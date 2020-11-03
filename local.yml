@@ -34,17 +34,13 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
-  docs:
-    image: kaffepause_local_docs
-    container_name: docs
-    build:
-      context: .
-      dockerfile: ./compose/local/docs/Dockerfile
-    env_file:
-      - ./.envs/.local/.django
-    volumes:
-      - ./docs:/docs:z
-      - ./config:/app/config:z
-      - ./kaffepause:/app/kaffepause:z
+  phppgadmin:
+    restart: always
+    image: dockage/phppgadmin:latest
     ports:
-      - "7000:7000"
+      - "80:80"
+      - "443:443"
+    environment:
+        - PHP_PG_ADMIN_SERVER_HOST=postgres
+        - PHP_PG_ADMIN_SERVER_PORT=5432
+        - PHP_PG_ADMIN_SERVER_DEFAULT_DB=kaffepause
