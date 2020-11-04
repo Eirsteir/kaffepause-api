@@ -72,13 +72,13 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
 ]
-
 LOCAL_APPS = [
+    "kaffepause.friendships",
     "kaffepause.users",
     "kaffepause.api",
     "kaffepause.common",
-    "kaffepause.friendships",
 ]
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -272,7 +272,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    "EXCEPTION_HANDLER": "kaffepause.common.errors.exception_handler",
+    "EXCEPTION_HANDLER": "kaffepause.api.errors.exception_handler",
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup

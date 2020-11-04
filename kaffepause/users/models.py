@@ -13,7 +13,9 @@ class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_("Name of User"), blank=True, max_length=255)
 
-    friends = models.ManyToManyField("User", through="friendships.Friendship")
+    friends = models.ManyToManyField(
+        "self", through="friendships.Friendship", symmetrical=True
+    )
 
     def __str__(self):
         return self.username
