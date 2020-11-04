@@ -61,7 +61,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
-    "django.forms"
+    "django.forms",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -75,7 +75,9 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "kaffepause.users",
-    # Your stuff: custom apps go here
+    "kaffepause.api",
+    "kaffepause.common",
+    "kaffepause.friendships",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -270,6 +272,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "EXCEPTION_HANDLER": "kaffepause.common.errors.exception_handler",
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
