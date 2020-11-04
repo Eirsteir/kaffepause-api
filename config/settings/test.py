@@ -50,3 +50,4 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 # Your stuff...
 # ------------------------------------------------------------------------------
 DATABASES = {"default": env.db("DATABASE_URL", default='postgres://postgres:@postgres:5432/postgres',)}
+
