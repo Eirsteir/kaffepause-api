@@ -1,7 +1,7 @@
 import pytest
 
 from kaffepause.users.models import User
-from kaffepause.users.tests.factories import UserFactory
+from kaffepause.users.test.factories import UserFactory
 
 
 @pytest.fixture(autouse=True)

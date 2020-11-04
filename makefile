@@ -19,3 +19,10 @@ dumpdata:
 
 loaddata:
 	docker-compose -f local.yml run --rm django python manage.py loaddata ./app/fixture.json
+
+test:
+	docker-compose -f local.yml run --rm django pytest
+
+coverage:
+	docker-compose -f local.yml run --rm django coverage run -m pytest
+	docker-compose -f local.yml run --rm django coverage report
