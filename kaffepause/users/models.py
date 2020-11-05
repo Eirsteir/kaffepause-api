@@ -14,7 +14,10 @@ class User(AbstractUser):
     name = models.CharField(_("Name of User"), blank=True, max_length=255)
 
     friends = models.ManyToManyField(
-        "self", through="friendships.Friendship", symmetrical=True
+        "self",
+        through="friendships.Friendship",
+        symmetrical=True,
+        related_name="related_to+",  # The reverse relationship should not be exposed
     )
 
     def __str__(self):

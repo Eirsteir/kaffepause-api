@@ -1,0 +1,27 @@
+PostgreSQL is available
+[
+{
+    "model": "sessions.session",
+    "pk": "1ugp0a73avqegerm9l56erxbsbe6b94q",
+    "fields": {
+        "session_data": "ZmM2MWUyOWY1N2NjYzIwMzgxOGQ5MjVjMTIyMWE5ZDY5ODQxYmUxMTp7Il9hdXRoX3VzZXJfaWQiOiI2MDg2NzZmNi0yYzhmLTRmNmQtYTRmMC0xNTViMDEzOWNmYzUiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjgyNzA4YWU0MDMwMWVkNjkzNjFhZjAwNDFjNTYzNGJhOGJiYmI2YWIifQ==",
+        "expire_date": "2020-11-18T20:31:27.063Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ibvnbehp4mfhlpo4n2lu2pt5d8un4woy",
+    "fields": {
+        "session_data": "ZmM2MWUyOWY1N2NjYzIwMzgxOGQ5MjVjMTIyMWE5ZDY5ODQxYmUxMTp7Il9hdXRoX3VzZXJfaWQiOiI2MDg2NzZmNi0yYzhmLTRmNmQtYTRmMC0xNTViMDEzOWNmYzUiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjgyNzA4YWU0MDMwMWVkNjkzNjFhZjAwNDFjNTYzNGJhOGJiYmI2YWIifQ==",
+        "expire_date": "2020-11-19T19:21:00.927Z"
+    }
+},
+{
+    "model": "sites.site",
+    "pk": 1,
+    "fields": {
+        "domain": "example.com",
+        "name": "example.com"
+    }
+}[31;1mCommandError: Unable to serialize database: cursor "_django_curs_140713188263744_sync_7" does not exist
+[0m
