@@ -16,7 +16,7 @@ class User(AbstractUser):
     friends = models.ManyToManyField(
         "self",
         through="relationships.Relationship",
-        symmetrical=False,
+        symmetrical=True,
         related_name="related_to+",  # The reverse relationship should not be exposed
     )
 

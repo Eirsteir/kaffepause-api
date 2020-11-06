@@ -31,13 +31,13 @@ def create_relationship(
 
     if symmetrical:
         return relationship, create_relationship(from_user, to_user, status, False)
-    else:
-        return relationship
+
+    return relationship
 
 
 def delete_relationship_from_to(
-    user: User,
-    other_user: User,
+    from_user: User,
+    to_user: User,
     status: RelationshipStatusEnum = None,
     symmetrical: bool = True,
 ):
@@ -49,10 +49,10 @@ def delete_relationship_from_to(
         status = RelationshipStatus.objects.requested()
 
     result = Relationship.objects.filter(
-        from_user=user, to_user=other_user, status=status
+        from_user=from_user, to_user=to_user, status=status
     ).delete()
 
     if symmetrical:
-        return result, delete_relationship_from_to(other_user, user, status, False)
-    else:
-        return result
+        return result, delete_relationship_from_to(to_user, from_user, status, False)
+
+    return result
