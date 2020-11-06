@@ -15,7 +15,7 @@ migrate: ##@Docker Perform migrations to database
 	docker-compose -f local.yml run --rm django python manage.py migrate
 
 dumpdata:
-	docker-compose -f local.yml run --rm django python manage.py dumpdata -e admin -e auth.Permission -e contenttypes --indent=4 > ./kaffepause/fixture.json
+	docker-compose -f local.yml run --rm django python manage.py dumpdata --indent=4 > ./kaffepause/fixture.json
 
 loaddata:
 	docker-compose -f local.yml run --rm django python manage.py loaddata ./kaffepause/fixture.json

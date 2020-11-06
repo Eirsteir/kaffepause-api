@@ -1,48 +1,36 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
+
+from kaffepause.relationships.enums import RelationshipStatusEnum
 
 User = get_user_model()
 
 
 class RelationshipStatusManager(models.Manager):
-    def requesting(self):
-        return self.get(from_slug="requesting")
-
     def requested(self):
-        return self.get(to_slug="requested")
+        return self.get(slug=RelationshipStatusEnum.REQUESTED.slug)
 
-    def blocking(self):
-        return self.get(from_slug="blocking")
+    def blocked(self):
+        return self.get(slug=RelationshipStatusEnum.BLOCKED.slug)
 
-    def are_friends(self):
-        return self.get(symmetrical_slug="are_friends")
+    def friends(self):
+        return self.get(slug=RelationshipStatusEnum.ARE_FRIENDS.slug)
 
     def by_slug(self, status_slug):
-        return self.get(
-            models.Q(from_slug=status_slug)
-            | models.Q(to_slug=status_slug)
-            | models.Q(symmetrical_slug=status_slug)
-        )
+        return self.get(slug=status_slug)
+
+    def by_status_enum(self, status_enum: RelationshipStatusEnum):
+        return self.get(slug=status_enum.slug)
 
 
 class RelationshipStatus(models.Model):
     name = models.CharField(_("name"), max_length=100)
     verb = models.CharField(_("verb"), max_length=100)
-    from_slug = models.CharField(
-        _("from slug"),
+    slug = models.CharField(
+        _("slug"),
         max_length=100,
-        help_text=_("Denote the relationship from the user, i.e. 'requesting'"),
-    )
-    to_slug = models.CharField(
-        _("to slug"),
-        max_length=100,
-        help_text=_("Denote the relationship to the user, i.e. 'requested'"),
-    )
-    symmetrical_slug = models.CharField(
-        _("symmetrical slug"),
-        max_length=100,
-        help_text=_("When a mutual relationship exists, i.e. 'friends'"),
+        help_text=_("When a mutual relationship exists, i.e. 'friends', 'requested'"),
     )
     login_required = models.BooleanField(
         _("login required"),
@@ -66,14 +54,14 @@ class RelationshipStatus(models.Model):
         return self.name
 
 
-class Friendship(models.Model):
-    requester = models.ForeignKey(
+class Relationship(models.Model):
+    from_user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
         related_name="from_users",
         verbose_name=_("from users"),
     )
-    addressee = models.ForeignKey(
+    to_user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
         related_name="to_users",
@@ -87,12 +75,12 @@ class Friendship(models.Model):
 
     class Meta:
         unique_together = (
-            "requester",
-            "addressee",
+            "from_user",
+            "to_user",
         )
         ordering = ("created",)
         verbose_name = _("Friendship")
         verbose_name_plural = _("Friendship")
 
     def __str__(self):
-        return f"Relationship from {self.requester} to {self.addressee}"
+        return f"Relationship from {self.from_user} to {self.to_user} ({self.status})"

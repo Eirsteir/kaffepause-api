@@ -1,22 +1,17 @@
 from django.contrib import admin
 
 from .forms import RelationshipStatusAdminForm
-from .models import Friendship, RelationshipStatus
+from .models import Relationship, RelationshipStatus
 
 
 class FriendshipInline(admin.StackedInline):
-    model = Friendship
-    fk_name = "requester"
+    model = Relationship
+    fk_name = "from_user"
 
 
-@admin.register(Friendship)
+@admin.register(Relationship)
 class FriendshipAdmin(admin.ModelAdmin):
-    search_fields = ("requester__username", "addressee__username")
-    list_display = (
-        "requester",
-        "addressee",
-        "status",
-    )
+    search_fields = ("from_user__username", "to_user__username")
 
 
 @admin.register(RelationshipStatus)

@@ -73,7 +73,7 @@ THIRD_PARTY_APPS = [
     "corsheaders",
 ]
 LOCAL_APPS = [
-    "kaffepause.friendships",
+    "kaffepause.relationships",
     "kaffepause.users",
     "kaffepause.api",
     "kaffepause.common",

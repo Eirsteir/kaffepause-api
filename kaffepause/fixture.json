@@ -1,19 +1,139 @@
 PostgreSQL is available
 [
 {
-    "model": "sessions.session",
-    "pk": "1ugp0a73avqegerm9l56erxbsbe6b94q",
+    "model": "contenttypes.contenttype",
+    "pk": 1,
     "fields": {
-        "session_data": "ZmM2MWUyOWY1N2NjYzIwMzgxOGQ5MjVjMTIyMWE5ZDY5ODQxYmUxMTp7Il9hdXRoX3VzZXJfaWQiOiI2MDg2NzZmNi0yYzhmLTRmNmQtYTRmMC0xNTViMDEzOWNmYzUiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjgyNzA4YWU0MDMwMWVkNjkzNjFhZjAwNDFjNTYzNGJhOGJiYmI2YWIifQ==",
-        "expire_date": "2020-11-18T20:31:27.063Z"
+        "app_label": "auth",
+        "model": "permission"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+        "app_label": "auth",
+        "model": "group"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+        "app_label": "contenttypes",
+        "model": "contenttype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+        "app_label": "sessions",
+        "model": "session"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+        "app_label": "sites",
+        "model": "site"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+        "app_label": "account",
+        "model": "emailaddress"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+        "app_label": "account",
+        "model": "emailconfirmation"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "socialaccount",
+        "model": "socialaccount"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+        "app_label": "socialaccount",
+        "model": "socialapp"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+        "app_label": "socialaccount",
+        "model": "socialtoken"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+        "app_label": "authtoken",
+        "model": "token"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+        "app_label": "authtoken",
+        "model": "tokenproxy"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+        "app_label": "friendships",
+        "model": "relationshipstatus"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+        "app_label": "friendships",
+        "model": "friendship"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+        "app_label": "users",
+        "model": "user"
     }
 },
 {
     "model": "sessions.session",
-    "pk": "ibvnbehp4mfhlpo4n2lu2pt5d8un4woy",
+    "pk": "pnumos2i5znfxgcn1f6ta1y6prxbhbvt",
     "fields": {
-        "session_data": "ZmM2MWUyOWY1N2NjYzIwMzgxOGQ5MjVjMTIyMWE5ZDY5ODQxYmUxMTp7Il9hdXRoX3VzZXJfaWQiOiI2MDg2NzZmNi0yYzhmLTRmNmQtYTRmMC0xNTViMDEzOWNmYzUiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjgyNzA4YWU0MDMwMWVkNjkzNjFhZjAwNDFjNTYzNGJhOGJiYmI2YWIifQ==",
-        "expire_date": "2020-11-19T19:21:00.927Z"
+        "session_data": "MzM4MDUzNjgyNzk5MzdhMzU3NjcxMmRlYmI2ZGNhNTBjZmUyZGJjZjp7Il9hdXRoX3VzZXJfaWQiOiIxMTI0MWFhMi1mNTAzLTQ3MTktYjNhOC0zMmM4OTZiMGM1NGEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImU5YjcwNWFhZjNjNTRiMjA5OTAzNzUzNGMzOWE0NWFiY2E4NTZjN2EifQ==",
+        "expire_date": "2020-11-19T19:30:13.654Z"
     }
 },
 {
@@ -23,5 +143,5 @@ PostgreSQL is available
         "domain": "example.com",
         "name": "example.com"
     }
-}[31;1mCommandError: Unable to serialize database: cursor "_django_curs_140713188263744_sync_7" does not exist
+}[31;1mCommandError: Unable to serialize database: cursor "_django_curs_140381163902784_sync_7" does not exist
 [0m
