@@ -10,7 +10,6 @@ class UserFactory(DjangoModelFactory):
         model = get_user_model()
         django_get_or_create = ("username",)
 
-    id = Faker('uuid4')
     username = Faker("user_name")
     email = Faker("email")
     name = Faker("name")

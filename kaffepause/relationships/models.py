@@ -27,10 +27,16 @@ class RelationshipStatusManager(models.Manager):
 class RelationshipStatus(models.Model):
     name = models.CharField(_("name"), max_length=100)
     verb = models.CharField(_("verb"), max_length=100)
+    # from_slug = models.CharField(_('from slug'), max_length=100,
+    #                              help_text=_("Denote the relationship from the user, i.e. user is 'requesting'"))
+    # to_slug = models.CharField(_('to slug'), max_length=100,
+    #                            help_text=_("Denote the relationship to the user, i.e. user is 'requested' by"))
     slug = models.CharField(
         _("slug"),
         max_length=100,
-        help_text=_("When a mutual relationship exists, i.e. 'friends', 'requested'"),
+        help_text=_(
+            "When a mutual relationship exists, i.e. 'friends', 'requested'"
+        ),
     )
     login_required = models.BooleanField(
         _("login required"),
@@ -70,17 +76,22 @@ class Relationship(models.Model):
     status = models.ForeignKey(
         RelationshipStatus, on_delete=models.PROTECT, verbose_name=_("status")
     )
-    created = models.DateTimeField(_("created"), auto_now_add=True)
+    since = models.DateTimeField(_("since"), auto_now_add=True)
     weight = models.FloatField(_("weight"), default=1.0, blank=True, null=True)
 
     class Meta:
-        unique_together = (
-            "from_user",
-            "to_user",
-        )
-        ordering = ("created",)
+        constraints = [
+            models.UniqueConstraint(
+                fields=["from_user", "to_user"], name="unique-relationship"
+            )
+        ]
+        ordering = ("since",)
         verbose_name = _("Friendship")
         verbose_name_plural = _("Friendship")
+
+    @property
+    def is_blocked(self):
+        return self.status == RelationshipStatus.objects.blocked()
 
     def __str__(self):
         return f"Relationship from {self.from_user} to {self.to_user} ({self.status})"

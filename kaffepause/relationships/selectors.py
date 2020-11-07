@@ -7,9 +7,7 @@ from kaffepause.users.models import User
 
 
 def get_friends(user: User) -> Union[QuerySet, List[User]]:
-    return get_relationships_for(
-        user, RelationshipStatus.objects.friends(), True
-    )
+    return get_relationships_for(user, RelationshipStatus.objects.friends())
 
 
 def get_incoming_requests(user: User) -> Union[QuerySet, List[User]]:
@@ -97,3 +95,24 @@ def relationship_exists(from_user, to_user, status=None, symmetrical=False):
             query &= Q(status=status)
 
     return Relationship.objects.filter(query).exists()
+
+
+def get_single_relationship(from_user, to_user, status=None):
+    """
+    Returns the symmetrical relationship between the given users.
+    An optional :class:`RelationshipStatus` instance can be specified.
+    """
+
+    query = Q(from_user=from_user, to_user=to_user) | Q(
+        from_user=to_user, to_user=from_user
+    )
+
+    if status:
+        query &= Q(status=status)
+
+    relationship = Relationship.objects.filter(query).first()
+    print(Relationship.objects.all())
+    if not relationship:
+        raise Relationship.DoesNotExist
+
+    return relationship
