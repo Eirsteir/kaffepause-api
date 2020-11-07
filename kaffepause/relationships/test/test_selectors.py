@@ -1,9 +1,13 @@
 import pytest
 
-from kaffepause.relationships.models import Relationship
 from kaffepause.relationships.selectors import (
+    get_friends,
+    get_incoming_blocks,
     get_incoming_relationships_for,
+    get_incoming_requests,
+    get_outgoing_blocks,
     get_outgoing_relationships_for,
+    get_outgoing_requests,
     get_relationships_for,
     relationship_exists,
 )
@@ -146,8 +150,6 @@ def test_relationship_exists_excluding_status_symmetrical_reversed(
     from_user = relationship.to_user
     to_user = relationship.from_user
 
-    print(Relationship.objects.all())
-
     assert relationship_exists(from_user, to_user, symmetrical=True)
 
 
@@ -194,3 +196,90 @@ def test_relationship_exists_including_status__symmetrical_when_it_does_not_exis
         status=requested_status,
         symmetrical=True,
     )
+
+
+def test_get_friends(user, are_friends_status, requested_status):
+    """Should return exclusively users who are in an accepted relationship with the given user."""
+    outgoing_accepted = RelationshipFactory(
+        from_user=user, status=are_friends_status
+    )
+    incoming_accepted = RelationshipFactory(
+        to_user=user, status=are_friends_status
+    )
+
+    # Leave out other relationships
+    RelationshipFactory(to_user=user)
+
+    friends = get_friends(user)
+
+    assert friends.count() == 2
+    assert friends.filter(id=outgoing_accepted.to_user.id).exists()
+    assert friends.filter(id=incoming_accepted.from_user.id).exists()
+
+
+def test_get_incoming_requests(
+    user, are_friends_status, blocked_status, requested_status
+):
+    """Should return all users who have created a requested relationship to the given user."""
+    incoming_request = RelationshipFactory(to_user=user)
+
+    # Leave out other relationships
+    RelationshipFactory.create(from_user=user)
+    RelationshipFactory.create(to_user=user, status=are_friends_status)
+    RelationshipFactory.create(from_user=user, status=blocked_status)
+
+    friends = get_incoming_requests(user)
+
+    assert friends.count() == 1
+    assert friends.filter(id=incoming_request.from_user.id).exists()
+
+
+def test_get_outgoing_requests(
+    user, are_friends_status, blocked_status, requested_status
+):
+    """Should return all users who the given user has created a requested relationship to."""
+    outgoing_request = RelationshipFactory(from_user=user)
+
+    # Leave out other relationships
+    RelationshipFactory.create(to_user=user)
+    RelationshipFactory.create(to_user=user, status=are_friends_status)
+    RelationshipFactory.create(from_user=user, status=blocked_status)
+
+    friends = get_outgoing_requests(user)
+
+    assert friends.count() == 1
+    assert friends.filter(id=outgoing_request.to_user.id).exists()
+
+
+def test_get_incoming_blocks(
+    user, are_friends_status, blocked_status, requested_status
+):
+    """Should return all users who have created a blocked relationship to the given user."""
+    incoming_block = RelationshipFactory(to_user=user, status=blocked_status)
+
+    # Leave out other relationships
+    RelationshipFactory.create(from_user=user)
+    RelationshipFactory.create(to_user=user, status=are_friends_status)
+    RelationshipFactory.create(from_user=user)
+
+    friends = get_incoming_blocks(user)
+
+    assert friends.count() == 1
+    assert friends.filter(id=incoming_block.from_user.id).exists()
+
+
+def test_get_outgoing_blocks(
+    user, are_friends_status, blocked_status, requested_status
+):
+    """Should return all users who the given user has created a blocked relationship to."""
+    outgoing_block = RelationshipFactory(from_user=user, status=blocked_status)
+
+    # Leave out other relationships
+    RelationshipFactory.create(to_user=user)
+    RelationshipFactory.create(to_user=user, status=are_friends_status)
+    RelationshipFactory.create(from_user=user)
+
+    friends = get_outgoing_blocks(user)
+
+    assert friends.count() == 1
+    assert friends.filter(id=outgoing_block.to_user.id).exists()

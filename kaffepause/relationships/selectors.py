@@ -6,6 +6,36 @@ from kaffepause.relationships.models import Relationship, RelationshipStatus
 from kaffepause.users.models import User
 
 
+def get_friends(user: User) -> Union[QuerySet, List[User]]:
+    return get_relationships_for(
+        user, RelationshipStatus.objects.friends(), True
+    )
+
+
+def get_incoming_requests(user: User) -> Union[QuerySet, List[User]]:
+    return get_incoming_relationships_for(
+        user, RelationshipStatus.objects.requested()
+    )
+
+
+def get_outgoing_requests(user: User) -> Union[QuerySet, List[User]]:
+    return get_outgoing_relationships_for(
+        user, RelationshipStatus.objects.requested()
+    )
+
+
+def get_outgoing_blocks(user: User) -> Union[QuerySet, List[User]]:
+    return get_outgoing_relationships_for(
+        user, RelationshipStatus.objects.blocked()
+    )
+
+
+def get_incoming_blocks(user: User) -> Union[QuerySet, List[User]]:
+    return get_incoming_relationships_for(
+        user, RelationshipStatus.objects.blocked()
+    )
+
+
 def get_relationships_for(
     user: User, status: RelationshipStatus, symmetrical: bool = True
 ) -> Union[QuerySet, List[User]]:
@@ -67,31 +97,3 @@ def relationship_exists(from_user, to_user, status=None, symmetrical=False):
             query &= Q(status=status)
 
     return Relationship.objects.filter(query).exists()
-
-
-def following(user):
-    return get_relationships_for(user, RelationshipStatus.objects.requesting())
-
-
-def followers(user):
-    return get_incoming_relationships_for(
-        user, RelationshipStatus.objects.requesting()
-    )
-
-
-def blocking(user):
-    return get_outgoing_relationships_for(
-        user, RelationshipStatus.objects.blocked()
-    )
-
-
-def blockers(user):
-    return get_incoming_relationships_for(
-        user, RelationshipStatus.objects.blocked()
-    )
-
-
-def friends(user):
-    return get_relationships_for(
-        user, RelationshipStatus.objects.friends(), True
-    )
