@@ -5,6 +5,14 @@ fresh:
 	docker-compose -f local.yml build
 	make start
 
+install:
+	docker-compose -f local.yml run --rm django pip install -r requirements/local.txt
+
+rebuild: clean update collect
+	docker-compose f local.yml run --rm django python manage.py reset_db --noinput
+	make makemigrations
+	make migrate
+
 createsuperuser: ##@Docker Create a superuser
 	docker-compose -f local.yml run --rm django python manage.py createsuperuser
 
@@ -15,7 +23,7 @@ migrate: ##@Docker Perform migrations to database
 	docker-compose -f local.yml run --rm django python manage.py migrate
 
 dumpdata:
-	docker-compose -f local.yml run --rm django python manage.py dumpdata --indent=4 > ./kaffepause/fixture.json
+	docker-compose -f local.yml run --rm django python manage.py dumpdata --indent=4 --format=json > ./kaffepause/fixture.json
 
 loaddata:
 	docker-compose -f local.yml run --rm django python manage.py loaddata ./kaffepause/fixture.json
