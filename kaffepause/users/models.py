@@ -16,8 +16,8 @@ class User(AbstractUser):
     friends = models.ManyToManyField(
         "self",
         through="relationships.Relationship",
-        symmetrical=True,
-        related_name="related_to+",  # The reverse relationship should not be exposed
+        symmetrical=False,
+        related_name="related_to",  # The reverse relationship should not be exposed
     )
 
     def __str__(self):

@@ -99,7 +99,7 @@ def relationship_exists(from_user, to_user, status=None, symmetrical=False):
 
 def get_single_relationship(from_user, to_user, status=None):
     """
-    Returns the symmetrical relationship between the given users.
+    Returns the relationship object between the given users.
     An optional :class:`RelationshipStatus` instance can be specified.
     """
 
@@ -111,7 +111,7 @@ def get_single_relationship(from_user, to_user, status=None):
         query &= Q(status=status)
 
     relationship = Relationship.objects.filter(query).first()
-    print(Relationship.objects.all())
+
     if not relationship:
         raise Relationship.DoesNotExist
 

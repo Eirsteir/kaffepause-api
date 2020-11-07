@@ -27,6 +27,7 @@ class RelationshipStatusManager(models.Manager):
 class RelationshipStatus(models.Model):
     name = models.CharField(_("name"), max_length=100)
     verb = models.CharField(_("verb"), max_length=100)
+    # TODO: Add these back
     # from_slug = models.CharField(_('from slug'), max_length=100,
     #                              help_text=_("Denote the relationship from the user, i.e. user is 'requesting'"))
     # to_slug = models.CharField(_('to slug'), max_length=100,

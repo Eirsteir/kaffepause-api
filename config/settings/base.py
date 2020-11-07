@@ -293,9 +293,9 @@ CORS_URLS_REGEX = r"^/api/.*$"
 # ------------------------------------------------------------------------------
 GRAPHENE = {
     "SCHEMA": "kaffepause.api.schema.schema",
-    "MIDDLEWARE": ["graphql_jwt.middleware.JSONWebTokenMiddleware"],
+    "MIDDLEWARE": [],
 }
-
+# "graphql_jwt.middleware.JSONWebTokenMiddleware"
 # Your stuff...
 # ------------------------------------------------------------------------------
 SITE = {
