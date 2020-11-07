@@ -1,10 +1,10 @@
 import pytest
 
-from kaffepause.relationships.enums import RelationshipStatusEnum
-from kaffepause.relationships.models import Relationship, RelationshipStatus
-from kaffepause.relationships.test.factories import (
-    RelationshipFactory,
-    RelationshipStatusFactory,
+from kaffepause.friendships.enums import FriendshipStatusEnum
+from kaffepause.friendships.models import Friendship, FriendshipStatus
+from kaffepause.friendships.test.factories import (
+    FriendshipFactory,
+    FriendshipStatusFactory,
 )
 from kaffepause.users.models import User
 from kaffepause.users.test.factories import UserFactory
@@ -21,20 +21,20 @@ def user() -> User:
 
 
 @pytest.fixture
-def relationship() -> Relationship:
-    return RelationshipFactory()
+def friendships() -> Friendship:
+    return FriendshipFactory()
 
 
 @pytest.fixture(autouse=True)
-def are_friends_status() -> RelationshipStatus:
-    return RelationshipStatusFactory(slug=RelationshipStatusEnum.ARE_FRIENDS)
+def are_friends_status() -> FriendshipStatus:
+    return FriendshipStatusFactory(name=FriendshipStatusEnum.ARE_FRIENDS)
 
 
 @pytest.fixture(autouse=True)
-def requested_status() -> RelationshipStatus:
-    return RelationshipStatusFactory(slug=RelationshipStatusEnum.REQUESTED)
+def requested_status() -> FriendshipStatus:
+    return FriendshipStatusFactory(name=FriendshipStatusEnum.REQUESTED)
 
 
 @pytest.fixture(autouse=True)
-def blocked_status() -> RelationshipStatus:
-    return RelationshipStatusFactory(slug=RelationshipStatusEnum.BLOCKED)
+def blocked_status() -> FriendshipStatus:
+    return FriendshipStatusFactory(name=FriendshipStatusEnum.BLOCKED)

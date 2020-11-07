@@ -2,66 +2,75 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from kaffepause.relationships.enums import RelationshipStatusEnum
+from kaffepause.friendships.enums import FriendshipStatusEnum
 
 User = get_user_model()
 
 
-class RelationshipStatusManager(models.Manager):
+class FriendshipsStatusManager(models.Manager):
     def requested(self):
-        return self.get(slug=RelationshipStatusEnum.REQUESTED.slug)
+        return self.get(slug=FriendshipStatusEnum.REQUESTED.slug)
 
     def blocked(self):
-        return self.get(slug=RelationshipStatusEnum.BLOCKED.slug)
+        return self.get(slug=FriendshipStatusEnum.BLOCKED.slug)
 
     def friends(self):
-        return self.get(slug=RelationshipStatusEnum.ARE_FRIENDS.slug)
+        return self.get(slug=FriendshipStatusEnum.ARE_FRIENDS.slug)
 
     def by_slug(self, status_slug):
         return self.get(slug=status_slug)
 
-    def by_status_enum(self, status_enum: RelationshipStatusEnum):
+    def by_status_enum(self, status_enum: FriendshipStatusEnum):
         return self.get(slug=status_enum.slug)
 
 
-class RelationshipStatus(models.Model):
+class FriendshipStatus(models.Model):
     name = models.CharField(_("name"), max_length=100)
     verb = models.CharField(_("verb"), max_length=100)
-    # TODO: Add these back
-    # from_slug = models.CharField(_('from slug'), max_length=100,
-    #                              help_text=_("Denote the relationship from the user, i.e. user is 'requesting'"))
-    # to_slug = models.CharField(_('to slug'), max_length=100,
-    #                            help_text=_("Denote the relationship to the user, i.e. user is 'requested' by"))
+    from_slug = models.CharField(
+        _("from slug"),
+        max_length=100,
+        help_text=_(
+            "Denote the friendship from the user, i.e. user is 'requesting'"
+        ),
+    )
+    to_slug = models.CharField(
+        _("to slug"),
+        max_length=100,
+        help_text=_(
+            "Denote the friendship to the user, i.e. user is 'requested' by"
+        ),
+    )
     slug = models.CharField(
         _("slug"),
         max_length=100,
         help_text=_(
-            "When a mutual relationship exists, i.e. 'friends', 'requested'"
+            "When a mutual friendship exists, i.e. 'friends', 'requested'"
         ),
     )
     login_required = models.BooleanField(
         _("login required"),
         default=False,
-        help_text=_("Users must be logged in to see these relationships"),
+        help_text=_("Users must be logged in to see these friendship"),
     )
     private = models.BooleanField(
         _("private"),
         default=False,
-        help_text=_("Only the user who owns these relationships can see them"),
+        help_text=_("Only the user who owns these friendship can see them"),
     )
 
-    objects = RelationshipStatusManager()
+    objects = FriendshipsStatusManager()
 
     class Meta:
         ordering = ("name",)
-        verbose_name = _("Relationship status")
-        verbose_name_plural = _("Relationship statuses")
+        verbose_name = _("Friendship status")
+        verbose_name_plural = _("Friendship statuses")
 
     def __str__(self):
         return self.name
 
 
-class Relationship(models.Model):
+class Friendship(models.Model):
     from_user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
@@ -75,7 +84,7 @@ class Relationship(models.Model):
         verbose_name=_("to user"),
     )
     status = models.ForeignKey(
-        RelationshipStatus, on_delete=models.PROTECT, verbose_name=_("status")
+        FriendshipStatus, on_delete=models.PROTECT, verbose_name=_("status")
     )
     since = models.DateTimeField(_("since"), auto_now_add=True)
     weight = models.FloatField(_("weight"), default=1.0, blank=True, null=True)
@@ -83,7 +92,7 @@ class Relationship(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["from_user", "to_user"], name="unique-relationship"
+                fields=["from_user", "to_user"], name="unique-friendship"
             )
         ]
         ordering = ("since",)
@@ -92,7 +101,7 @@ class Relationship(models.Model):
 
     @property
     def is_blocked(self):
-        return self.status == RelationshipStatus.objects.blocked()
+        return self.status == FriendshipStatus.objects.blocked()
 
     def __str__(self):
-        return f"Relationship from {self.from_user} to {self.to_user} ({self.status})"
+        return f"Friendship from {self.from_user} to {self.to_user} ({self.status})"

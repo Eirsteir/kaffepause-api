@@ -6,9 +6,9 @@ from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 
-from kaffepause.relationships.models import Relationship, RelationshipStatus
-from kaffepause.relationships.selectors import get_friends
-from kaffepause.relationships.services import create_relationship
+from kaffepause.friendships.models import Friendship, FriendshipStatus
+from kaffepause.friendships.selectors import get_friends
+from kaffepause.friendships.services import create_friendship
 
 User = get_user_model()
 
@@ -32,8 +32,6 @@ class UserNode(DjangoObjectType):
             "name",
             "username",
             "friends",
-            "to_users",
-            "from_users",
         )
         filter_fields = {
             "id": ["exact"],
@@ -49,17 +47,17 @@ class UserNode(DjangoObjectType):
         return get_friends(parent)
 
 
-class RelationshipNode(DjangoObjectType):
+class FriendshipNode(DjangoObjectType):
     class Meta:
-        model = Relationship
+        model = Friendship
         filter_fields = ("from_user", "to_user", "status", "since")
         interfaces = (relay.Node,)
 
 
-class RelationshipStatusNode(DjangoObjectType):
+class FriendshipStatusNode(DjangoObjectType):
     class Meta:
-        model = RelationshipStatus
-        filter_fields = ("name", "verb", "slug")
+        model = FriendshipStatus
+        filter_fields = ("name", "verb", "from_slug", "to_slug", "slug")
         interfaces = (relay.Node,)
 
 
@@ -67,11 +65,11 @@ class Query(graphene.ObjectType):
     user = relay.Node.Field(UserNode)
     all_users = DjangoFilterConnectionField(UserNode)
 
-    relationship = relay.Node.Field(RelationshipNode)
-    all_relationships = DjangoFilterConnectionField(RelationshipNode)
+    friendships = relay.Node.Field(FriendshipNode)
+    all_friendships = DjangoFilterConnectionField(FriendshipNode)
 
     def resolve_all_users(root, info):
-        return User.objects.all().prefetch_related("friends")
+        return User.objects.all()
 
 
 class SendFriendRequest(graphene.Mutation):
@@ -79,16 +77,16 @@ class SendFriendRequest(graphene.Mutation):
         to_friend = graphene.String()
 
     # This defines the response of the mutation
-    relationship = graphene.Field(RelationshipNode)
+    friendship = graphene.Field(FriendshipNode)
     ok = graphene.Boolean()
 
     def mutate(self, info, to_friend):
         current_user = info.context.user
         to_friend = User.objects.get(id=to_friend)
-        relationship = create_relationship(
+        friendship = create_friendship(
             from_user=current_user, to_user=to_friend
         )
-        return SendFriendRequest(relationship=relationship, ok=True)
+        return SendFriendRequest(friendship=friendship, ok=True)
 
 
 class Mutation:

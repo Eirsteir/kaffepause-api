@@ -75,7 +75,7 @@ THIRD_PARTY_APPS = [
     "graphene_django",
 ]
 LOCAL_APPS = [
-    "kaffepause.relationships",
+    "kaffepause.friendships",
     "kaffepause.users",
     "kaffepause.api",
     "kaffepause.common",

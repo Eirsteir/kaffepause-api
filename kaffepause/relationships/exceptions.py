@@ -1,2 +1,0 @@
-class InvalidRelationshipDeletion(ValueError):
-    pass

@@ -1,0 +1,2 @@
+class InvalidFriendshipDeletion(ValueError):
+    pass

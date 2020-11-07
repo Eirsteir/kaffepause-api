@@ -3,7 +3,7 @@ from rest_framework.permissions import AllowAny
 
 from kaffepause.common.permissions import IsUserOrReadOnly
 
-from .models import Relationship
+from .models import Friendship
 from .serializers import FriendshipSerializer
 
 
@@ -11,19 +11,21 @@ class FriendshipViewSet(
     mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
 ):
     """
-    Updates and retrieves friendships
+    Updates and retrieves friendship
     """
 
-    queryset = Relationship.objects.all()
+    queryset = Friendship.objects.all()
     serializer_class = FriendshipSerializer
     permission_classes = (IsUserOrReadOnly,)
 
 
-class FriendshipCreateViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class FriendshipCreateViewSet(
+    mixins.CreateModelMixin, viewsets.GenericViewSet
+):
     """
-    Creates friendships
+    Creates friendship
     """
 
-    queryset = Relationship.objects.all()
+    queryset = Friendship.objects.all()
     serializer_class = FriendshipSerializer
     permission_classes = (AllowAny,)

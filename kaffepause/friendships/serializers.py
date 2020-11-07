@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from kaffepause.users.serializers import UserSerializer
 
-from .models import Relationship
+from .models import Friendship
 
 
 class FriendshipSerializer(serializers.ModelSerializer):
@@ -10,7 +10,7 @@ class FriendshipSerializer(serializers.ModelSerializer):
     addressee = UserSerializer(read_only=True)
 
     class Meta:
-        model = Relationship
+        model = Friendship
         fields = (
             "requester",
             "addressee",

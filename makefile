@@ -8,10 +8,14 @@ fresh:
 install:
 	docker-compose -f local.yml run --rm django pip install -r requirements/local.txt
 
-rebuild: clean update collect
-	docker-compose f local.yml run --rm django python manage.py reset_db --noinput
+rebuild:
+	docker-compose -f local.yml run --rm django python manage.py reset_db --noinput
 	make makemigrations
 	make migrate
+	make seed
+
+shell:
+	docker-compose -f local.yml run --rm django python manage.py shell_plus
 
 createsuperuser: ##@Docker Create a superuser
 	docker-compose -f local.yml run --rm django python manage.py createsuperuser
@@ -27,6 +31,10 @@ dumpdata:
 
 loaddata:
 	docker-compose -f local.yml run --rm django python manage.py loaddata ./kaffepause/fixture.json
+
+seed:
+	docker-compose -f local.yml run --rm django python manage.py seed ${args}
+	make dumpdata
 
 test:
 	docker-compose -f local.yml run --rm django pytest ${args}

@@ -1,15 +1,15 @@
 from django import forms
 
-from .models import RelationshipStatus
+from .models import FriendshipStatus
 
 
-class RelationshipStatusAdminForm(forms.ModelForm):
+class FriendshipStatusAdminForm(forms.ModelForm):
     class Meta:
-        model = RelationshipStatus
+        model = FriendshipStatus
         fields = "__all__"
 
     def duplicate_slug_check(self, status_slug):
-        status_qs = RelationshipStatus.objects.filter(slug=status_slug)
+        status_qs = FriendshipStatus.objects.filter(slug=status_slug)
 
         if self.instance.pk:
             status_qs = status_qs.exclude(pk=self.instance.pk)
