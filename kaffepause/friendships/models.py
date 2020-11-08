@@ -1,9 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from model_utils import FieldTracker
+from model_utils.fields import MonitorField
+from model_utils.models import TimeStampedModel
 
+from kaffepause.common.models import BaseModel
 from kaffepause.friendships.enums import DefaultFriendshipStatus
-from kaffepause.friendships.exceptions import InvalidFriendshipStatusChange
 
 User = get_user_model()
 
@@ -65,7 +68,7 @@ class FriendshipStatus(models.Model):
         return self.name
 
 
-class Friendship(models.Model):
+class Friendship(TimeStampedModel):
     from_user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
@@ -81,18 +84,19 @@ class Friendship(models.Model):
     status = models.ForeignKey(
         FriendshipStatus, on_delete=models.PROTECT, verbose_name=_("status")
     )
-    since = models.DateTimeField(_("since"), auto_now_add=True)
+    # https://django-model-utils.readthedocs.io/en/latest/utilities.html#field-tracker
+    since = FieldTracker(fields=["status"])
     weight = models.FloatField(_("weight"), default=1.0, blank=True, null=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["from_user", "to_user"], name="unique-friendship"
+                fields=["from_user", "to_user"], name="unique-participants"
             )
         ]
-        ordering = ("since",)
+        ordering = ("modified",)
         verbose_name = _("Friendship")
-        verbose_name_plural = _("Friendship")
+        verbose_name_plural = _("Friendships")
 
     @property
     def is_blocked(self):

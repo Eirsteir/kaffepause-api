@@ -35,6 +35,7 @@ class Query(graphene.ObjectType):
     all_friendships = DjangoFilterConnectionField(FriendshipNode)
 
 
+# TODO: Use relay? https://www.howtographql.com/graphql-python/9-relay/
 class SendFriendRequest(graphene.Mutation):
     class Arguments:
         to_friend = graphene.String()

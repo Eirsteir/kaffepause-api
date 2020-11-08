@@ -14,6 +14,7 @@ class Query(
 
 
 class Mutation(
+    kaffepause.users.schema.Mutation,
     kaffepause.friendships.schema.Mutation,
     graphene.ObjectType,
 ):
