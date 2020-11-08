@@ -1,23 +1,40 @@
-from factory import LazyAttribute, SubFactory, fuzzy
+from typing import Any, Sequence
+
+from factory import LazyAttribute, SubFactory, fuzzy, post_generation
 from factory.django import DjangoModelFactory
 
-from kaffepause.friendships.enums import FriendshipStatusEnum
+from kaffepause.friendships.enums import (
+    BaseFriendshipStatusEnum,
+    DefaultFriendshipStatus,
+)
 from kaffepause.friendships.models import Friendship, FriendshipStatus
 from kaffepause.users.test.factories import UserFactory
 
 
 class FriendshipStatusFactory(DjangoModelFactory):
-    """Requires slug to be of type :class:`FriendshipStatusEnum`:"""
+    """Requires slug to be of type :class:`DefaultFriendshipStatus`:"""
 
     class Meta:
         model = FriendshipStatus
-        django_get_or_create = ("slug",)
+        django_get_or_create = ("name",)
 
-    name = fuzzy.FuzzyChoice(FriendshipStatusEnum)
-    verb = LazyAttribute(lambda o: o.name.verb)
-    from_slug = LazyAttribute(lambda o: o.name.from_slug)
-    to_slug = LazyAttribute(lambda o: o.name.to_slug)
-    slug = LazyAttribute(lambda o: o.name.slug)
+    name = fuzzy.FuzzyChoice(DefaultFriendshipStatus, getter=lambda n: n.name)
+
+    @classmethod
+    def from_enum(cls, enum: BaseFriendshipStatusEnum) -> FriendshipStatus:
+        instance = cls.build(
+            name=enum.name,
+            verb=enum.verb,
+            from_slug=enum.from_slug,
+            to_slug=enum.to_slug,
+            slug=enum.slug,
+        )
+
+        if FriendshipStatus.objects.filter(name=instance.name).exists():
+            return FriendshipStatus.objects.get(name=instance.name)
+
+        instance.save()
+        return instance
 
 
 class FriendshipFactory(DjangoModelFactory):

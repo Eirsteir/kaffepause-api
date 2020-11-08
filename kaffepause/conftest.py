@@ -1,6 +1,6 @@
 import pytest
 
-from kaffepause.friendships.enums import FriendshipStatusEnum
+from kaffepause.friendships.enums import DefaultFriendshipStatus
 from kaffepause.friendships.models import Friendship, FriendshipStatus
 from kaffepause.friendships.test.factories import (
     FriendshipFactory,
@@ -21,20 +21,20 @@ def user() -> User:
 
 
 @pytest.fixture
-def friendships() -> Friendship:
+def friendship() -> Friendship:
     return FriendshipFactory()
 
 
 @pytest.fixture(autouse=True)
 def are_friends_status() -> FriendshipStatus:
-    return FriendshipStatusFactory(name=FriendshipStatusEnum.ARE_FRIENDS)
+    return FriendshipStatusFactory.from_enum(DefaultFriendshipStatus.ARE_FRIENDS)
 
 
 @pytest.fixture(autouse=True)
 def requested_status() -> FriendshipStatus:
-    return FriendshipStatusFactory(name=FriendshipStatusEnum.REQUESTED)
+    return FriendshipStatusFactory.from_enum(DefaultFriendshipStatus.REQUESTED)
 
 
 @pytest.fixture(autouse=True)
 def blocked_status() -> FriendshipStatus:
-    return FriendshipStatusFactory(name=FriendshipStatusEnum.BLOCKED)
+    return FriendshipStatusFactory.from_enum(DefaultFriendshipStatus.BLOCKED)

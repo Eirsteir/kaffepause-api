@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError
 
-from kaffepause.friendships.enums import FriendshipStatusEnum
+from kaffepause.friendships.enums import DefaultFriendshipStatus
 from kaffepause.friendships.test.factories import (
     FriendshipFactory,
     FriendshipStatusFactory,
@@ -20,9 +20,9 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        for status in FriendshipStatusEnum:
+        for status in DefaultFriendshipStatus:
             try:
-                FriendshipStatusFactory(name=status)
+                FriendshipStatusFactory.from_enum(enum=status)
             except IntegrityError:
                 print("Friendship status already exists: ", status)
 

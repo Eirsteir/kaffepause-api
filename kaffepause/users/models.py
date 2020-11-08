@@ -17,7 +17,7 @@ class User(AbstractUser):
         "self",
         through="friendships.Friendship",
         symmetrical=False,
-        related_name="related_to",  # The reverse friendship should not be exposed
+        related_name="related_to+",  # The reverse friendship should not be exposed
     )
 
     def __str__(self):

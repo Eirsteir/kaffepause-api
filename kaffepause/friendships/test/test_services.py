@@ -1,10 +1,16 @@
 import pytest
+from django.test import TransactionTestCase
 
-from kaffepause.friendships.exceptions import InvalidFriendshipDeletion
+from kaffepause.friendships.exceptions import (
+    InvalidFriendshipDeletion,
+    UnnecessaryStatusUpdate,
+)
 from kaffepause.friendships.models import Friendship, FriendshipStatus
 from kaffepause.friendships.services import (
+    __update_friendship_status,
     _attempt_to_delete_blocked_friendship,
     _get_or_create_friendship,
+    accept_friend_request,
     create_friendship,
     delete_friendship,
 )
@@ -41,29 +47,27 @@ def test_create_friendships_with_are_friends_status(are_friends_status):
 
 
 def test_create_friendships_when_friendships_already_exist(
-    friendships, requested_status
+    friendship, requested_status
 ):
     """Should return the existing friendship."""
-    from_user = friendships.from_user
-    to_user = friendships.to_user
+    from_user = friendship.from_user
+    to_user = friendship.to_user
 
     actual_friendships = create_friendship(from_user, to_user)
 
-    assert actual_friendships == friendships
+    assert actual_friendships == friendship
 
 
 def test_create_friendships_when_the_reversed_friendships_already_exist(
-    friendships, requested_status
+    friendship, requested_status
 ):
     """Should create and return the existing friendship."""
-    from_user = friendships.from_user
-    to_user = friendships.to_user
+    from_user = friendship.from_user
+    to_user = friendship.to_user
 
-    actual_friendships = create_friendship(
-        from_user=to_user, to_user=from_user
-    )
+    actual_friendships = create_friendship(from_user=to_user, to_user=from_user)
 
-    assert actual_friendships == friendships
+    assert actual_friendships == friendship
 
 
 def test_get_or_create_friendships(requested_status):
@@ -76,48 +80,44 @@ def test_get_or_create_friendships(requested_status):
     assert created
 
 
-def test_get_or_create_friendships_when_friendships_exists(friendships):
+def test_get_or_create_friendships_when_friendships_exists(friendship):
     """Should return the existing friendship."""
-    from_user = friendships.from_user
-    to_user = friendships.to_user
-    status = friendships.status
+    from_user = friendship.from_user
+    to_user = friendship.to_user
+    status = friendship.status
 
-    actual_friendships, created = _get_or_create_friendship(
-        from_user, to_user, status
-    )
+    actual_friendships, created = _get_or_create_friendship(from_user, to_user, status)
 
-    assert actual_friendships == friendships
+    assert actual_friendships == friendship
     assert not created
 
 
 def test_get_or_create_friendships_when_friendships_exists_with_different_status(
-    friendships, are_friends_status
+    friendship, are_friends_status
 ):
     """Should return the existing friendship."""
-    from_user = friendships.from_user
-    to_user = friendships.to_user
+    from_user = friendship.from_user
+    to_user = friendship.to_user
 
     actual_friendships, created = _get_or_create_friendship(
         from_user, to_user, are_friends_status
     )
 
-    assert actual_friendships == friendships
+    assert actual_friendships == friendship
     assert not created
 
 
 def test_get_or_create_friendships_when_reverse_friendships_exists(
-    friendships,
+    friendship,
 ):
     """Should return the existing friendship."""
-    from_user = friendships.to_user
-    to_user = friendships.from_user
-    status = friendships.status
+    from_user = friendship.to_user
+    to_user = friendship.from_user
+    status = friendship.status
 
-    actual_friendships, created = _get_or_create_friendship(
-        from_user, to_user, status
-    )
+    actual_friendships, created = _get_or_create_friendship(from_user, to_user, status)
 
-    assert actual_friendships == friendships
+    assert actual_friendships == friendship
     assert not created
 
 
@@ -225,3 +225,74 @@ def test_both_users_can_delete_the_friendships_when_status_is_valid(
     delete_friendship(actor=user, user=actor)
 
     assert not Friendship.objects.filter(pk=friendships.pk).exists()
+
+
+def test_update_friendship_status_updates_to_new_status(
+    requested_status, are_friends_status
+):
+    """Should update the friendship to the new status."""
+    from_user = UserFactory()
+    to_user = UserFactory()
+    old_status = requested_status
+    new_status = are_friends_status
+
+    FriendshipFactory(from_user=from_user, to_user=to_user, status=old_status)
+
+    friendship = __update_friendship_status(from_user, to_user, old_status, new_status)
+
+    assert friendship.status == new_status
+
+
+def test_update_friendship_status_when_attempting_to_update_to_same_status(
+    requested_status, are_friends_status
+):
+    """Should update the friendship to the new status."""
+    from_user = UserFactory()
+    to_user = UserFactory()
+    old_status = requested_status
+    new_status = requested_status
+
+    FriendshipFactory(from_user=from_user, to_user=to_user, status=old_status)
+
+    with pytest.raises(UnnecessaryStatusUpdate):
+        __update_friendship_status(from_user, to_user, old_status, new_status)
+
+
+def test_accept_friend_request(requested_status, are_friends_status):
+    """Should update the status to 'are_friends' when the update request is valid."""
+    from_user = UserFactory()
+    to_user = UserFactory()
+    old_status = requested_status
+    new_status = are_friends_status
+
+    FriendshipFactory(from_user=from_user, to_user=to_user, status=old_status)
+
+    friendship = accept_friend_request(actor=to_user, from_user=from_user)
+
+    assert friendship.status == new_status
+
+
+def test_accept_friend_request_when_existing_friendship_is_not_requested(
+    are_friends_status,
+):
+    """Should update the status to 'are_friends' when the update request is valid."""
+    from_user = UserFactory()
+    to_user = UserFactory()
+
+    FriendshipFactory(from_user=from_user, to_user=to_user, status=are_friends_status)
+
+    with pytest.raises(Friendship.DoesNotExist):
+        accept_friend_request(actor=to_user, from_user=from_user)
+
+
+def test_only_user_to_which_the_friendship_is_incoming_to_can_accept_friend_request(
+    requested_status, are_friends_status
+):
+    """Should update the status to 'are_friends' when the update request is valid."""
+    from_user = UserFactory()
+    to_user = UserFactory()
+
+    FriendshipFactory(from_user=from_user, to_user=to_user, status=requested_status)
+
+    with pytest.raises(Friendship.DoesNotExist):
+        accept_friend_request(actor=from_user, from_user=to_user)

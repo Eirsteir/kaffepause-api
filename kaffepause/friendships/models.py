@@ -2,25 +2,26 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from kaffepause.friendships.enums import FriendshipStatusEnum
+from kaffepause.friendships.enums import DefaultFriendshipStatus
+from kaffepause.friendships.exceptions import InvalidFriendshipStatusChange
 
 User = get_user_model()
 
 
 class FriendshipsStatusManager(models.Manager):
     def requested(self):
-        return self.get(slug=FriendshipStatusEnum.REQUESTED.slug)
+        return self.get(slug=DefaultFriendshipStatus.REQUESTED.slug)
 
     def blocked(self):
-        return self.get(slug=FriendshipStatusEnum.BLOCKED.slug)
+        return self.get(slug=DefaultFriendshipStatus.BLOCKED.slug)
 
     def friends(self):
-        return self.get(slug=FriendshipStatusEnum.ARE_FRIENDS.slug)
+        return self.get(slug=DefaultFriendshipStatus.ARE_FRIENDS.slug)
 
     def by_slug(self, status_slug):
         return self.get(slug=status_slug)
 
-    def by_status_enum(self, status_enum: FriendshipStatusEnum):
+    def by_status_enum(self, status_enum: DefaultFriendshipStatus):
         return self.get(slug=status_enum.slug)
 
 
@@ -30,23 +31,17 @@ class FriendshipStatus(models.Model):
     from_slug = models.CharField(
         _("from slug"),
         max_length=100,
-        help_text=_(
-            "Denote the friendship from the user, i.e. user is 'requesting'"
-        ),
+        help_text=_("Denote the friendship from the user, i.e. user is 'requesting'"),
     )
     to_slug = models.CharField(
         _("to slug"),
         max_length=100,
-        help_text=_(
-            "Denote the friendship to the user, i.e. user is 'requested' by"
-        ),
+        help_text=_("Denote the friendship to the user, i.e. user is 'requested' by"),
     )
     slug = models.CharField(
         _("slug"),
         max_length=100,
-        help_text=_(
-            "When a mutual friendship exists, i.e. 'friends', 'requested'"
-        ),
+        help_text=_("When a mutual friendship exists, i.e. 'friends', 'requested'"),
     )
     login_required = models.BooleanField(
         _("login required"),
