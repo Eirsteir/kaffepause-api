@@ -29,7 +29,7 @@ def test_get_friendships_for(user, are_friends_status, requested_status):
     )
 
     # Leave out other friendship
-    FriendshipFactory(to_user=user)
+    FriendshipFactory(to_user=user, status=requested_status)
 
     friends = get_friendships_for(user, are_friends_status)
 
@@ -51,10 +51,10 @@ def test_get_incoming_friendships_for(
     user, are_friends_status, blocked_status, requested_status
 ):
     """Should return all users who have created a friendship to the given user."""
-    incoming_request = FriendshipFactory(to_user=user)
+    incoming_request = FriendshipFactory(to_user=user, status=requested_status)
 
     # Leave out other friendship
-    FriendshipFactory.create(from_user=user)
+    FriendshipFactory.create(from_user=user, status=requested_status)
     FriendshipFactory.create(to_user=user, status=are_friends_status)
     FriendshipFactory.create(from_user=user, status=blocked_status)
 
@@ -68,10 +68,12 @@ def test_get_outgoing_friendships_for(
     user, are_friends_status, blocked_status, requested_status
 ):
     """Should return all users who the given user has created a friendship to."""
-    outgoing_request = FriendshipFactory(from_user=user)
+    outgoing_request = FriendshipFactory(
+        from_user=user, status=requested_status
+    )
 
     # Leave out other friendship
-    FriendshipFactory.create(to_user=user)
+    FriendshipFactory.create(to_user=user, status=requested_status)
     FriendshipFactory.create(to_user=user, status=are_friends_status)
     FriendshipFactory.create(from_user=user, status=blocked_status)
 
@@ -210,7 +212,7 @@ def test_get_friends(user, are_friends_status, requested_status):
     )
 
     # Leave out other friendship
-    FriendshipFactory(to_user=user)
+    FriendshipFactory(to_user=user, status=requested_status)
 
     friends = get_friends(user)
 
@@ -223,10 +225,10 @@ def test_get_incoming_requests(
     user, are_friends_status, blocked_status, requested_status
 ):
     """Should return all users who have created a requested friendship to the given user."""
-    incoming_request = FriendshipFactory(to_user=user)
+    incoming_request = FriendshipFactory(to_user=user, status=requested_status)
 
     # Leave out other friendship
-    FriendshipFactory.create(from_user=user)
+    FriendshipFactory.create(from_user=user, status=requested_status)
     FriendshipFactory.create(to_user=user, status=are_friends_status)
     FriendshipFactory.create(from_user=user, status=blocked_status)
 
@@ -240,10 +242,12 @@ def test_get_outgoing_requests(
     user, are_friends_status, blocked_status, requested_status
 ):
     """Should return all users who the given user has created a requested friendship to."""
-    outgoing_request = FriendshipFactory(from_user=user)
+    outgoing_request = FriendshipFactory(
+        from_user=user, status=requested_status
+    )
 
     # Leave out other friendship
-    FriendshipFactory.create(to_user=user)
+    FriendshipFactory.create(to_user=user, status=requested_status)
     FriendshipFactory.create(to_user=user, status=are_friends_status)
     FriendshipFactory.create(from_user=user, status=blocked_status)
 
@@ -277,9 +281,9 @@ def test_get_outgoing_blocks(
     outgoing_block = FriendshipFactory(from_user=user, status=blocked_status)
 
     # Leave out other friendship
-    FriendshipFactory.create(to_user=user)
+    FriendshipFactory.create(to_user=user, status=requested_status)
     FriendshipFactory.create(to_user=user, status=are_friends_status)
-    FriendshipFactory.create(from_user=user)
+    FriendshipFactory.create(from_user=user, status=are_friends_status)
 
     friends = get_outgoing_blocks(user)
 
