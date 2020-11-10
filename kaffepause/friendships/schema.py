@@ -3,14 +3,10 @@ from django.contrib.auth import get_user_model
 from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
+from graphql_auth.schema import UserNode
 
 from kaffepause.friendships.models import Friendship, FriendshipStatus
-from kaffepause.friendships.services import (
-    accept_friend_request,
-    create_friendship,
-    send_friend_request,
-)
-from kaffepause.users.schema import UserNode
+from kaffepause.friendships.services import accept_friend_request, send_friend_request
 
 User = get_user_model()
 
@@ -18,8 +14,13 @@ User = get_user_model()
 class FriendshipNode(DjangoObjectType):
     class Meta:
         model = Friendship
-        filter_fields = ("from_user", "to_user", "status", "since")
+        filter_fields = ("from_user", "to_user", "status")
         interfaces = (relay.Node,)
+
+    since = graphene.DateTime()
+
+    def resolve_since(self, info):
+        return self.since
 
 
 class FriendshipStatusNode(DjangoObjectType):
@@ -35,7 +36,6 @@ class Query(graphene.ObjectType):
     all_friendships = DjangoFilterConnectionField(FriendshipNode)
 
 
-# TODO: Use relay? https://www.howtographql.com/graphql-python/9-relay/
 class SendFriendRequest(graphene.Mutation):
     class Arguments:
         to_friend = graphene.String()

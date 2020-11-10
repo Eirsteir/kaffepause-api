@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from kaffepause.users.test.factories import UserFactory
+from kaffepause.users.test.factories import UserFactory, UserStatusFactory
 
 
 class Command(BaseCommand):
@@ -16,4 +16,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for _ in range(options["users"]):
-            UserFactory.create()
+            user = UserFactory()
+            UserStatusFactory(user=user)

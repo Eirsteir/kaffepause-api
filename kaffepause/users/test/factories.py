@@ -1,8 +1,9 @@
 from typing import Any, Sequence
 
 from django.contrib.auth import get_user_model
-from factory import Faker, post_generation
+from factory import Faker, SubFactory, post_generation
 from factory.django import DjangoModelFactory
+from graphql_auth.models import UserStatus
 
 
 class UserFactory(DjangoModelFactory):
@@ -35,3 +36,10 @@ class UserFactory(DjangoModelFactory):
             return
 
         self.set_password(password)
+
+
+class UserStatusFactory(DjangoModelFactory):
+    class Meta:
+        model = UserStatus
+
+    user = SubFactory(UserFactory)

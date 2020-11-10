@@ -1,8 +1,7 @@
 import graphene
 from django.contrib.auth import get_user_model
-from graphene_django import DjangoObjectType
 from graphql_auth import mutations
-from graphql_auth.schema import MeQuery, UserQuery
+from graphql_auth.schema import MeQuery, UserNode, UserQuery
 
 from kaffepause.common.schema import UUIDNode
 from kaffepause.friendships.selectors import get_friends
@@ -10,36 +9,34 @@ from kaffepause.friendships.selectors import get_friends
 User = get_user_model()
 
 
-class UserNode(DjangoObjectType):
-    class Meta:
-        model = User
-        fields = (
-            "id",
-            "name",
-            "username",
-            "friends",
-        )
-        filter_fields = {
-            "id": ["exact"],
-            "name": ["exact", "icontains", "istartswith"],
-            "username": ["exact", "icontains", "istartswith"],
-            "friends": ["exact"],
-            "friends__name": ["exact"],
-        }
-        interfaces = (UUIDNode,)
+# class ExtendedUserNode(UserNode):
+#     class Meta:
+#         model = User
+# fields = UserNode.Meta.fields (
+#     "id",
+#     "name",
+#     "username",
+#     "friends",
+# )
+# filter_fields = UserNode.Meta.filter_fields + {
+#     "username": ["exact", "icontains", "istartswith"],
+#     "friends": ["exact"],
+#     "friends__name": ["exact"],
+# }
+# interfaces = (UUIDNode,)
 
-    # profile_action = graphene.Field(ProfileAction)
+# profile_action = graphene.Field(ProfileAction)
 
-    # TODO: enable when adding login required
-    # friendship_status = graphene.String()
-    #
-    # def resolve_friendship_status(parent, info):
-    #     current_user = info.context.to_user
-    #     return get_friendship_status(to_user=current_user, to_user=parent)
+# TODO: enable when adding login required
+# friendship_status = graphene.String()
+#
+# def resolve_friendship_status(parent, info):
+#     current_user = info.context.to_user
+#     return get_friendship_status(to_user=current_user, to_user=parent)
 
-    def resolve_friends(parent, info):
-
-        return get_friends(parent)
+# def resolve_friends(parent, info):
+#
+#     return get_friends(parent)
 
 
 class AuthMutation(graphene.ObjectType):
