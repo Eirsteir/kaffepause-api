@@ -8,5 +8,5 @@ class UUIDNode(relay.Node):
         name = "UUIDNode"
 
     @classmethod
-    def to_global_id(cls, id):
+    def to_global_id(cls, type, id):
         return id

@@ -1,42 +1,40 @@
 import graphene
 from django.contrib.auth import get_user_model
+from graphene_django.filter import DjangoFilterConnectionField
 from graphql_auth import mutations
-from graphql_auth.schema import MeQuery, UserNode, UserQuery
+from graphql_auth.bases import OutputErrorType
+from graphql_auth.schema import UserNode
+from graphql_auth.settings import graphql_auth_settings
 
 from kaffepause.common.schema import UUIDNode
-from kaffepause.friendships.selectors import get_friends
+from kaffepause.friendships.selectors import get_friends, get_friendship_status
 
 User = get_user_model()
 
 
-# class ExtendedUserNode(UserNode):
-#     class Meta:
-#         model = User
-# fields = UserNode.Meta.fields (
-#     "id",
-#     "name",
-#     "username",
-#     "friends",
-# )
-# filter_fields = UserNode.Meta.filter_fields + {
-#     "username": ["exact", "icontains", "istartswith"],
-#     "friends": ["exact"],
-#     "friends__name": ["exact"],
-# }
-# interfaces = (UUIDNode,)
+class ExtendedUserNode(UserNode):
+    class Meta:
+        model = User
+        filter_fields = graphql_auth_settings.USER_NODE_FILTER_FIELDS
+        exclude = graphql_auth_settings.USER_NODE_EXCLUDE_FIELDS
+        interfaces = (UUIDNode,)
 
-# profile_action = graphene.Field(ProfileAction)
+    success = graphene.Boolean(default_value=True)
+    errors = graphene.Field(OutputErrorType)
+    friends = graphene.List(UserNode)
 
-# TODO: enable when adding login required
-# friendship_status = graphene.String()
-#
-# def resolve_friendship_status(parent, info):
-#     current_user = info.context.to_user
-#     return get_friendship_status(to_user=current_user, to_user=parent)
+    # profile_action = graphene.Field(ProfileAction)
 
-# def resolve_friends(parent, info):
-#
-#     return get_friends(parent)
+    # TODO: enable when adding login required
+    friendship_status = graphene.String()
+
+    def resolve_friendship_status(parent, info):
+        current_user = info.context.to_user
+        return get_friendship_status(actor=current_user, user=parent)
+
+    def resolve_friends(parent, info):
+
+        return get_friends(parent)
 
 
 class AuthMutation(graphene.ObjectType):
@@ -60,6 +58,21 @@ class AuthMutation(graphene.ObjectType):
     verify_token = mutations.VerifyToken.Field()
     refresh_token = mutations.RefreshToken.Field()
     revoke_token = mutations.RevokeToken.Field()
+
+
+class UserQuery(graphene.ObjectType):
+    user = graphene.relay.Node.Field(ExtendedUserNode)
+    users = DjangoFilterConnectionField(ExtendedUserNode)
+
+
+class MeQuery(graphene.ObjectType):
+    me = graphene.Field(ExtendedUserNode)
+
+    def resolve_me(self, info):
+        user = info.context.user
+        if user.is_authenticated:
+            return user
+        return None
 
 
 class Query(UserQuery, MeQuery, graphene.ObjectType):

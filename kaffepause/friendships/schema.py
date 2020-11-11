@@ -14,7 +14,7 @@ User = get_user_model()
 class FriendshipNode(DjangoObjectType):
     class Meta:
         model = Friendship
-        filter_fields = ("from_user", "to_user", "status")
+        filter_fields = ("id", "from_user", "to_user", "status")
         interfaces = (relay.Node,)
 
     since = graphene.DateTime()
@@ -41,7 +41,7 @@ class SendFriendRequest(graphene.Mutation):
         to_friend = graphene.String()
 
     # This defines the response of the mutation
-    cancelled_friend_requestee = graphene.Field(UserNode)
+    friendship = graphene.Field(UserNode)
     ok = graphene.Boolean(default_value=False)
 
     def mutate(self, info, to_friend):
@@ -57,7 +57,7 @@ class CancelFriendRequest(graphene.Mutation):
         to_friend = graphene.String()
 
     # This defines the response of the mutation
-    friendship = graphene.Field(FriendshipNode)
+    cancelled_friend_requestee = graphene.Field(UserNode)
     ok = graphene.Boolean(default_value=False)
 
     def mutate(self, info, to_friend):
@@ -65,7 +65,7 @@ class CancelFriendRequest(graphene.Mutation):
         to_friend = User.objects.get(id=to_friend)
         friendship = send_friend_request(actor=current_user, to_user=to_friend)
 
-        return SendFriendRequest(friendship=friendship, ok=True)
+        return SendFriendRequest(cancelled_friend_requestee=friendship.to_user, ok=True)
 
 
 class AcceptFriendRequest(graphene.Mutation):
