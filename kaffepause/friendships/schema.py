@@ -131,6 +131,20 @@ class AcceptFriendRequest(graphene.Mutation):
         return AcceptFriendRequest(friendship=friendship, ok=True)
 
 
+class BlockUser(graphene.Mutation):
+    class Arguments:
+        user = graphene.String()
+
+    pass
+
+
+class UnblockUser(graphene.Mutation):
+    class Arguments:
+        user = graphene.String()
+
+    pass
+
+
 class Mutation:
 
     send_friend_request = SendFriendRequest.Field()

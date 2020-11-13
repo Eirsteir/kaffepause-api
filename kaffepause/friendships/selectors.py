@@ -154,4 +154,6 @@ def get_mutual_friends(actor: User, user: User):
     """Returns the mutual friends for the given users."""
     actors_friends = get_friends(actor)
     users_friends = get_friends(user)
-    return actors_friends.filter(id__in=users_friends.values_list("pk", flat=True))
+    qs = actors_friends.filter(id__in=users_friends.values_list("pk", flat=True))
+    print(qs.query)
+    return qs
