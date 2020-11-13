@@ -7,18 +7,17 @@ from graphql_auth.bases import OutputErrorType
 from graphql_auth.schema import UserNode
 from graphql_auth.settings import graphql_auth_settings
 
-from kaffepause.common.schema import UUIDNode
+from kaffepause.common.schema import CountingNodeConnection, UUIDNode
 from kaffepause.friendships.selectors import get_friends, get_friendship_status
 
-User = get_user_model()
 
-
-class ExtendedUserNode(UserNode):
+class User(UserNode):
     class Meta:
-        model = User
+        model = get_user_model()
         filter_fields = graphql_auth_settings.USER_NODE_FILTER_FIELDS
         exclude = graphql_auth_settings.USER_NODE_EXCLUDE_FIELDS
         interfaces = (UUIDNode,)
+        connection_class = CountingNodeConnection
 
     success = graphene.Boolean(default_value=True)
     errors = graphene.Field(OutputErrorType)
@@ -27,10 +26,12 @@ class ExtendedUserNode(UserNode):
     # profile_action = graphene.Field(ProfileAction)
 
     friendship_status = graphene.String()
+    # social_context = graphene.Field(SocialContext)
 
     def resolve_friendship_status(parent, info):
         current_user = info.context.user
-        return get_friendship_status(actor=current_user, user=parent)
+        status = get_friendship_status(actor=current_user, user=parent)
+        return status.name
 
     def resolve_friends_count(parent, info):
 
@@ -61,14 +62,13 @@ class AuthMutation(graphene.ObjectType):
 
 
 class UserQuery(graphene.ObjectType):
-    # single user
-    user = relay.Node.Field(ExtendedUserNode)
-    # Do we need this?
-    users = DjangoFilterConnectionField(ExtendedUserNode)
+
+    user = relay.Node.Field(User)
+    users = DjangoFilterConnectionField(User)
 
 
 class MeQuery(graphene.ObjectType):
-    me = graphene.Field(ExtendedUserNode)
+    me = graphene.Field(User)
 
     def resolve_me(self, info):
         user = info.context.user
