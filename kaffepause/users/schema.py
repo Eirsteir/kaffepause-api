@@ -1,6 +1,7 @@
 import graphene
 from django.contrib.auth import get_user_model
-from graphene import relay
+from django.utils.translation import gettext_lazy as _
+from graphene import ObjectType, Scalar, relay
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_auth import mutations
 from graphql_auth.bases import OutputErrorType
@@ -8,7 +9,11 @@ from graphql_auth.schema import UserNode
 from graphql_auth.settings import graphql_auth_settings
 
 from kaffepause.common.schema import CountingNodeConnection, UUIDNode
-from kaffepause.friendships.selectors import get_friends, get_friendship_status
+from kaffepause.friendships.selectors import (
+    get_friends,
+    get_friendship_status,
+    get_mutual_friends,
+)
 
 
 class User(UserNode):
@@ -19,14 +24,12 @@ class User(UserNode):
         interfaces = (UUIDNode,)
         connection_class = CountingNodeConnection
 
-    success = graphene.Boolean(default_value=True)
-    errors = graphene.Field(OutputErrorType)
     friends_count = graphene.List(UserNode)
 
     # profile_action = graphene.Field(ProfileAction)
 
     friendship_status = graphene.String()
-    # social_context = graphene.Field(SocialContext)
+    social_context = graphene.String()
 
     def resolve_friendship_status(parent, info):
         current_user = info.context.user
@@ -36,6 +39,12 @@ class User(UserNode):
     def resolve_friends_count(parent, info):
 
         return get_friends(parent).count()
+
+    def resolve_social_context(parent, info):
+        current_user = info.context.user
+        mutual_friends = get_mutual_friends(actor=current_user, user=parent)
+        mutual_friends_count = mutual_friends.count()
+        return _(f"{mutual_friends_count} mutual friends")
 
 
 class AuthMutation(graphene.ObjectType):

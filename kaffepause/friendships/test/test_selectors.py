@@ -10,6 +10,7 @@ from kaffepause.friendships.selectors import (
     get_incoming_blocks,
     get_incoming_friendships_for,
     get_incoming_requests,
+    get_mutual_friends,
     get_outgoing_blocks,
     get_outgoing_friendships_for,
     get_outgoing_requests,
@@ -362,3 +363,26 @@ def test_get_friendship_status_when_friendship_does_not_exist(
     actual_status = get_friendship_status(actor, user)
 
     assert actual_status.name == expected_status.name
+
+
+def test_get_mutual_friends(are_friends_status):
+    """Should return only the friends the users have in common."""
+    actor = UserFactory()
+    user = UserFactory()
+    mutual_friend = UserFactory()
+
+    FriendshipFactory(from_user=actor, to_user=mutual_friend, status=are_friends_status)
+    FriendshipFactory(from_user=user, to_user=mutual_friend, status=are_friends_status)
+
+    FriendshipFactory(from_user=actor, to_user=user, status=are_friends_status)
+
+    FriendshipFactory(from_user=actor, to_user=UserFactory(), status=are_friends_status)
+    FriendshipFactory(from_user=UserFactory(), to_user=actor, status=are_friends_status)
+
+    FriendshipFactory(from_user=user, to_user=UserFactory(), status=are_friends_status)
+    FriendshipFactory(from_user=UserFactory(), to_user=user, status=are_friends_status)
+
+    mutual_friends = get_mutual_friends(actor=actor, user=user)
+
+    assert mutual_friends.count() == 1
+    assert mutual_friends.filter(id=mutual_friend.id).exists()

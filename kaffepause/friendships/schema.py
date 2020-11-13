@@ -1,6 +1,6 @@
 import graphene
 from django.contrib.auth import get_user_model
-from graphene import relay
+from graphene import ObjectType, relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_auth.schema import UserNode
@@ -100,6 +100,21 @@ class CancelFriendRequest(graphene.Mutation):
         return CancelFriendRequest(cancelled_friend_requestee=to_friend, ok=True)
 
 
+class UnfriendUser(graphene.Mutation):
+    class Arguments:
+        friend = graphene.String()
+
+    unfriended_user = graphene.Field(UserNode)
+    ok = graphene.Boolean(default_value=False)
+
+    def mutate(self, info, friend):
+        current_user = info.context.user
+        friend = UserModel.objects.get(id=friend)
+        delete_friendship(actor=current_user, user=friend)
+
+        return UnfriendUser(unfriended_user=friend, ok=True)
+
+
 class AcceptFriendRequest(graphene.Mutation):
     class Arguments:
         from_user = graphene.String()
@@ -121,3 +136,4 @@ class Mutation:
     send_friend_request = SendFriendRequest.Field()
     cancel_friend_request = CancelFriendRequest.Field()
     accept_friend_request = AcceptFriendRequest.Field()
+    unfriend_user = UnfriendUser.Field()

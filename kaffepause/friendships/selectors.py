@@ -143,8 +143,15 @@ def get_friendship_status(actor: User, user: User) -> BaseFriendshipStatusEnum:
 
 # TODO: might throw exception
 def _get_friendship_status_for_existing_friendship(
-    actor, user
+    actor: User, user: User
 ) -> DefaultFriendshipStatus:
     """Returns the friendship status for the given users."""
     friendship = get_single_friendship(actor, user)
     return DefaultFriendshipStatus.from_name(friendship.status.name)
+
+
+def get_mutual_friends(actor: User, user: User):
+    """Returns the mutual friends for the given users."""
+    actors_friends = get_friends(actor)
+    users_friends = get_friends(user)
+    return actors_friends.filter(id__in=users_friends.values_list("pk", flat=True))
