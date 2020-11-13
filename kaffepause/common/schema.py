@@ -1,5 +1,7 @@
 import graphene
-from graphene import Connection, relay
+from graphene import relay
+
+from kaffepause.common.types import OutputErrorType
 
 
 class UUIDNode(relay.Node):
@@ -13,15 +15,11 @@ class UUIDNode(relay.Node):
         return id
 
 
-class CountingNodeConnection(Connection):
-    class Meta:
-        abstract = True
+class Output:
+    """
+    A class to all public classes extend to
+    standardize the output
+    """
 
-    count = graphene.Int()
-    edge_count = graphene.Int()
-
-    def resolve_count(root, info, **kwargs):
-        return root.length
-
-    def resolve_edge_count(root, info, **kwargs):
-        return len(root.edges)
+    success = graphene.Boolean(default_value=True)
+    errors = graphene.Field(OutputErrorType)
