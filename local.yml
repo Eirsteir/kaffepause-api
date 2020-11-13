@@ -13,14 +13,32 @@ services:
     container_name: django
     depends_on:
       - postgres
+      - neo4j
     volumes:
       - .:/app:z
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
+      - ./.envs/.local/.neo4j
     ports:
       - "8000:8000"
     command: /start
+
+  neo4j:
+    image: neo4j:3.5
+    container_name: neo4j
+    restart: unless-stopped
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - ./conf:/conf
+      - ./data:/data
+      - ./import:/import
+      - ./logs:/logs
+      - ./plugins:/plugins
+    env_file:
+      - ./.envs/.local/.neo4j
 
   postgres:
     build:

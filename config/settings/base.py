@@ -44,6 +44,12 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 DATABASES = {"default": env.db("DATABASE_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
+NEOMODEL_NEO4J_BOLT_URL = env("NEO4J_BOLT_URL", default="bolt://neo4j:debug@neo4j:7687")
+NEOMODEL_SIGNALS = env.bool("NEOMODEL_SIGNALS")
+NEOMODEL_FORCE_TIMEZONE = env("NEOMODEL_FORCE_TIMEZONE")
+NEOMODEL_ENCRYPTED_CONNECTION = env("NEOMODEL_ENCRYPTED_CONNECTION")
+NEOMODEL_MAX_POOL_SIZE = env.int("NEOMODEL_MAX_POOL_SIZE")
+
 # URLS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
@@ -68,6 +74,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "crispy_forms",
     "corsheaders",
+    "django_neomodel",
     "graphene_django",
     "graphql_auth",
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",

@@ -329,3 +329,10 @@ kaffepause/media/
 .env
 .envs/*
 !.envs/.local/
+/plugins/
+
+plugins
+logs/*
+import
+conf
+data

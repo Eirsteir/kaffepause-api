@@ -27,6 +27,9 @@ makemigrations: ##@Docker Set up migration files
 migrate: ##@Docker Perform migrations to database
 	docker-compose -f local.yml run --rm django python manage.py migrate
 
+install-labels: ##@Docker Perform migrations to database
+	docker-compose -f local.yml run --rm django python manage.py install_labels
+
 dumpdata:
 	docker-compose -f local.yml run --rm django python manage.py dumpdata --indent=4 --format=json > ./kaffepause/fixture.json
 
