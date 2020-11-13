@@ -11,7 +11,11 @@ from kaffepause.friendships.selectors import (
     get_incoming_requests,
     get_outgoing_requests,
 )
-from kaffepause.friendships.services import accept_friend_request, send_friend_request
+from kaffepause.friendships.services import (
+    accept_friend_request,
+    delete_friendship,
+    send_friend_request,
+)
 from kaffepause.users.schema import User
 
 UserModel = get_user_model()
@@ -91,9 +95,9 @@ class CancelFriendRequest(graphene.Mutation):
     def mutate(self, info, to_friend):
         current_user = info.context.user
         to_friend = UserModel.objects.get(id=to_friend)
-        friendship = send_friend_request(actor=current_user, to_user=to_friend)
+        delete_friendship(actor=current_user, user=to_friend)
 
-        return SendFriendRequest(cancelled_friend_requestee=friendship.to_user, ok=True)
+        return CancelFriendRequest(cancelled_friend_requestee=to_friend, ok=True)
 
 
 class AcceptFriendRequest(graphene.Mutation):
@@ -115,4 +119,5 @@ class AcceptFriendRequest(graphene.Mutation):
 class Mutation:
 
     send_friend_request = SendFriendRequest.Field()
+    cancel_friend_request = CancelFriendRequest.Field()
     accept_friend_request = AcceptFriendRequest.Field()
