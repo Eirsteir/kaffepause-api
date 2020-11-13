@@ -1,5 +1,6 @@
 import graphene
 from django.contrib.auth import get_user_model
+from graphene import relay
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_auth import mutations
 from graphql_auth.bases import OutputErrorType
@@ -21,20 +22,19 @@ class ExtendedUserNode(UserNode):
 
     success = graphene.Boolean(default_value=True)
     errors = graphene.Field(OutputErrorType)
-    friends = graphene.List(UserNode)
+    friends_count = graphene.List(UserNode)
 
     # profile_action = graphene.Field(ProfileAction)
 
-    # TODO: enable when adding login required
     friendship_status = graphene.String()
 
     def resolve_friendship_status(parent, info):
-        current_user = info.context.to_user
+        current_user = info.context.user
         return get_friendship_status(actor=current_user, user=parent)
 
-    def resolve_friends(parent, info):
+    def resolve_friends_count(parent, info):
 
-        return get_friends(parent)
+        return get_friends(parent).count()
 
 
 class AuthMutation(graphene.ObjectType):
@@ -61,7 +61,9 @@ class AuthMutation(graphene.ObjectType):
 
 
 class UserQuery(graphene.ObjectType):
-    user = graphene.relay.Node.Field(ExtendedUserNode)
+    # single user
+    user = relay.Node.Field(ExtendedUserNode)
+    # Do we need this?
     users = DjangoFilterConnectionField(ExtendedUserNode)
 
 

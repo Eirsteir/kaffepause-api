@@ -147,4 +147,5 @@ def _get_friendship_status_for_existing_friendship(
 ) -> DefaultFriendshipStatus:
     """Returns the friendship status for the given users."""
     friendship = get_single_friendship(actor, user)
-    return DefaultFriendshipStatus.from_name(friendship.status.name)
+    status = DefaultFriendshipStatus.from_name(friendship.status.name)
+    return status.name

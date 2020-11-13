@@ -6,7 +6,13 @@ from graphene_django.filter import DjangoFilterConnectionField
 from graphql_auth.schema import UserNode
 
 from kaffepause.friendships.models import Friendship, FriendshipStatus
+from kaffepause.friendships.selectors import (
+    get_friends,
+    get_incoming_requests,
+    get_outgoing_requests,
+)
 from kaffepause.friendships.services import accept_friend_request, send_friend_request
+from kaffepause.users.schema import ExtendedUserNode
 
 User = get_user_model()
 
@@ -14,7 +20,11 @@ User = get_user_model()
 class FriendshipNode(DjangoObjectType):
     class Meta:
         model = Friendship
-        filter_fields = ("id", "from_user", "to_user", "status")
+        filter_fields = {
+            "from_user__username": ["exact"],
+            "to_user__username": ["exact"],
+            "status__name": ["exact"],
+        }
         interfaces = (relay.Node,)
 
     since = graphene.DateTime()
@@ -32,8 +42,28 @@ class FriendshipStatusNode(DjangoObjectType):
 
 class Query(graphene.ObjectType):
 
-    friendships = relay.Node.Field(FriendshipNode)
-    all_friendships = DjangoFilterConnectionField(FriendshipNode)
+    friendship = relay.Node.Field(FriendshipNode)
+    # Get all friends of the user
+    all_friendships = DjangoFilterConnectionField(
+        ExtendedUserNode, user=graphene.String()
+    )
+    friending_possibilities = DjangoFilterConnectionField(ExtendedUserNode)
+    outgoing_friend_requests = DjangoFilterConnectionField(ExtendedUserNode)
+
+    @staticmethod
+    def resolve_all_friendships(root, info, user):
+        user = User.objects.get(id=user)
+        return get_friends(user)
+
+    @staticmethod
+    def resolve_friending_possibilities(root, info):
+        user = info.context.user
+        return get_incoming_requests(user)
+
+    @staticmethod
+    def resolve_outgoing_friend_requests(root, info):
+        user = info.context.user
+        return get_outgoing_requests(user)
 
 
 class SendFriendRequest(graphene.Mutation):
@@ -41,7 +71,7 @@ class SendFriendRequest(graphene.Mutation):
         to_friend = graphene.String()
 
     # This defines the response of the mutation
-    friendship = graphene.Field(UserNode)
+    friendship = graphene.Field(ExtendedUserNode)
     ok = graphene.Boolean(default_value=False)
 
     def mutate(self, info, to_friend):
