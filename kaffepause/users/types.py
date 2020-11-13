@@ -4,7 +4,8 @@ from django.utils.translation import gettext_lazy as _
 from graphql_auth.schema import UserNode
 from graphql_auth.settings import graphql_auth_settings
 
-from kaffepause.common.schema import CountingNodeConnection, UUIDNode
+from kaffepause.common.bases import UUIDNode
+from kaffepause.common.types import CountingNodeConnection
 from kaffepause.friendships.selectors import (
     get_friends,
     get_friendship_status,

@@ -107,12 +107,12 @@ def get_single_friendship(from_user, to_user, status=None):
     if status:
         query &= Q(status=status)
 
-    friendships = Friendship.objects.filter(query).first()
+    friendship = Friendship.objects.filter(query).first()
 
-    if not friendships:
+    if not friendship:
         raise Friendship.DoesNotExist
 
-    return friendships
+    return friendship
 
 
 def get_single_incoming_friendship(

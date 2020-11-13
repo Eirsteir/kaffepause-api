@@ -1,5 +1,6 @@
 import graphene
 from graphene import relay
+from graphql_auth.decorators import verification_required
 
 from kaffepause.common.types import OutputErrorType
 
@@ -23,3 +24,14 @@ class Output:
 
     success = graphene.Boolean(default_value=True)
     errors = graphene.Field(OutputErrorType)
+
+
+class VerificationRequiredMixin:
+    """
+    All mutations which requires user to be verified should extend this class.
+    """
+
+    @classmethod
+    @verification_required
+    def mutate(cls, root, info, **input):
+        return cls.resolve_mutation(root, info, **input)
