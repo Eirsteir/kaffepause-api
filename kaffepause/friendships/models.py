@@ -75,14 +75,14 @@ class Friendship(TimeStampedModel):
     # Interactions?
 
     class Meta:
+        ordering = ("modified",)
+        verbose_name = _("Friendship")
+        verbose_name_plural = _("Friendships")
         constraints = [
             models.UniqueConstraint(
                 fields=["from_user", "to_user"], name="unique-participants"
             )
         ]
-        ordering = ("modified",)
-        verbose_name = _("Friendship")
-        verbose_name_plural = _("Friendships")
 
     @property
     def is_blocked(self):
