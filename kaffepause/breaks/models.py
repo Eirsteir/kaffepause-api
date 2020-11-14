@@ -7,35 +7,10 @@ from django.utils.timezone import localtime
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
 
+from kaffepause.breaks.enums import InvitationReply
 from kaffepause.common.models import StatusModel
-from kaffepause.study.enums import Intensity, InvitationReply
 
 User = get_user_model()
-
-
-# TODO: Split CheckIn and Break into separate apps?
-class CheckInStatus(StatusModel):
-    class Meta:
-        verbose_name = _("Check-in status")
-        verbose_name_plural = _("Check-in statuses")
-
-
-class CheckIn(TimeStampedModel):
-    """Model class for a users current action - what the user is currently doing."""
-
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="check_ins",
-        verbose_name=_("check-ins"),
-    )
-    status = models.ForeignKey(
-        CheckInStatus, on_delete=models.PROTECT, verbose_name=_("status")
-    )
-    intensity = models.CharField(
-        choices=Intensity.choices, max_length=14, blank=False, default=Intensity.FOCUSED
-    )
-    duration = models.DurationField(default=timedelta(minutes=50))
 
 
 class Break(TimeStampedModel):

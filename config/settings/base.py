@@ -75,7 +75,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "kaffepause.friendships",
     "kaffepause.users",
-    "kaffepause.study",
+    "kaffepause.breaks",
+    "kaffepause.checkins",
     "kaffepause.api",
     "kaffepause.common",
 ]
