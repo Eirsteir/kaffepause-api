@@ -4,13 +4,13 @@ from django.utils.translation import gettext_lazy as _
 from model_utils import FieldTracker
 from model_utils.models import TimeStampedModel
 
-from kaffepause.common.models import BaseModel
+from kaffepause.common.models import BaseModel, StatusManager, StatusModel
 from kaffepause.friendships.enums import DefaultFriendshipStatus
 
 User = get_user_model()
 
 
-class FriendshipsStatusManager(models.Manager):
+class FriendshipsStatusManager(StatusManager):
     def requested(self):
         return self.get(slug=DefaultFriendshipStatus.REQUESTED.slug)
 
@@ -20,16 +20,12 @@ class FriendshipsStatusManager(models.Manager):
     def friends(self):
         return self.get(slug=DefaultFriendshipStatus.ARE_FRIENDS.slug)
 
-    def by_slug(self, status_slug):
-        return self.get(slug=status_slug)
-
     def by_status_enum(self, status_enum: DefaultFriendshipStatus):
         return self.get(slug=status_enum.slug)
 
 
-class FriendshipStatus(models.Model):
-    name = models.CharField(_("name"), max_length=100)
-    verb = models.CharField(_("verb"), max_length=100)
+class FriendshipStatus(StatusModel):
+
     from_slug = models.CharField(
         _("from slug"),
         max_length=100,
@@ -40,11 +36,7 @@ class FriendshipStatus(models.Model):
         max_length=100,
         help_text=_("Denote the friendship to the user, i.e. user is 'requested' by"),
     )
-    slug = models.CharField(
-        _("slug"),
-        max_length=100,
-        help_text=_("When a mutual friendship exists, i.e. 'friends', 'requested'"),
-    )
+
     login_required = models.BooleanField(
         _("login required"),
         default=False,
@@ -59,12 +51,8 @@ class FriendshipStatus(models.Model):
     objects = FriendshipsStatusManager()
 
     class Meta:
-        ordering = ("name",)
         verbose_name = _("Friendship status")
         verbose_name_plural = _("Friendship statuses")
-
-    def __str__(self):
-        return self.name
 
 
 class Friendship(TimeStampedModel):
@@ -86,6 +74,8 @@ class Friendship(TimeStampedModel):
     # https://django-model-utils.readthedocs.io/en/latest/utilities.html#field-tracker
     since = FieldTracker(fields=["status"])
     weight = models.FloatField(_("weight"), default=1.0, blank=True, null=True)
+
+    # Interactions?
 
     class Meta:
         constraints = [

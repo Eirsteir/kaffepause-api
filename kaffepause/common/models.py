@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+from model_utils.models import TimeStampedModel
 
 
 class BaseModel(models.Model):
@@ -8,3 +10,23 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class StatusManager(models.Manager):
+    def by_slug(self, status_slug):
+        return self.get(slug=status_slug)
+
+
+class StatusModel(TimeStampedModel):
+    name = models.CharField(_("name"), max_length=100)
+    verb = models.CharField(_("verb"), max_length=100)
+    slug = models.CharField(_("slug"), max_length=100)
+
+    objects = StatusManager()
+
+    class Meta:
+        abstract = True
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
