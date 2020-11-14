@@ -12,16 +12,13 @@ User = get_user_model()
 
 class FriendshipsStatusManager(StatusManager):
     def requested(self):
-        return self.get(slug=DefaultFriendshipStatus.REQUESTED.slug)
+        return self.get(slug=DefaultFriendshipStatus.REQUESTED())
 
     def blocked(self):
-        return self.get(slug=DefaultFriendshipStatus.BLOCKED.slug)
+        return self.get(slug=DefaultFriendshipStatus.BLOCKED())
 
     def friends(self):
-        return self.get(slug=DefaultFriendshipStatus.ARE_FRIENDS.slug)
-
-    def by_status_enum(self, status_enum: DefaultFriendshipStatus):
-        return self.get(slug=status_enum.slug)
+        return self.get(slug=DefaultFriendshipStatus.ARE_FRIENDS())
 
 
 class FriendshipStatus(StatusModel):

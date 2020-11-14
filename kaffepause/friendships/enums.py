@@ -1,27 +1,21 @@
 from enum import Enum
 
+from kaffepause.common.enums import BaseStatusEnum
 
-class BaseFriendshipStatusEnum(Enum):
+
+class BaseFriendshipStatusEnum(BaseStatusEnum):
     """
     Mirrors :class:`FriendshipStatus` in which subclasses have to define
-    member variables in the form of a tuple (verb, from_slug, to_slug, slug).
+    member variables in the form of a tuple (verb, slug, from_slug, to_slug).
     The name member variable is inferred from the name of the attribute.
     """
 
     @property
-    def verb(self):
-        return self.value[0]
-
-    @property
     def from_slug(self):
-        return self.value[1]
-
-    @property
-    def to_slug(self):
         return self.value[2]
 
     @property
-    def slug(self):
+    def to_slug(self):
         return self.value[3]
 
     @classmethod
@@ -32,20 +26,20 @@ class BaseFriendshipStatusEnum(Enum):
 class DefaultFriendshipStatus(BaseFriendshipStatusEnum):
     ARE_FRIENDS = (
         "are friends",
+        "friends",
         "friends_with",
         "friended_by",
-        "friends",
     )
     REQUESTED = (
         "requesting",
+        "requested",
         "requested_to",
         "requested_by",
-        "requested",
     )
     BLOCKED = (
         "blocking",
-        "blocking",
         "blocked",
+        "blocking",
         "blocked",
     )
 
