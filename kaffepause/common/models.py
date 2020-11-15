@@ -1,17 +1,8 @@
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
 
 from kaffepause.common.enums import BaseStatusEnum
-
-
-class BaseModel(models.Model):
-    created_at = models.DateTimeField(db_index=True, default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
 
 
 class StatusManager(models.Manager):

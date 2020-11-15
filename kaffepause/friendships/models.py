@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from model_utils import FieldTracker
 from model_utils.models import TimeStampedModel
 
-from kaffepause.common.models import BaseModel, StatusManager, StatusModel
+from kaffepause.common.models import StatusManager, StatusModel
 from kaffepause.friendships.enums import DefaultFriendshipStatus
 
 User = get_user_model()
