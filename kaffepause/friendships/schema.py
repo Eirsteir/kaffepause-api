@@ -41,7 +41,7 @@ class Query(graphene.ObjectType):
         return get_outgoing_requests(user)
 
 
-class Mutation:
+class Mutation(graphene.ObjectType):
 
     send_friend_request = SendFriendRequest.Field()
     cancel_friend_request = CancelFriendRequest.Field()

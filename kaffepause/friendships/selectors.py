@@ -1,7 +1,6 @@
-from typing import List, Union
+from django.db.models import Q
 
-from django.db.models import Q, QuerySet
-
+from kaffepause.common.typing import QuerySet
 from kaffepause.friendships.enums import (
     BaseFriendshipStatusEnum,
     DefaultFriendshipStatus,
@@ -11,29 +10,29 @@ from kaffepause.friendships.models import Friendship, FriendshipStatus
 from kaffepause.users.models import User
 
 
-def get_friends(user: User) -> Union[QuerySet, List[User]]:
+def get_friends(user: User) -> QuerySet[User]:
     return get_friendships_for(user, FriendshipStatus.objects.friends())
 
 
-def get_incoming_requests(user: User) -> Union[QuerySet, List[User]]:
+def get_incoming_requests(user: User) -> QuerySet[User]:
     return get_incoming_friendships_for(user, FriendshipStatus.objects.requested())
 
 
-def get_outgoing_requests(user: User) -> Union[QuerySet, List[User]]:
+def get_outgoing_requests(user: User) -> QuerySet[User]:
     return get_outgoing_friendships_for(user, FriendshipStatus.objects.requested())
 
 
-def get_outgoing_blocks(user: User) -> Union[QuerySet, List[User]]:
+def get_outgoing_blocks(user: User) -> QuerySet[User]:
     return get_outgoing_friendships_for(user, FriendshipStatus.objects.blocked())
 
 
-def get_incoming_blocks(user: User) -> Union[QuerySet, List[User]]:
+def get_incoming_blocks(user: User) -> QuerySet[User]:
     return get_incoming_friendships_for(user, FriendshipStatus.objects.blocked())
 
 
 def get_friendships_for(
     user: User, status: FriendshipStatus, symmetrical: bool = True
-) -> Union[QuerySet, List[User]]:
+) -> QuerySet[User]:
     """
     Returns a QuerySet of user objects with which the given user has
     established a friendship.
@@ -49,7 +48,7 @@ def get_friendships_for(
 
 def get_incoming_friendships_for(
     user: User, status: FriendshipStatus
-) -> Union[QuerySet, List[User]]:
+) -> QuerySet[User]:
     """
     Returns a QuerySet of user objects which have created a friendship to
     the given user. to_user = user, from_user = other_user
@@ -59,7 +58,7 @@ def get_incoming_friendships_for(
 
 def get_outgoing_friendships_for(
     user: User, status: FriendshipStatus
-) -> Union[QuerySet, List[User]]:
+) -> QuerySet[User]:
     """Returns a QuerySet of user objects which the given user has created a friendship to."""
     return User.objects.filter(_get_outgoing_query(user, status))
 
@@ -150,7 +149,7 @@ def _get_friendship_status_for_existing_friendship(
     return DefaultFriendshipStatus.from_name(friendship.status.name)
 
 
-def get_mutual_friends(actor: User, user: User):
+def get_mutual_friends(actor: User, user: User) -> QuerySet[User]:
     """Returns the mutual friends for the given users."""
     actors_friends = get_friends(actor)
     users_friends = get_friends(user)
