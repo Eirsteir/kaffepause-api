@@ -1,10 +1,14 @@
 import pytest
 
 from kaffepause.breaks.enums import InvitationReply
+from kaffepause.breaks.exceptions import InvalidInvitationUpdate
 from kaffepause.breaks.models import BreakInvitation
 from kaffepause.breaks.services import (
     __reply_to_invitation,
+    accept_break_invitation,
     create_and_invite_friends_to_a_break,
+    decline_break_invitation,
+    ignore_break_invitation,
 )
 from kaffepause.breaks.test.factories import BreakInvitationFactory
 from kaffepause.common.utils import three_hours_from_now
@@ -57,7 +61,7 @@ def test_create_and_invite_friends_to_a_break_with_start_time_sets_start_time(us
         actor=user, start_time=start_time
     )
 
-    assert created_break.start_time == start_time.time()
+    assert created_break.start_time == start_time
 
 
 def test_reply_to_invitation(user):
@@ -70,7 +74,28 @@ def test_reply_to_invitation(user):
     assert invitation.reply == InvitationReply.ACCEPTED
 
 
-def test_accept_break_invitation(user):
-    """Should update the invitation reply to accepted."""
-    BreakInvitationFactory(recipient=user, reply=None)
-    pass
+def test_reply_to_invitation_when_invitation_does_not_belong_to_the_actor(user):
+    """Only the recipient of an invitation should be able to reply to it."""
+    invitation = BreakInvitationFactory(reply=None)
+
+    with pytest.raises(InvalidInvitationUpdate):
+        __reply_to_invitation(
+            actor=user, invitation=invitation, action=invitation.accept
+        )
+
+
+@pytest.mark.parametrize(
+    "reply_action, expected_reply",
+    [
+        (accept_break_invitation, InvitationReply.ACCEPTED),
+        (decline_break_invitation, InvitationReply.DECLINED),
+        (ignore_break_invitation, InvitationReply.IGNORED),
+    ],
+)
+def test_replying_to_break_invitation(user, reply_action, expected_reply):
+    """Should update the invitation reply to given reply."""
+    invitation = BreakInvitationFactory(recipient=user, reply=None)
+
+    invitation = reply_action(actor=user, invitation=invitation)
+
+    assert invitation.reply == expected_reply

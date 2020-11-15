@@ -1,6 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import pytest
+from django.utils import timezone
 
 from kaffepause.breaks.enums import InvitationReply
 from kaffepause.breaks.exceptions import (
@@ -16,7 +17,7 @@ pytestmark = pytest.mark.django_db
 @pytest.mark.parametrize("expires_in_hours, expected", [(-1, True), (1, False)])
 def test_is_expired(expires_in_hours, expected):
     """Should return whether the invitation has expired."""
-    now = datetime.now()
+    now = timezone.now()
     expiry = now + timedelta(hours=expires_in_hours)
 
     invitation = BreakInvitationFactory.build(expiry=expiry)
@@ -26,7 +27,7 @@ def test_is_expired(expires_in_hours, expected):
 
 def test_save_with_invalid_expiry():
     """It should not be possible to set expiration in the past."""
-    now = datetime.now()
+    now = timezone.now()
     expiry = now + timedelta(hours=-1)
 
     with pytest.raises(InvalidInvitationExpiration):
@@ -43,7 +44,7 @@ def test_reply(break_invitation):
 
 def test_reply_when_invitation_has_expired():
     """Should not update the invitation when it has expired."""
-    now = datetime.now()
+    now = timezone.now()
     expiry = now + timedelta(hours=-1)
 
     invitation = BreakInvitationFactory(reply=None)

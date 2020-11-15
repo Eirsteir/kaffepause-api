@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Callable
+from typing import Callable
 
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
@@ -52,7 +52,7 @@ def ignore_break_invitation(
 def __reply_to_invitation(
     actor: User, invitation: BreakInvitation, action: Callable
 ) -> BreakInvitation:
-    if not actor == invitation.recipient:
+    if actor != invitation.recipient:
         raise InvalidInvitationUpdate(_("Invitation does not belong to this user"))
 
     action()

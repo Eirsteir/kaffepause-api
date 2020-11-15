@@ -1,4 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
+
+from django.utils import timezone
 
 
 def get_first_matching_attr(obj, *attrs, default=None):
@@ -18,6 +20,6 @@ def three_hours_from_now():
 
 
 def time_from_now(hours=0, minutes=0):
-    now = datetime.now()
+    now = timezone.now()
     start = now + timedelta(hours=hours, minutes=minutes)
     return start if start > now else start + timedelta(days=1)
