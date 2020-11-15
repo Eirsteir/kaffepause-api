@@ -1,10 +1,8 @@
 import graphene
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
-from graphql_auth.decorators import verification_required
 from graphql_auth.schema import UserNode
 
-from kaffepause.common.bases import Output, VerificationRequiredMixin
+from kaffepause.common.bases import Mutation
 from kaffepause.friendships.services import (
     accept_friend_request,
     delete_friendship,
@@ -16,7 +14,7 @@ from kaffepause.users.schema import User
 UserModel = get_user_model()
 
 
-class SendFriendRequest(VerificationRequiredMixin, Output, graphene.Mutation):
+class SendFriendRequest(Mutation):
     class Arguments:
         to_friend = graphene.String(required=True)
 
@@ -31,7 +29,7 @@ class SendFriendRequest(VerificationRequiredMixin, Output, graphene.Mutation):
         return cls(friendship=to_user)
 
 
-class CancelFriendRequest(VerificationRequiredMixin, Output, graphene.Mutation):
+class CancelFriendRequest(Mutation):
     class Arguments:
         to_friend = graphene.String(required=True)
 
@@ -46,7 +44,7 @@ class CancelFriendRequest(VerificationRequiredMixin, Output, graphene.Mutation):
         return cls(cancelled_friend_requestee=to_friend)
 
 
-class UnfriendUser(VerificationRequiredMixin, Output, graphene.Mutation):
+class UnfriendUser(Mutation):
     class Arguments:
         friend = graphene.String(required=True)
 
@@ -61,7 +59,7 @@ class UnfriendUser(VerificationRequiredMixin, Output, graphene.Mutation):
         return cls(unfriended_user=friend)
 
 
-class AcceptFriendRequest(VerificationRequiredMixin, Output, graphene.Mutation):
+class AcceptFriendRequest(Mutation):
     class Arguments:
         from_user = graphene.String(required=True)
 
@@ -76,7 +74,7 @@ class AcceptFriendRequest(VerificationRequiredMixin, Output, graphene.Mutation):
         return cls(friendship=friendship)
 
 
-class BlockUser(VerificationRequiredMixin, Output, graphene.Mutation):
+class BlockUser(Mutation):
     class Arguments:
         user = graphene.String(required=True)
 
@@ -85,7 +83,7 @@ class BlockUser(VerificationRequiredMixin, Output, graphene.Mutation):
         raise NotImplementedError()
 
 
-class UnblockUser(VerificationRequiredMixin, Output, graphene.Mutation):
+class UnblockUser(Mutation):
     class Arguments:
         user = graphene.String(required=True)
 

@@ -10,6 +10,7 @@ from model_utils.models import TimeStampedModel
 from kaffepause.breaks.enums import InvitationReply
 from kaffepause.breaks.exceptions import (
     AlreadyReplied,
+    InvalidBreakStartTime,
     InvalidInvitationExpiration,
     InvitationExpired,
 )
@@ -34,12 +35,16 @@ class Break(TimeStampedModel):
             self.start_time = thirty_minutes_from_now()
         return super().clean_fields(*args, **kwargs)
 
+    def clean(self):
+        if timezone.now() >= self.start_time:
+            raise InvalidBreakStartTime
+
     def save(self, *args, **kwargs):
         self.full_clean()
         return super().save(*args, **kwargs)
 
-    def add_participant(self, recipient):
-        self.participants.add(recipient)
+    def add_participant(self, participant):
+        self.participants.add(participant)
 
     def __str__(self):
         return f"Break starting at {self.actual_start_time} ({self.participants.count()} participants)"
@@ -56,7 +61,6 @@ class BreakInvitation(TimeStampedModel):
         related_name="break_invites",
         related_query_name="break_invitation",
     )
-    # TODO: change name?
     subject = models.ForeignKey(
         Break, on_delete=models.CASCADE, related_name="invitations"
     )

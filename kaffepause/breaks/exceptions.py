@@ -23,3 +23,7 @@ class InvalidInvitationExpiration(DefaultError):
 
 class InvalidInvitationUpdate(DefaultError):
     default_message = _("Cannot update invitation")
+
+
+class InvalidBreakStartTime(DefaultError):
+    default_message = _("The break start time must be in the future")

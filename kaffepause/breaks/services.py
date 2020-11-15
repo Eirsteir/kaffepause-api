@@ -23,8 +23,11 @@ def create_and_invite_friends_to_a_break(
 def _invite_friends_to_break(actor: User, subject: Break) -> None:
     """Create an invitation to given break to all friends of the actor."""
     friend_ids = get_friends(actor).values_list("id", flat=True)
+    expiry = subject.start_time  # TODO: Is this wanted?
     invitations = [
-        BreakInvitation(sender=actor, recipient_id=friend_id, subject=subject)
+        BreakInvitation(
+            sender=actor, recipient_id=friend_id, subject=subject, expiry=expiry
+        )
         for friend_id in friend_ids
     ]
 

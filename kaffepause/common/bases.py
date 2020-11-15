@@ -22,7 +22,7 @@ class Output:
     standardize the output
     """
 
-    success = graphene.Boolean(default_value=True)
+    success = graphene.Boolean(default_value=False)
     errors = graphene.Field(OutputErrorType)
 
 
@@ -35,3 +35,7 @@ class VerificationRequiredMixin:
     @verification_required
     def mutate(cls, root, info, **input):
         return cls.resolve_mutation(root, info, **input)
+
+
+class Mutation(VerificationRequiredMixin, Output, graphene.Mutation):
+    pass
