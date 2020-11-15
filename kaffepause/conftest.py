@@ -1,5 +1,7 @@
 import pytest
 
+from kaffepause.breaks.models import Break, BreakInvitation
+from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory
 from kaffepause.friendships.enums import DefaultFriendshipStatus
 from kaffepause.friendships.models import Friendship, FriendshipStatus
 from kaffepause.friendships.test.factories import (
@@ -38,3 +40,13 @@ def requested_status() -> FriendshipStatus:
 @pytest.fixture(autouse=True)
 def blocked_status() -> FriendshipStatus:
     return FriendshipStatusFactory.from_enum(DefaultFriendshipStatus.BLOCKED)
+
+
+@pytest.fixture(autouse=True)
+def study_break() -> Break:
+    return BreakFactory(participants=(UserFactory(),))
+
+
+@pytest.fixture(autouse=True)
+def break_invitation(study_break) -> BreakInvitation:
+    return BreakInvitationFactory(subject=study_break, reply=None)

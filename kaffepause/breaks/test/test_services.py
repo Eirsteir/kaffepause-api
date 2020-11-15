@@ -1,9 +1,12 @@
-from datetime import datetime, timedelta
-
 import pytest
 
+from kaffepause.breaks.enums import InvitationReply
 from kaffepause.breaks.models import BreakInvitation
-from kaffepause.breaks.services import create_and_invite_friends_to_a_break
+from kaffepause.breaks.services import (
+    __reply_to_invitation,
+    create_and_invite_friends_to_a_break,
+)
+from kaffepause.breaks.test.factories import BreakInvitationFactory
 from kaffepause.common.utils import three_hours_from_now
 from kaffepause.friendships.test.factories import FriendshipFactory
 from kaffepause.users.test.factories import UserFactory
@@ -55,3 +58,19 @@ def test_create_and_invite_friends_to_a_break_with_start_time_sets_start_time(us
     )
 
     assert created_break.start_time == start_time.time()
+
+
+def test_reply_to_invitation(user):
+    """Should update the invitation reply to given reply action"""
+    invitation = BreakInvitationFactory(recipient=user, reply=None)
+    invitation = __reply_to_invitation(
+        actor=user, invitation=invitation, action=invitation.accept
+    )
+
+    assert invitation.reply == InvitationReply.ACCEPTED
+
+
+def test_accept_break_invitation(user):
+    """Should update the invitation reply to accepted."""
+    BreakInvitationFactory(recipient=user, reply=None)
+    pass

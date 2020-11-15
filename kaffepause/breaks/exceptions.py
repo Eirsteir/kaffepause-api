@@ -15,3 +15,11 @@ class BreakInvitationExpiresBeforeStartTime(DefaultError):
     default_message = _(
         "The invitation cannot expire before the break is supposed to start"
     )
+
+
+class InvalidInvitationExpiration(DefaultError):
+    default_message = _("The invitation expiration is invalid")
+
+
+class InvalidInvitationUpdate(DefaultError):
+    default_message = _("Cannot update invitation")

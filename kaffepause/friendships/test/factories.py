@@ -1,6 +1,4 @@
-from typing import Any, Sequence
-
-from factory import LazyAttribute, SubFactory, fuzzy, post_generation
+from factory import SubFactory, fuzzy
 from factory.django import DjangoModelFactory
 
 from kaffepause.friendships.enums import (

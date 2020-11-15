@@ -8,7 +8,11 @@ from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
 
 from kaffepause.breaks.enums import InvitationReply
-from kaffepause.breaks.exceptions import AlreadyReplied, InvitationExpired
+from kaffepause.breaks.exceptions import (
+    AlreadyReplied,
+    InvalidInvitationExpiration,
+    InvitationExpired,
+)
 from kaffepause.common.models import StatusModel
 from kaffepause.common.utils import thirty_minutes_from_now, three_hours_from_now
 
@@ -19,7 +23,7 @@ class Break(TimeStampedModel):
     participants = models.ManyToManyField(
         User, related_name="breaks", related_query_name="break"
     )
-    start_time = models.TimeField(default=thirty_minutes_from_now)
+    start_time = models.DateTimeField(default=thirty_minutes_from_now)
 
     @property
     def actual_start_time(self):
@@ -63,9 +67,7 @@ class BreakInvitation(TimeStampedModel):
     reply = models.CharField(
         choices=InvitationReply.choices, max_length=10, null=True, blank=True
     )
-    expiry = models.TimeField(
-        default=three_hours_from_now
-    )  # TODO: put in settings? validation?
+    expiry = models.DateTimeField(default=three_hours_from_now)
 
     class Meta:
         ordering = ("-created", "is_seen")
@@ -76,6 +78,21 @@ class BreakInvitation(TimeStampedModel):
                 fields=["sender", "recipient", "subject"], name="unique-invitation"
             )
         ]
+
+    def clean_fields(self, *args, **kwargs):
+        if self.is_expired:
+            raise InvalidInvitationExpiration(
+                _("Invitation expiry must be in the future")
+            )
+        return super().clean_fields(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    @property
+    def is_expired(self):
+        return datetime.now() >= self.expiry
 
     @atomic
     def accept(self):
@@ -101,10 +118,6 @@ class BreakInvitation(TimeStampedModel):
     def assert_is_not_already_replied_to(self):
         if self.reply:
             raise AlreadyReplied
-
-    @property
-    def is_expired(self):
-        return self.expiry >= localtime().time()
 
     def __str__(self):
         return f"Invitation from {self.sender} to {self.recipient}, {self.subject}"
