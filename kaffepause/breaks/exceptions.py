@@ -7,6 +7,10 @@ class InvitationExpired(DefaultError):
     default_message = _("Invitation has expired")
 
 
+class AlreadyReplied(DefaultError):
+    default_message = _("Invitation has already been replied to")
+
+
 class BreakInvitationExpiresBeforeStartTime(DefaultError):
     default_message = _(
         "The invitation cannot expire before the break is supposed to start"

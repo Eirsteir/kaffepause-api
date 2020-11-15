@@ -1,15 +1,14 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.transaction import atomic
-from django.utils import timezone
 from django.utils.timezone import localtime
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
 
 from kaffepause.breaks.enums import InvitationReply
-from kaffepause.breaks.exceptions import InvitationExpired
+from kaffepause.breaks.exceptions import AlreadyReplied, InvitationExpired
 from kaffepause.common.models import StatusModel
 from kaffepause.common.utils import thirty_minutes_from_now, three_hours_from_now
 
@@ -24,22 +23,25 @@ class Break(TimeStampedModel):
 
     @property
     def actual_start_time(self):
-        actual_start_time = self.created
-        actual_start_time.replace(hour=self.start_time.hour)
-        actual_start_time.replace(minute=self.start_time.minute)
-        actual_start_time.replace(second=self.start_time.second)
-        return actual_start_time
+        return datetime.combine(self.created, self.start_time)
+
+    def clean_fields(self, *args, **kwargs):
+        if not self.start_time:
+            self.start_time = thirty_minutes_from_now()
+        return super().clean_fields(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    def add_participant(self, recipient):
+        self.participants.add(recipient)
 
     def __str__(self):
         return f"Break starting at {self.actual_start_time} ({self.participants.count()} participants)"
 
 
 class BreakInvitation(TimeStampedModel):
-    """
-    Model class for inviting to a break from studies.
-    The invitation expires in 3 hours from time of creation by default.
-    """
-
     # inviter, requester, sender, actor,
     sender = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="sent_invites"
@@ -61,7 +63,9 @@ class BreakInvitation(TimeStampedModel):
     reply = models.CharField(
         choices=InvitationReply.choices, max_length=10, null=True, blank=True
     )
-    expiry = models.TimeField(default=three_hours_from_now)  # TODO: put in settings?
+    expiry = models.TimeField(
+        default=three_hours_from_now
+    )  # TODO: put in settings? validation?
 
     class Meta:
         ordering = ("-created", "is_seen")
@@ -75,24 +79,28 @@ class BreakInvitation(TimeStampedModel):
 
     @atomic
     def accept(self):
-        self.check_expiry()
-        self.reply = InvitationReply.ACCEPTED
-        self.subject.participants.add(self.recipient)
-        self.save()
+        self._reply(InvitationReply.ACCEPTED)
+        self.subject.add_participant(self.recipient)
 
     def decline(self):
-        self.check_expiry()
-        self.reply = InvitationReply.DECLINED
-        self.save()
+        self._reply(InvitationReply.DECLINED)
 
     def ignore(self):
+        self._reply(InvitationReply.IGNORED)
+
+    def _reply(self, reply: InvitationReply):
         self.check_expiry()
-        self.reply = InvitationReply.IGNORED
+        self.assert_is_not_already_replied_to()
+        self.reply = reply
         self.save()
 
     def check_expiry(self):
         if self.is_expired:
             raise InvitationExpired
+
+    def assert_is_not_already_replied_to(self):
+        if self.reply:
+            raise AlreadyReplied
 
     @property
     def is_expired(self):

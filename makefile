@@ -4,6 +4,7 @@ start:
 fresh:
 	docker-compose -f local.yml down
 	docker-compose -f local.yml build
+	make seed
 	make start
 
 install:
@@ -35,7 +36,6 @@ loaddata:
 
 seed:
 	docker-compose -f local.yml run --rm django python manage.py seed ${args}
-	make dumpdata
 
 test:
 	docker-compose -f local.yml run --rm django pytest ${args}
