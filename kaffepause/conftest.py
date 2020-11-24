@@ -8,7 +8,7 @@ from kaffepause.friendships.test.factories import (
     FriendshipFactory,
     FriendshipStatusFactory,
 )
-from kaffepause.users.models import User
+from kaffepause.users.models import AuthUser
 from kaffepause.users.test.factories import UserFactory
 
 
@@ -18,7 +18,7 @@ def media_storage(settings, tmpdir):
 
 
 @pytest.fixture
-def user() -> User:
+def user() -> AuthUser:
     return UserFactory()
 
 

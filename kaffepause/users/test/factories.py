@@ -9,11 +9,9 @@ from graphql_auth.models import UserStatus
 class UserFactory(DjangoModelFactory):
     class Meta:
         model = get_user_model()
-        django_get_or_create = ("username",)
+        django_get_or_create = ("email",)
 
-    username = Faker("user_name")
     email = Faker("email")
-    name = Faker("name")
 
     @post_generation
     def password(self, create: bool, extracted: Sequence[Any], **kwargs):

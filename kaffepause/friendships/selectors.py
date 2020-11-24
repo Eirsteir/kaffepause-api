@@ -7,32 +7,32 @@ from kaffepause.friendships.enums import (
     NonFriendsFriendshipStatus,
 )
 from kaffepause.friendships.models import Friendship, FriendshipStatus
-from kaffepause.users.models import User
+from kaffepause.users.models import AuthUser
 
 
-def get_friends(user: User) -> QuerySet[User]:
+def get_friends(user: AuthUser) -> QuerySet[AuthUser]:
     return get_friendships_for(user, FriendshipStatus.objects.friends())
 
 
-def get_incoming_requests(user: User) -> QuerySet[User]:
+def get_incoming_requests(user: AuthUser) -> QuerySet[AuthUser]:
     return get_incoming_friendships_for(user, FriendshipStatus.objects.requested())
 
 
-def get_outgoing_requests(user: User) -> QuerySet[User]:
+def get_outgoing_requests(user: AuthUser) -> QuerySet[AuthUser]:
     return get_outgoing_friendships_for(user, FriendshipStatus.objects.requested())
 
 
-def get_outgoing_blocks(user: User) -> QuerySet[User]:
+def get_outgoing_blocks(user: AuthUser) -> QuerySet[AuthUser]:
     return get_outgoing_friendships_for(user, FriendshipStatus.objects.blocked())
 
 
-def get_incoming_blocks(user: User) -> QuerySet[User]:
+def get_incoming_blocks(user: AuthUser) -> QuerySet[AuthUser]:
     return get_incoming_friendships_for(user, FriendshipStatus.objects.blocked())
 
 
 def get_friendships_for(
-    user: User, status: FriendshipStatus, symmetrical: bool = True
-) -> QuerySet[User]:
+    user: AuthUser, status: FriendshipStatus, symmetrical: bool = True
+) -> QuerySet[AuthUser]:
     """
     Returns a QuerySet of user objects with which the given user has
     established a friendship.
@@ -43,24 +43,24 @@ def get_friendships_for(
     if symmetrical:
         query |= _get_outgoing_query(user, status)
 
-    return User.objects.filter(query)
+    return AuthUser.objects.filter(query)
 
 
 def get_incoming_friendships_for(
-    user: User, status: FriendshipStatus
-) -> QuerySet[User]:
+    user: AuthUser, status: FriendshipStatus
+) -> QuerySet[AuthUser]:
     """
     Returns a QuerySet of user objects which have created a friendship to
     the given user. to_user = user, from_user = other_user
     """
-    return User.objects.filter(_get_incoming_query(user, status))
+    return AuthUser.objects.filter(_get_incoming_query(user, status))
 
 
 def get_outgoing_friendships_for(
-    user: User, status: FriendshipStatus
-) -> QuerySet[User]:
+    user: AuthUser, status: FriendshipStatus
+) -> QuerySet[AuthUser]:
     """Returns a QuerySet of user objects which the given user has created a friendship to."""
-    return User.objects.filter(_get_outgoing_query(user, status))
+    return AuthUser.objects.filter(_get_outgoing_query(user, status))
 
 
 def _get_incoming_query(user, status):
@@ -115,20 +115,20 @@ def get_single_friendship(from_user, to_user, status=None):
 
 
 def get_single_incoming_friendship(
-    actor: User, from_user: User, status: FriendshipStatus
+    actor: AuthUser, from_user: AuthUser, status: FriendshipStatus
 ):
     """Returns the incoming friendship object, if found."""
     return Friendship.objects.filter(from_user=from_user, to_user=actor, status=status)
 
 
 def get_single_outgoing_friendship(
-    actor: User, to_user: User, status: FriendshipStatus
+    actor: AuthUser, to_user: AuthUser, status: FriendshipStatus
 ):
     """Returns the outgoing friendship object, if found."""
     return Friendship.objects.filter(from_user=actor, to_user=to_user, status=status)
 
 
-def get_friendship_status(actor: User, user: User) -> BaseFriendshipStatusEnum:
+def get_friendship_status(actor: AuthUser, user: AuthUser) -> BaseFriendshipStatusEnum:
     """
     Returns the friendship status as viewed by the user when
     only the users are available in the current context.
@@ -142,14 +142,14 @@ def get_friendship_status(actor: User, user: User) -> BaseFriendshipStatusEnum:
 
 # TODO: might throw exception
 def _get_friendship_status_for_existing_friendship(
-    actor: User, user: User
+    actor: AuthUser, user: AuthUser
 ) -> DefaultFriendshipStatus:
     """Returns the friendship status for the given users."""
     friendship = get_single_friendship(actor, user)
     return DefaultFriendshipStatus.from_name(friendship.status.name)
 
 
-def get_mutual_friends(actor: User, user: User) -> QuerySet[User]:
+def get_mutual_friends(actor: AuthUser, user: AuthUser) -> QuerySet[AuthUser]:
     """Returns the mutual friends for the given users."""
     actors_friends = get_friends(actor)
     users_friends = get_friends(user)
