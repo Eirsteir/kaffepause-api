@@ -16,12 +16,9 @@ class UserStatusInline(admin.TabularInline):
 class UserAdmin(auth_admin.UserAdmin):
 
     form = UserChangeForm
-    add_form = UserCreationForm
-    fieldsets = (("User", {"fields": ("name",)}),) + tuple(
-        auth_admin.UserAdmin.fieldsets
-    )
-    list_display = ["username", "name", "is_superuser"]
-    search_fields = ["name", "username", "first_name", "last_name"]
+    list_display = ["email", "is_superuser"]
+    search_fields = ["email", "id"]
+    ordering = ("email",)
     inlines = (
         UserStatusInline,
         FriendshipInline,

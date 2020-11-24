@@ -19,7 +19,7 @@ django-cors-headers==3.5.0 # https://github.com/adamchainz/django-cors-headers
 # Neomodel
 # ------------------------------------------------------------------------------
 neomodel==3.3.2
-django-neomodel==0.0.4
+django-neomodel==0.0.4 # wait for this https://github.com/neo4j-contrib/django-neomodel/pull/39
 
 # GraphQL
 # ------------------------------------------------------------------------------
