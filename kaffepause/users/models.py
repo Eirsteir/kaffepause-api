@@ -67,11 +67,11 @@ class AuthenticationPrincipal(AbstractUser):
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_user(sender, instance=None, created=False, **kwargs):
     if created:
-        User(id=instance.id).create()
+        User(uid=instance.id).save()
 
 
 class User(StructuredNode):
-    id = UniqueIdProperty()
+    uid = UniqueIdProperty()
     name = StringProperty(unique_index=True)
     age = IntegerProperty(index=True, default=0)
 
