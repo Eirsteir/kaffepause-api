@@ -21,7 +21,7 @@ class InviteFriendsToABreak(Mutation):
     subject = graphene.Field(BreakType)
 
     @classmethod
-    def resolve_mutation(cls, root, info, start_time):
+    def resolve_mutation(cls, root, info, start_time=None):
         current_user = info.context.user
         subject = create_and_invite_friends_to_a_break(
             actor=current_user, start_time=start_time
@@ -31,7 +31,7 @@ class InviteFriendsToABreak(Mutation):
 
 class BreakInvitationAction(Mutation):
     class Arguments:
-        invitation = graphene.Int()
+        invitation = graphene.String()
 
     _invitation_action = None
 

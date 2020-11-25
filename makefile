@@ -4,7 +4,6 @@ start:
 fresh:
 	docker-compose -f local.yml down
 	docker-compose -f local.yml build
-	make seed
 	make start
 
 install:

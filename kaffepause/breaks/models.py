@@ -28,7 +28,7 @@ class Break(TimeStampedModel):
 
     @property
     def actual_start_time(self):
-        return datetime.combine(self.created, self.start_time)
+        return datetime.combine(self.created, self.start_time.time())
 
     def clean_fields(self, *args, **kwargs):
         if not self.start_time:

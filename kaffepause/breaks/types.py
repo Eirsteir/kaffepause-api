@@ -1,3 +1,4 @@
+import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
 
@@ -12,9 +13,18 @@ class BreakInvitationType(DjangoObjectType):
         interfaces = (relay.Node,)
         connection_class = CountingNodeConnection
 
+    id = graphene.ID(source="pk", required=True)
+
 
 class BreakType(DjangoObjectType):
     class Meta:
         model = Break
+        fields = (
+            "id",
+            "participants",
+            "start_time",
+        )
         interfaces = (relay.Node,)
         connection_class = CountingNodeConnection
+
+    id = graphene.ID(source="pk", required=True)

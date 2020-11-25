@@ -1,6 +1,7 @@
 import graphene
 from graphene_django.debug import DjangoDebug
 
+import kaffepause.breaks.schema
 import kaffepause.friendships.schema
 import kaffepause.users.schema
 
