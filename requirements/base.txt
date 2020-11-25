@@ -18,13 +18,11 @@ django-cors-headers==3.5.0 # https://github.com/adamchainz/django-cors-headers
 
 # Neomodel
 # ------------------------------------------------------------------------------
-neomodel==3.3.2
+neomodel==3.3.2  # https://neomodel.readthedocs.io/en/latest/
 django-neomodel==0.0.4 # wait for this https://github.com/neo4j-contrib/django-neomodel/pull/39
-neo4j-driver==1.7.0
 
 # GraphQL
 # ------------------------------------------------------------------------------
-#graphene-django==2.13.0 # https://github.com/graphql-python/graphene
-graphene-neo4j >= 2.0
+graphene>=2.0  # https://graphene-python.org/
 django-graphql-auth==0.3.14
 django-graphql-jwt==0.3.0

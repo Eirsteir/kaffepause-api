@@ -277,7 +277,19 @@ GRAPHQL_JWT = {
         "graphql_auth.mutations.VerifySecondaryEmail",
     ],
 }
-
+GRAPHQL_AUTH = {
+    # Disable some of graphql-auth's required fields
+    "LOGIN_ALLOWED_FIELDS": ["email"],
+    "REGISTER_MUTATION_FIELDS": ["email"],
+    "UPDATE_MUTATION_FIELDS": {},
+    "USER_NODE_FILTER_FIELDS": {
+        "email": ["exact"],
+        "is_active": ["exact"],
+        "status__archived": ["exact"],
+        "status__verified": ["exact"],
+        "status__secondary_email": ["exact"],
+    },
+}
 # Your stuff...
 # ------------------------------------------------------------------------------
 SITE = {

@@ -3,7 +3,8 @@ from graphene import relay
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_auth import mutations
 
-from kaffepause.users.types import User
+from kaffepause.users.models import User
+from kaffepause.users.types import User as UserType
 
 
 class AuthMutation(graphene.ObjectType):
@@ -31,12 +32,15 @@ class AuthMutation(graphene.ObjectType):
 
 class UserQuery(graphene.ObjectType):
 
-    user = relay.Node.Field(User)
-    users = DjangoFilterConnectionField(User)
+    user = relay.Node.Field(UserType)
+    users = relay.ConnectionField(UserType)
+
+    def resolve_users(parent, info):
+        return User.nodes.all()
 
 
 class MeQuery(graphene.ObjectType):
-    me = graphene.Field(User)
+    me = graphene.Field(UserType)
 
     def resolve_me(self, info):
         user = info.context.user

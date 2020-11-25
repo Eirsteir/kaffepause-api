@@ -9,8 +9,8 @@ class FriendshipNode(DjangoObjectType):
     class Meta:
         model = Friendship
         filter_fields = {
-            "from_user__username": ["exact"],
-            "to_user__username": ["exact"],
+            # "from_user__username": ["exact"],
+            # "to_user__username": ["exact"],
             "status__name": ["exact"],
         }
         interfaces = (relay.Node,)
