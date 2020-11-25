@@ -54,13 +54,13 @@ class FriendshipStatus(StatusModel):
 
 class Friendship(TimeStampedModel):
     from_user = models.ForeignKey(
-        "users.AuthUser",
+        "users.AuthenticationPrincipal",
         on_delete=models.CASCADE,
         related_name="from_users",
         verbose_name=_("from users"),
     )
     to_user = models.ForeignKey(
-        "users.AuthUser",
+        "users.AuthenticationPrincipal",
         on_delete=models.CASCADE,
         related_name="to_users",
         verbose_name=_("to user"),
