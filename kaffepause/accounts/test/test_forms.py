@@ -1,7 +1,7 @@
 import pytest
 
-from kaffepause.users.forms import UserCreationForm
-from kaffepause.users.test.factories import UserFactory
+from kaffepause.accounts.forms import AccountCreationForm
+from kaffepause.accounts.test.factories import AccountFactory
 
 pytestmark = pytest.mark.django_db
 
@@ -9,9 +9,9 @@ pytestmark = pytest.mark.django_db
 class TestUserCreationForm:
     def test_clean_username(self):
         # A user with proto_user params does not exist yet.
-        proto_user = UserFactory.build()
+        proto_user = AccountFactory.build()
 
-        form = UserCreationForm(
+        form = AccountCreationForm(
             {
                 "username": proto_user.username,
                 "password1": proto_user._password,
@@ -27,7 +27,7 @@ class TestUserCreationForm:
 
         # The user with proto_user params already exists,
         # hence cannot be created.
-        form = UserCreationForm(
+        form = AccountCreationForm(
             {
                 "username": proto_user.username,
                 "password1": proto_user._password,

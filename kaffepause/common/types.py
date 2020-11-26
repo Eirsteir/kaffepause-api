@@ -4,7 +4,7 @@ from graphene_django.utils import camelize
 
 
 class CountingNodeConnection(Connection):
-    """Custom connection to include a node and edges count."""
+    """Connection to include a node and edges count."""
 
     class Meta:
         abstract = True

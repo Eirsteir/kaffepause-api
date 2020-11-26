@@ -1,8 +1,8 @@
-from factory import SubFactory, fuzzy, post_generation
+from factory import SubFactory, post_generation
 from factory.django import DjangoModelFactory
 
+from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.breaks.models import Break, BreakInvitation
-from kaffepause.users.test.factories import UserFactory
 
 
 class BreakFactory(DjangoModelFactory):
@@ -25,6 +25,6 @@ class BreakInvitationFactory(DjangoModelFactory):
     class Meta:
         model = BreakInvitation
 
-    sender = SubFactory(UserFactory)
-    recipient = SubFactory(UserFactory)
+    sender = SubFactory(AccountFactory)
+    recipient = SubFactory(AccountFactory)
     subject = SubFactory(BreakFactory)

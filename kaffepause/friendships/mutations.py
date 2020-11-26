@@ -1,6 +1,5 @@
 import graphene
 from django.contrib.auth import get_user_model
-from graphql_auth.schema import UserNode
 
 from kaffepause.common.bases import Mutation
 from kaffepause.friendships.services import (
@@ -33,7 +32,7 @@ class CancelFriendRequest(Mutation):
     class Arguments:
         to_friend = graphene.String(required=True)
 
-    cancelled_friend_requestee = graphene.Field(UserNode)
+    cancelled_friend_requestee = graphene.Field(User)
 
     @classmethod
     def resolve_mutation(cls, root, info, to_friend):
@@ -48,7 +47,7 @@ class UnfriendUser(Mutation):
     class Arguments:
         friend = graphene.String(required=True)
 
-    unfriended_user = graphene.Field(UserNode)
+    unfriended_user = graphene.Field(User)
 
     @classmethod
     def resolve_mutation(cls, root, info, friend):

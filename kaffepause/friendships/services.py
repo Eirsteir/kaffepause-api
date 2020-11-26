@@ -11,16 +11,16 @@ from kaffepause.friendships.exceptions import (
 from kaffepause.friendships.models import Friendship, FriendshipStatus
 from kaffepause.friendships.selectors import friendship_exists, get_single_friendship
 
-User = get_user_model()
+Account = get_user_model()
 
 
-def send_friend_request(actor: User, to_user: User):
+def send_friend_request(actor: Account, to_user: Account):
     return create_friendship(from_user=actor, to_user=to_user)
 
 
 def create_friendship(
-    from_user: User,
-    to_user: User,
+    from_user: Account,
+    to_user: Account,
     status: FriendshipStatus = None,
 ) -> Friendship:
     """
@@ -39,7 +39,7 @@ def create_friendship(
 
 @atomic()
 def _get_or_create_friendship(
-    from_user: User, to_user: User, status: FriendshipStatus
+    from_user: Account, to_user: Account, status: FriendshipStatus
 ) -> Tuple[Friendship, bool]:
     """
     Look up a friendship with the given arguments, creating one if necessary.
@@ -58,7 +58,7 @@ def _get_or_create_friendship(
 
 
 # https://www.kite.com/python/docs/django.test.TransactionTestCase
-def accept_friend_request(actor: User, from_user: User) -> Friendship:
+def accept_friend_request(actor: Account, from_user: Account) -> Friendship:
     """Update an incoming friendship with status of 'requested'."""
     requested_status = FriendshipStatus.objects.requested()
     accepted_status = FriendshipStatus.objects.friends()
@@ -75,8 +75,8 @@ def accept_friend_request(actor: User, from_user: User) -> Friendship:
 
 @atomic()  # TODO: Does transaction end on raise exception?
 def __update_friendship_status(
-    from_user: User,
-    to_user: User,
+    from_user: Account,
+    to_user: Account,
     old_status: FriendshipStatus,
     new_status: FriendshipStatus,
 ) -> Friendship:
@@ -100,7 +100,7 @@ def __update_friendship_status(
 
 
 @atomic()
-def delete_friendship(actor: User, user: User):
+def delete_friendship(actor: Account, user: Account):
     """
     Deletes a friendship from one user to another, following some simple rules.
 
@@ -116,7 +116,7 @@ def delete_friendship(actor: User, user: User):
     return friendship.delete()
 
 
-def _attempt_to_delete_blocked_friendship(actor: User, friendship: Friendship):
+def _attempt_to_delete_blocked_friendship(actor: Account, friendship: Friendship):
     """
     Assures only the one blocking can delete the friendship.
 

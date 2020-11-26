@@ -15,7 +15,6 @@ from kaffepause.friendships.selectors import (
     get_outgoing_requests,
 )
 from kaffepause.friendships.types import FriendshipNode
-from kaffepause.users.schema import User
 
 UserModel = get_user_model()
 
@@ -24,9 +23,9 @@ class Query(graphene.ObjectType):
 
     friendship = relay.Node.Field(FriendshipNode)
     # Get all friends of the user
-    all_friendships = DjangoFilterConnectionField(User, user=graphene.String())
-    friending_possibilities = DjangoFilterConnectionField(User)
-    outgoing_friend_requests = DjangoFilterConnectionField(User)
+    # all_friendships = DjangoFilterConnectionField(User, user=graphene.String())
+    # friending_possibilities = DjangoFilterConnectionField(User)
+    # outgoing_friend_requests = DjangoFilterConnectionField(User)
 
     def resolve_all_friendships(root, info, user):
         user = UserModel.objects.get(id=user)

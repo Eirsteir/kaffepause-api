@@ -6,7 +6,7 @@ from factory.django import DjangoModelFactory
 from graphql_auth.models import UserStatus
 
 
-class UserFactory(DjangoModelFactory):
+class AccountFactory(DjangoModelFactory):
     class Meta:
         model = get_user_model()
         django_get_or_create = ("email",)
@@ -40,4 +40,4 @@ class UserStatusFactory(DjangoModelFactory):
     class Meta:
         model = UserStatus
 
-    user = SubFactory(UserFactory)
+    user = SubFactory(AccountFactory)

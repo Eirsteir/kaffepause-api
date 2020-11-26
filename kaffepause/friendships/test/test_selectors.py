@@ -1,5 +1,6 @@
 import pytest
 
+from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.friendships.enums import NonFriendsFriendshipStatus
 from kaffepause.friendships.models import Friendship
 from kaffepause.friendships.selectors import (
@@ -17,7 +18,6 @@ from kaffepause.friendships.selectors import (
     get_single_friendship,
 )
 from kaffepause.friendships.test.factories import FriendshipFactory
-from kaffepause.users.test.factories import UserFactory
 
 pytestmark = pytest.mark.django_db
 
@@ -99,7 +99,7 @@ def test_friendships_exists_excluding_status_asymmetrical_reversed(
 def test_friendships_exists_excluding_status_asymmetrical_when_it_does_not_exist():
     """Should return false if an asymmetrical friendship with the respective users does not exist."""
 
-    assert not friendship_exists(from_user=UserFactory(), to_user=UserFactory())
+    assert not friendship_exists(from_user=AccountFactory(), to_user=AccountFactory())
 
 
 def test_friendships_exists_including_status_asymmetrical(friendship):
@@ -128,7 +128,7 @@ def test_friendships_exists_including_status__asymmetrical_when_it_does_not_exis
     """Should return false if an asymmetrical friendship with the respective users and status does not exist."""
 
     assert not friendship_exists(
-        from_user=UserFactory(), to_user=UserFactory(), status=requested_status
+        from_user=AccountFactory(), to_user=AccountFactory(), status=requested_status
     )
 
 
@@ -154,7 +154,7 @@ def test_friendships_exists_excluding_status_symmetrical_when_it_does_not_exist(
     """Should return false if a symmetrical friendship with the respective users does not exist."""
 
     assert not friendship_exists(
-        from_user=UserFactory(), to_user=UserFactory(), symmetrical=True
+        from_user=AccountFactory(), to_user=AccountFactory(), symmetrical=True
     )
 
 
@@ -184,8 +184,8 @@ def test_friendships_exists_including_status__symmetrical_when_it_does_not_exist
     """Should return false if a symmetrical friendship with the respective users and status does not exist."""
 
     assert not friendship_exists(
-        from_user=UserFactory(),
-        to_user=UserFactory(),
+        from_user=AccountFactory(),
+        to_user=AccountFactory(),
         status=requested_status,
         symmetrical=True,
     )
@@ -299,7 +299,7 @@ def test_get_single_friendships_excluding_status_reversed(
 def test_get_single_friendships_excluding_status_when_it_does_not_exist():
     """Should raise an exception if a friendship with the respective users does not exist."""
     with pytest.raises(Friendship.DoesNotExist):
-        get_single_friendship(from_user=UserFactory(), to_user=UserFactory())
+        get_single_friendship(from_user=AccountFactory(), to_user=AccountFactory())
 
 
 def test_get_single_friendships_including_status(friendship):
@@ -332,16 +332,16 @@ def test_get_single_friendships_including_status__when_it_does_not_exist(
     """Should raise an exception if a friendship with the respective users and status does not exist."""
     with pytest.raises(Friendship.DoesNotExist):
         get_single_friendship(
-            from_user=UserFactory(),
-            to_user=UserFactory(),
+            from_user=AccountFactory(),
+            to_user=AccountFactory(),
             status=requested_status,
         )
 
 
 def test_get_friendship_status(are_friends_status):
     """Should return the friendship status as a :class:`BaseFriendshipStatusEnum`."""
-    actor = UserFactory()
-    user = UserFactory()
+    actor = AccountFactory()
+    user = AccountFactory()
     friendship = FriendshipFactory(
         from_user=actor, to_user=user, status=are_friends_status
     )
@@ -356,8 +356,8 @@ def test_get_friendship_status_when_friendship_does_not_exist(
     are_friends_status,
 ):
     """Should return the friendship status as 'CAN_REQUEST' of :class:`NonFriendsFriendshipStatus`."""
-    actor = UserFactory()
-    user = UserFactory()
+    actor = AccountFactory()
+    user = AccountFactory()
 
     expected_status = NonFriendsFriendshipStatus.CAN_REQUEST
     actual_status = get_friendship_status(actor, user)
@@ -367,20 +367,28 @@ def test_get_friendship_status_when_friendship_does_not_exist(
 
 def test_get_mutual_friends(are_friends_status):
     """Should return only the friends the users have in common."""
-    actor = UserFactory()
-    user = UserFactory()
-    mutual_friend = UserFactory()
+    actor = AccountFactory()
+    user = AccountFactory()
+    mutual_friend = AccountFactory()
 
     FriendshipFactory(from_user=actor, to_user=mutual_friend, status=are_friends_status)
     FriendshipFactory(from_user=user, to_user=mutual_friend, status=are_friends_status)
 
     FriendshipFactory(from_user=actor, to_user=user, status=are_friends_status)
 
-    FriendshipFactory(from_user=actor, to_user=UserFactory(), status=are_friends_status)
-    FriendshipFactory(from_user=UserFactory(), to_user=actor, status=are_friends_status)
+    FriendshipFactory(
+        from_user=actor, to_user=AccountFactory(), status=are_friends_status
+    )
+    FriendshipFactory(
+        from_user=AccountFactory(), to_user=actor, status=are_friends_status
+    )
 
-    FriendshipFactory(from_user=user, to_user=UserFactory(), status=are_friends_status)
-    FriendshipFactory(from_user=UserFactory(), to_user=user, status=are_friends_status)
+    FriendshipFactory(
+        from_user=user, to_user=AccountFactory(), status=are_friends_status
+    )
+    FriendshipFactory(
+        from_user=AccountFactory(), to_user=user, status=are_friends_status
+    )
 
     mutual_friends = get_mutual_friends(actor=actor, user=user)
 

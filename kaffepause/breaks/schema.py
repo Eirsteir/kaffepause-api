@@ -1,6 +1,5 @@
 import graphene
 from django.contrib.auth import get_user_model
-from graphene_django.filter import DjangoFilterConnectionField
 
 from kaffepause.breaks.mutations import (
     AcceptBreakInvitation,
@@ -21,10 +20,10 @@ UserModel = get_user_model()
 
 class Query(graphene.ObjectType):
 
-    break_invitations_awaiting_reply = DjangoFilterConnectionField(BreakInvitationType)
-    expired_break_invitations = DjangoFilterConnectionField(BreakInvitationType)
-    all_break_invitations = DjangoFilterConnectionField(BreakInvitationType)
-    outgoing_break_invitations = DjangoFilterConnectionField(BreakInvitationType)
+    # break_invitations_awaiting_reply = DjangoFilterConnectionField(BreakInvitationType)
+    # expired_break_invitations = DjangoFilterConnectionField(BreakInvitationType)
+    # all_break_invitations = DjangoFilterConnectionField(BreakInvitationType)
+    # outgoing_break_invitations = DjangoFilterConnectionField(BreakInvitationType)
 
     def resolve_break_invitations_awaiting_reply(parent, info):
         current_user = info.context.user

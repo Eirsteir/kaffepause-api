@@ -2,16 +2,16 @@ from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
 from django.forms import EmailField
 
-User = get_user_model()
+Account = get_user_model()
 
 
-class UserChangeForm(admin_forms.UserChangeForm):
+class AccountChangeForm(admin_forms.UserChangeForm):
     class Meta(admin_forms.UserChangeForm.Meta):
-        model = User
+        model = Account
 
 
-class UserCreationForm(admin_forms.UserCreationForm):
+class AccountCreationForm(admin_forms.UserCreationForm):
     class Meta(admin_forms.UserCreationForm.Meta):
-        model = User
+        model = Account
         fields = ("email",)
         field_classes = {"email": EmailField}

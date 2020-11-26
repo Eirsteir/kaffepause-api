@@ -1,5 +1,6 @@
 import pytest
 
+from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.breaks.enums import InvitationReply
 from kaffepause.breaks.exceptions import InvalidInvitationUpdate
 from kaffepause.breaks.models import BreakInvitation
@@ -13,7 +14,6 @@ from kaffepause.breaks.services import (
 from kaffepause.breaks.test.factories import BreakInvitationFactory
 from kaffepause.common.utils import three_hours_from_now
 from kaffepause.friendships.test.factories import FriendshipFactory
-from kaffepause.users.test.factories import UserFactory
 
 pytestmark = pytest.mark.django_db
 
@@ -32,7 +32,7 @@ def test_create_and_invite_friends_to_a_break_invites_all_friends_to_break(
         amount_of_friends_half, to_user=user, status=are_friends_status
     )
 
-    requesting_friend = UserFactory()
+    requesting_friend = AccountFactory()
     FriendshipFactory(
         from_user=requesting_friend, to_user=user, status=requested_status
     )

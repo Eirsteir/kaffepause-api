@@ -1,5 +1,7 @@
 import pytest
+from django.contrib.auth import get_user_model
 
+from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.breaks.models import Break, BreakInvitation
 from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory
 from kaffepause.friendships.enums import DefaultFriendshipStatus
@@ -8,8 +10,8 @@ from kaffepause.friendships.test.factories import (
     FriendshipFactory,
     FriendshipStatusFactory,
 )
-from kaffepause.users.models import AuthenticationPrincipal
-from kaffepause.users.test.factories import UserFactory
+
+Account = get_user_model()
 
 
 @pytest.fixture(autouse=True)
@@ -18,8 +20,8 @@ def media_storage(settings, tmpdir):
 
 
 @pytest.fixture
-def user() -> AuthenticationPrincipal:
-    return UserFactory()
+def user() -> Account:
+    return AccountFactory()
 
 
 @pytest.fixture
@@ -44,7 +46,7 @@ def blocked_status() -> FriendshipStatus:
 
 @pytest.fixture(autouse=True)
 def study_break() -> Break:
-    return BreakFactory(participants=(UserFactory(),))
+    return BreakFactory(participants=(AccountFactory(),))
 
 
 @pytest.fixture(autouse=True)

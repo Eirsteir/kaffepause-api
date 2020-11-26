@@ -1,11 +1,11 @@
 import pytest
-from django.test import TransactionTestCase
 
+from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.friendships.exceptions import (
     InvalidFriendshipDeletion,
     UnnecessaryStatusUpdate,
 )
-from kaffepause.friendships.models import Friendship, FriendshipStatus
+from kaffepause.friendships.models import Friendship
 from kaffepause.friendships.services import (
     __update_friendship_status,
     _attempt_to_delete_blocked_friendship,
@@ -15,15 +15,14 @@ from kaffepause.friendships.services import (
     delete_friendship,
 )
 from kaffepause.friendships.test.factories import FriendshipFactory
-from kaffepause.users.test.factories import UserFactory
 
 pytestmark = pytest.mark.django_db
 
 
 def test_create_friendships(requested_status):
     """Should create and return the created friendship with a default status of 'requested'."""
-    from_user = UserFactory()
-    to_user = UserFactory()
+    from_user = AccountFactory()
+    to_user = AccountFactory()
 
     friendships = create_friendship(from_user, to_user)
 
@@ -34,8 +33,8 @@ def test_create_friendships(requested_status):
 
 def test_create_friendships_with_are_friends_status(are_friends_status):
     """Should create and return the created friendship with the given status."""
-    from_user = UserFactory()
-    to_user = UserFactory()
+    from_user = AccountFactory()
+    to_user = AccountFactory()
 
     actual_friendships = create_friendship(
         from_user, to_user, status=are_friends_status
@@ -73,7 +72,7 @@ def test_create_friendships_when_the_reversed_friendships_already_exist(
 def test_get_or_create_friendships(requested_status):
     """Should create a new friendship with the given users and status when the friendship does not exist."""
     actual_friendships, created = _get_or_create_friendship(
-        from_user=UserFactory(), to_user=UserFactory(), status=requested_status
+        from_user=AccountFactory(), to_user=AccountFactory(), status=requested_status
     )
 
     assert actual_friendships.status == requested_status
@@ -123,7 +122,7 @@ def test_get_or_create_friendships_when_reverse_friendships_exists(
 
 def test_attempt_to_delete_blocked_friendships(blocked_status):
     """Should delete the friendship when the actor is the one blocking."""
-    actor = UserFactory()
+    actor = AccountFactory()
     friendships = FriendshipFactory(from_user=actor, status=blocked_status)
 
     _attempt_to_delete_blocked_friendship(actor, friendships)
@@ -133,7 +132,7 @@ def test_attempt_to_delete_blocked_friendships_when_actor_is_being_blocked(
     blocked_status,
 ):
     """Should not delete the friendship when the actor is the one being blocked."""
-    actor = UserFactory()
+    actor = AccountFactory()
     friendships = FriendshipFactory(to_user=actor, status=blocked_status)
 
     with pytest.raises(InvalidFriendshipDeletion):
@@ -144,7 +143,7 @@ def test_attempt_to_delete_blocked_friendships_when_friendships_status_is_not_bl
     requested_status,
 ):
     """Should not delete the friendship when the status is not 'blocked'."""
-    actor = UserFactory()
+    actor = AccountFactory()
     friendships = FriendshipFactory(to_user=actor, status=requested_status)
 
     with pytest.raises(InvalidFriendshipDeletion):
@@ -153,8 +152,8 @@ def test_attempt_to_delete_blocked_friendships_when_friendships_status_is_not_bl
 
 def test_delete_friendships_when_status_is_requested(requested_status):
     """Should delete the friendship when status is 'requested'."""
-    actor = UserFactory()
-    user = UserFactory()
+    actor = AccountFactory()
+    user = AccountFactory()
     friendships = FriendshipFactory(
         from_user=actor, to_user=user, status=requested_status
     )
@@ -166,8 +165,8 @@ def test_delete_friendships_when_status_is_requested(requested_status):
 
 def test_delete_friendships_when_status_is_are_friends(are_friends_status):
     """Should delete the friendship when status is 'are_friends'."""
-    actor = UserFactory()
-    user = UserFactory()
+    actor = AccountFactory()
+    user = AccountFactory()
     friendships = FriendshipFactory(
         from_user=actor, to_user=user, status=are_friends_status
     )
@@ -181,8 +180,8 @@ def test_delete_friendships_when_status_is_blocked_and_actor_is_blocking(
     blocked_status,
 ):
     """Should delete the friendship when status is 'blocked' and the actor is the blocker."""
-    actor = UserFactory()
-    user = UserFactory()
+    actor = AccountFactory()
+    user = AccountFactory()
     friendships = FriendshipFactory(
         from_user=actor, to_user=user, status=blocked_status
     )
@@ -196,8 +195,8 @@ def test_delete_friendships_when_status_is_blocked_and_actor_is_being_blocked(
     blocked_status,
 ):
     """Should not delete the friendship when status is 'blocked' and the actor is being blocked."""
-    actor = UserFactory()
-    user = UserFactory()
+    actor = AccountFactory()
+    user = AccountFactory()
     FriendshipFactory(from_user=user, to_user=actor, status=blocked_status)
 
     with pytest.raises(InvalidFriendshipDeletion):
@@ -208,8 +207,8 @@ def test_both_users_can_delete_the_friendships_when_status_is_valid(
     are_friends_status,
 ):
     """Both users should be able to delete the friendship when status is not 'blocked'"""
-    actor = UserFactory()
-    user = UserFactory()
+    actor = AccountFactory()
+    user = AccountFactory()
     friendships = FriendshipFactory(
         from_user=actor, to_user=user, status=are_friends_status
     )
@@ -231,8 +230,8 @@ def test_update_friendship_status_updates_to_new_status(
     requested_status, are_friends_status
 ):
     """Should update the friendship to the new status."""
-    from_user = UserFactory()
-    to_user = UserFactory()
+    from_user = AccountFactory()
+    to_user = AccountFactory()
     old_status = requested_status
     new_status = are_friends_status
 
@@ -247,8 +246,8 @@ def test_update_friendship_status_when_attempting_to_update_to_same_status(
     requested_status, are_friends_status
 ):
     """Should update the friendship to the new status."""
-    from_user = UserFactory()
-    to_user = UserFactory()
+    from_user = AccountFactory()
+    to_user = AccountFactory()
     old_status = requested_status
     new_status = requested_status
 
@@ -260,8 +259,8 @@ def test_update_friendship_status_when_attempting_to_update_to_same_status(
 
 def test_accept_friend_request(requested_status, are_friends_status):
     """Should update the status to 'are_friends' when the update request is valid."""
-    from_user = UserFactory()
-    to_user = UserFactory()
+    from_user = AccountFactory()
+    to_user = AccountFactory()
     old_status = requested_status
     new_status = are_friends_status
 
@@ -276,8 +275,8 @@ def test_accept_friend_request_when_existing_friendship_is_not_requested(
     are_friends_status,
 ):
     """Should update the status to 'are_friends' when the update request is valid."""
-    from_user = UserFactory()
-    to_user = UserFactory()
+    from_user = AccountFactory()
+    to_user = AccountFactory()
 
     FriendshipFactory(from_user=from_user, to_user=to_user, status=are_friends_status)
 
@@ -289,8 +288,8 @@ def test_only_user_to_which_the_friendship_is_incoming_to_can_accept_friend_requ
     requested_status, are_friends_status
 ):
     """Should update the status to 'are_friends' when the update request is valid."""
-    from_user = UserFactory()
-    to_user = UserFactory()
+    from_user = AccountFactory()
+    to_user = AccountFactory()
 
     FriendshipFactory(from_user=from_user, to_user=to_user, status=requested_status)
 

@@ -80,6 +80,7 @@ THIRD_PARTY_APPS = [
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
 ]
 LOCAL_APPS = [
+    "kaffepause.accounts",
     "kaffepause.friendships",
     "kaffepause.users",
     "kaffepause.breaks",
@@ -99,7 +100,7 @@ AUTHENTICATION_BACKENDS = [
     "graphql_auth.backends.GraphQLAuthBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
-AUTH_USER_MODEL = "users.AuthenticationPrincipal"
+AUTH_USER_MODEL = "accounts.Account"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
 LOGIN_REDIRECT_URL = "users:redirect"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url

@@ -1,12 +1,12 @@
 from factory import SubFactory, fuzzy
 from factory.django import DjangoModelFactory
 
+from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.friendships.enums import (
     BaseFriendshipStatusEnum,
     DefaultFriendshipStatus,
 )
 from kaffepause.friendships.models import Friendship, FriendshipStatus
-from kaffepause.users.test.factories import UserFactory
 
 
 class FriendshipStatusFactory(DjangoModelFactory):
@@ -41,6 +41,6 @@ class FriendshipFactory(DjangoModelFactory):
     class Meta:
         model = Friendship
 
-    from_user = SubFactory(UserFactory)
-    to_user = SubFactory(UserFactory)
+    from_user = SubFactory(AccountFactory)
+    to_user = SubFactory(AccountFactory)
     status = SubFactory(FriendshipStatusFactory)
