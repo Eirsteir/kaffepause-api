@@ -1,6 +1,7 @@
 import graphene
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from graphene import relay
 from graphql_auth.schema import UserNode
 from graphql_auth.settings import graphql_auth_settings
 
@@ -11,21 +12,29 @@ from kaffepause.friendships.selectors import (
     get_friendship_status,
     get_mutual_friends,
 )
+from kaffepause.users.models import User
 
 
 class UserType(graphene.ObjectType):
     class Meta:
-        interfaces = (UUIDNode,)
+        interfaces = (relay.Node,)
         connection_class = CountingNodeConnection
 
-    id = graphene.String()
     name = graphene.String()
-
-    def resolve_id(parent, info):
-        return parent.id
 
     def resolve_name(parent, info):
         return parent.name
+
+    @classmethod
+    def to_global_id(cls, type, id):
+        print(cls)
+        print(id)
+        return id
+
+    @classmethod
+    def get_node(cls, info, id):
+        print(id)
+        return User.nodes.get(uid=id)
 
     # friends_count = graphene.List(UserNode)
     #

@@ -3,16 +3,18 @@ from graphene import relay
 from graphene_django import DjangoConnectionField
 from graphql_auth import mutations
 
+from kaffepause.users.models import User
 from kaffepause.users.types import UserType
 
 
 class UserQuery(graphene.ObjectType):
 
-    user = relay.Node.Field(UserType)
+    users = graphene.List(UserType)
     # users = DjangoConnectionField(User)
-    #
-    # def resolve_users(parent, info):
-    #     return User.nodes.all()
+
+    def resolve_users(root, info):
+        print("USERS")
+        return User.nodes.all()
 
 
 class MeQuery(graphene.ObjectType):

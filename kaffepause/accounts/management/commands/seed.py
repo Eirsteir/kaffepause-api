@@ -15,6 +15,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        for _ in range(options["users"]):
+        for _ in range(options["accounts"]):
             user = AccountFactory()
             UserStatusFactory(user=user)
