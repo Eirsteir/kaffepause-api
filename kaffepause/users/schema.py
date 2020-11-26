@@ -4,28 +4,29 @@ from graphene_django import DjangoConnectionField
 from graphql_auth import mutations
 
 from kaffepause.users.models import User
-from kaffepause.users.types import UserType
+from kaffepause.users.types import UserConnection, UserType
 
 
 class UserQuery(graphene.ObjectType):
 
-    users = graphene.List(UserType)
-    # users = DjangoConnectionField(User)
+    user = graphene.Field(UserType, id=graphene.String())
+    users = relay.ConnectionField(UserConnection)
 
-    def resolve_users(root, info):
-        print("USERS")
+    def resolve_user(root, info, id):
+        return User.nodes.get(uid=id)
+
+    def resolve_users(root, info, **kwargs):
         return User.nodes.all()
 
 
 class MeQuery(graphene.ObjectType):
-    pass
-    # me = graphene.Field(User)
-    #
-    # def resolve_me(self, info):
-    #     user = info.context.user
-    #     if user.is_authenticated:
-    #         return user
-    #     return None
+    me = graphene.Field(UserType)
+
+    def resolve_me(self, info):
+        user = info.context.user
+        if user.is_authenticated:
+            return User.nodes.get(uid=user.id)
+        return None
 
 
 class Query(UserQuery, MeQuery, graphene.ObjectType):

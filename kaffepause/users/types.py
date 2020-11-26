@@ -18,23 +18,15 @@ from kaffepause.users.models import User
 class UserType(graphene.ObjectType):
     class Meta:
         interfaces = (relay.Node,)
-        connection_class = CountingNodeConnection
 
+    uid = graphene.UUID()
     name = graphene.String()
+
+    def resolve_uid(parent, info):
+        return parent.uid
 
     def resolve_name(parent, info):
         return parent.name
-
-    @classmethod
-    def to_global_id(cls, type, id):
-        print(cls)
-        print(id)
-        return id
-
-    @classmethod
-    def get_node(cls, info, id):
-        print(id)
-        return User.nodes.get(uid=id)
 
     # friends_count = graphene.List(UserNode)
     #
@@ -57,3 +49,8 @@ class UserType(graphene.ObjectType):
     #     mutual_friends = get_mutual_friends(actor=current_user, user=parent)
     #     mutual_friends_count = mutual_friends.count()
     #     return _(f"{mutual_friends_count} mutual friends")
+
+
+class UserConnection(CountingNodeConnection, relay.Connection):
+    class Meta:
+        node = UserType

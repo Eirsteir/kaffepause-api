@@ -1,9 +1,9 @@
 import graphene
-from graphene import Connection
+from graphene import relay
 from graphene_django.utils import camelize
 
 
-class CountingNodeConnection(Connection):
+class CountingNodeConnection(relay.Connection):
     """Connection to include a node and edges count."""
 
     class Meta:
@@ -12,8 +12,9 @@ class CountingNodeConnection(Connection):
     count = graphene.Int()
     edge_count = graphene.Int()
 
+    # TODO: fix this, returns count of all nodes
     def resolve_count(root, info, **kwargs):
-        return root.length
+        return len(root.iterable)
 
     def resolve_edge_count(root, info, **kwargs):
         return len(root.edges)
