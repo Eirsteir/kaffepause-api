@@ -1,20 +1,44 @@
 import graphene
+from django.contrib.auth import get_user_model
+from django.db import transaction
+from django.db.transaction import atomic
 from graphene import relay
 from graphene_django import DjangoConnectionField
 from graphql_auth import mutations
 
+from kaffepause.accounts.models import Account
+from kaffepause.users.models import User
 from kaffepause.users.types import UserType
+
+UserModel = get_user_model()
+
+
+class Register(mutations.Register):
+    class Arguments:
+        name = graphene.String(required=True)
+
+    @classmethod
+    def mutate(cls, root, info, name, **input):
+        # TODO: fix this flow, should revert account creation when user is not found or fails
+        with transaction.atomic:
+            registration = cls.resolve_mutation(root, info, **input)
+            email = input.get(UserModel.EMAIL_FIELD, False)
+            account = Account.objects.get(email=email)
+
+            user = User.nodes.get(uid=account.id)
+            user.name = name
+            user.save()
+        return registration
 
 
 class AuthMutation(graphene.ObjectType):
-    register = mutations.Register.Field()
+    register = Register.Field()
     verify_account = mutations.VerifyAccount.Field()
     resend_activation_email = mutations.ResendActivationEmail.Field()
     send_password_reset_email = mutations.SendPasswordResetEmail.Field()
     password_reset = mutations.PasswordReset.Field()
     password_set = mutations.PasswordSet.Field()  # For passwordless registration
     password_change = mutations.PasswordChange.Field()
-    update_account = mutations.UpdateAccount.Field()
     archive_account = mutations.ArchiveAccount.Field()
     delete_account = mutations.DeleteAccount.Field()
     send_secondary_email_activation = mutations.SendSecondaryEmailActivation.Field()

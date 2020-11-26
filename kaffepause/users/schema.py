@@ -1,8 +1,7 @@
 import graphene
 from graphene import relay
-from graphene_django import DjangoConnectionField
-from graphql_auth import mutations
 
+from kaffepause.users import mutations
 from kaffepause.users.models import User
 from kaffepause.users.types import UserConnection, UserType
 
@@ -27,6 +26,10 @@ class MeQuery(graphene.ObjectType):
         if user.is_authenticated:
             return User.nodes.get(uid=user.id)
         return None
+
+
+class ProfileMutations(graphene.ObjectType):
+    update_account = mutations.UpdateProfile.Field()
 
 
 class Query(UserQuery, MeQuery, graphene.ObjectType):

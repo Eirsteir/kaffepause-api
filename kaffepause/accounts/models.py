@@ -69,4 +69,4 @@ class Account(AbstractUser):
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_user(sender, instance=None, created=False, **kwargs):
     if created:
-        User(uid=instance.id).save()
+        User(uid=instance.id, name="").save()

@@ -1,16 +1,12 @@
 from django.contrib.auth.models import AbstractUser
-from neomodel import (
-    IntegerProperty,
-    RelationshipTo,
-    StringProperty,
-    StructuredNode,
-    UniqueIdProperty,
-)
+from neomodel import RelationshipTo, StringProperty, StructuredNode, UniqueIdProperty
 
 
 class User(StructuredNode):
-    uid = UniqueIdProperty()
-    name = StringProperty(unique_index=True)
-    age = IntegerProperty(index=True, default=0)
+    uid = (
+        UniqueIdProperty()
+    )  # https://neomodel.readthedocs.io/en/latest/properties.html#independent-database-property-name
+    name = StringProperty(unique_index=True, required=True)
+    username = StringProperty(unique_index=True)
 
     friends = RelationshipTo("User", "FRIEND")
