@@ -1,7 +1,7 @@
 import graphene
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext_lazy as _
 from graphql_auth import mutations
+from neomodel import NeomodelException
 
 from kaffepause.common.constants import Messages
 from kaffepause.users.models import User
@@ -21,9 +21,10 @@ class Register(mutations.Register):
         if registration.success:
             email = input.get(Account.EMAIL_FIELD, False)
             account = Account.objects.get(email=email)
+            user = User(uid=account.id, **account)
             try:
-                user = User.nodes.get(uid=account.id)
-            except User.DoesNotExist:
+                user.save()
+            except NeomodelException:
                 account.delete()
                 return cls(success=False, errors=Messages.ACCOUNT_CREATION_FAILED)
 
