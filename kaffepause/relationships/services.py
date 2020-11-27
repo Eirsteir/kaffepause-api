@@ -1,106 +1,37 @@
-from typing import Tuple
+from typing import Any
 
-from django.contrib.auth import get_user_model
 from django.db.transaction import atomic
 from django.utils.translation import gettext_lazy as _
+from neomodel import db
 
-from kaffepause.friendships.exceptions import (
-    InvalidFriendshipDeletion,
-    UnnecessaryStatusUpdate,
-)
-from kaffepause.friendships.models import Friendship, FriendshipStatus
-from kaffepause.friendships.selectors import friendship_exists, get_single_friendship
-
-Account = get_user_model()
+from kaffepause.relationships.exceptions import InvalidFriendshipDeletion
+from kaffepause.users.models import User
 
 
-def send_friend_request(actor: Account, to_user: Account):
-    return create_friendship(from_user=actor, to_user=to_user)
+def send_friend_request(actor: User, to_user: User) -> User:
+    query = "MATCH (a:User)-[:FRIEND | :REQUESTED_FRIEND]-(b:User) WHERE a.id = {actor_id} AND b.id = {to_user_id} RETURN b"
+    params = dict(actor_id=actor.id, to_user_id=to_user.id)
+    results, meta = db.cypher_query(query, params)
+    people = [User.inflate(row[0]) for row in results]
+    print(people)
+
+    actor.outgoing_friend_requests.connect(to_user)
+    to_user.incoming_friend_requests.connect(actor)
+    return to_user
 
 
-def create_friendship(
-    from_user: Account,
-    to_user: Account,
-    status: FriendshipStatus = None,
-) -> Friendship:
-    """
-    Add a friendship from one user to another with the given status,
-    which defaults to "requested".
-    Adding a friendship is by default symmetrical (akin to friending
-    someone on facebook).
-    """
-    if not status:
-        status = FriendshipStatus.objects.requested()
+def create_friendship(from_user, to_user):
+    raise NotImplementedError()
 
-    friendships, created = _get_or_create_friendship(from_user, to_user, status)
 
-    return friendships
+def accept_friend_request(actor: User, from_user: User) -> Any:
+    """Create a friendship relationship between given nodes."""
+    actor.incoming_friend_requests.relationships(from_user)
+    raise NotImplementedError()
 
 
 @atomic()
-def _get_or_create_friendship(
-    from_user: Account, to_user: Account, status: FriendshipStatus
-) -> Tuple[Friendship, bool]:
-    """
-    Look up a friendship with the given arguments, creating one if necessary.
-    Return a tuple of (object, created), where created is a boolean
-    specifying whether a friendship was created.
-
-    Ensures there is only one friendship between the users at any given time.
-    """
-    if friendship_exists(from_user, to_user, symmetrical=True):
-        return get_single_friendship(from_user, to_user), False
-
-    return (
-        Friendship.objects.create(from_user=from_user, to_user=to_user, status=status),
-        True,
-    )
-
-
-# https://www.kite.com/python/docs/django.test.TransactionTestCase
-def accept_friend_request(actor: Account, from_user: Account) -> Friendship:
-    """Update an incoming friendship with status of 'requested'."""
-    requested_status = FriendshipStatus.objects.requested()
-    accepted_status = FriendshipStatus.objects.friends()
-
-    friendship = __update_friendship_status(
-        from_user=from_user,
-        to_user=actor,
-        old_status=requested_status,
-        new_status=accepted_status,
-    )
-
-    return friendship
-
-
-@atomic()  # TODO: Does transaction end on raise exception?
-def __update_friendship_status(
-    from_user: Account,
-    to_user: Account,
-    old_status: FriendshipStatus,
-    new_status: FriendshipStatus,
-) -> Friendship:
-    """
-    Atomically perform an update from 'old_status' to 'new_status'.
-    Only restricts an update if the statuses are the same,
-    so this method should be wrapped by extended validation.
-    """
-    if old_status == new_status:
-        raise UnnecessaryStatusUpdate(
-            _("Old and new status are the same. Aborting update")
-        )
-
-    friendship = Friendship.objects.select_for_update().get(
-        from_user=from_user, to_user=to_user, status=old_status
-    )
-    friendship.status = new_status
-    friendship.save()
-
-    return friendship
-
-
-@atomic()
-def delete_friendship(actor: Account, user: Account):
+def delete_friendship(actor: User, user: User):
     """
     Deletes a friendship from one user to another, following some simple rules.
 
@@ -108,15 +39,10 @@ def delete_friendship(actor: Account, user: Account):
     - Both users should be able to delete an accepted friendship
     - Only the one blocking should be able to delete a blocked friendship
     """
-    friendship = get_single_friendship(actor, user)
-
-    if friendship.is_blocked:
-        return _attempt_to_delete_blocked_friendship(actor, friendship)
-
-    return friendship.delete()
+    raise NotImplementedError()
 
 
-def _attempt_to_delete_blocked_friendship(actor: Account, friendship: Friendship):
+def _attempt_to_delete_blocked_friendship(actor: User, friendship):
     """
     Assures only the one blocking can delete the friendship.
 

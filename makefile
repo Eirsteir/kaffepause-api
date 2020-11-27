@@ -13,7 +13,6 @@ rebuild:
 	docker-compose -f local.yml run --rm django python manage.py reset_db --noinput
 	make makemigrations
 	make migrate
-	make seed
 
 shell:
 	docker-compose -f local.yml run --rm django python manage.py shell_plus

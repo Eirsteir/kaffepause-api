@@ -13,7 +13,7 @@ from kaffepause.breaks.services import (
 )
 from kaffepause.breaks.test.factories import BreakInvitationFactory
 from kaffepause.common.utils import three_hours_from_now
-from kaffepause.friendships.test.factories import FriendshipFactory
+from kaffepause.relationships.test.factories import FriendshipFactory
 
 pytestmark = pytest.mark.django_db
 

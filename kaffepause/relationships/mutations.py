@@ -2,12 +2,12 @@ import graphene
 from django.contrib.auth import get_user_model
 
 from kaffepause.common.bases import Mutation
-from kaffepause.friendships.services import (
+from kaffepause.relationships.services import (
     accept_friend_request,
     delete_friendship,
     send_friend_request,
 )
-from kaffepause.friendships.types import FriendshipType
+from kaffepause.relationships.types import FriendshipType
 from kaffepause.users.types import UserType
 
 UserModel = get_user_model()

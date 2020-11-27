@@ -2,7 +2,7 @@ import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
 
-from kaffepause.friendships.models import Friendship, FriendshipStatus
+from kaffepause.relationships.models import Friendship, FriendshipStatus
 
 
 class FriendshipType(DjangoObjectType):

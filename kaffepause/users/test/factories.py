@@ -9,5 +9,3 @@ class UserFactory(factory.Factory):
 
     username = factory.Faker("user_name")
     name = factory.Faker("name")
-
-    friends = factory.SubFactory("kaffepause.users.test.factories.UserFactory")

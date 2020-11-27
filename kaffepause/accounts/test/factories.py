@@ -39,5 +39,6 @@ class AccountFactory(DjangoModelFactory):
 class UserStatusFactory(DjangoModelFactory):
     class Meta:
         model = UserStatus
+        django_get_or_create = ("user",)
 
     user = SubFactory(AccountFactory)

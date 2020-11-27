@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from kaffepause.breaks.exceptions import InvalidInvitationUpdate
 from kaffepause.breaks.models import Break, BreakInvitation
-from kaffepause.friendships.selectors import get_friends
+from kaffepause.relationships.selectors import get_friends
 
 User = get_user_model()
 

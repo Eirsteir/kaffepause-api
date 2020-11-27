@@ -7,7 +7,7 @@ from graphql_auth.settings import graphql_auth_settings
 
 from kaffepause.common.bases import UUIDNode
 from kaffepause.common.types import CountingNodeConnection
-from kaffepause.friendships.selectors import (
+from kaffepause.relationships.selectors import (
     get_friends,
     get_friendship_status,
     get_mutual_friends,

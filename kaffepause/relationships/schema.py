@@ -1,20 +1,19 @@
 import graphene
 from django.contrib.auth import get_user_model
 from graphene import relay
-from graphene_django.filter import DjangoFilterConnectionField
 
-from kaffepause.friendships.mutations import (
+from kaffepause.relationships.mutations import (
     AcceptFriendRequest,
     CancelFriendRequest,
     SendFriendRequest,
     UnfriendUser,
 )
-from kaffepause.friendships.selectors import (
+from kaffepause.relationships.selectors import (
     get_friends,
     get_incoming_requests,
     get_outgoing_requests,
 )
-from kaffepause.friendships.types import FriendshipType
+from kaffepause.relationships.types import FriendshipType
 
 UserModel = get_user_model()
 
