@@ -1,6 +1,7 @@
 import graphene
 
 from kaffepause.common.bases import Mutation
+from kaffepause.common.constants import Messages
 from kaffepause.users.models import User
 from kaffepause.users.types import UserType
 
@@ -14,15 +15,16 @@ class UpdateProfile(Mutation):
 
     @classmethod
     def resolve_mutation(cls, root, info, name, username):
-        user_id = info.context.user.id
+        account = info.context.user
 
-        if User.nodes.filter(username__iexact=username).exclude(uid=user_id).exists():
-            errors = {
-                "detail": "User with username already exists"
-            }  # TODO: proper error handling
-            return cls(success=False, errors=errors)
+        if (
+            User.nodes.filter(username__iexact=username)
+            .exclude(uid=account.id)
+            .exists()
+        ):
+            return cls(success=False, errors=Messages.USERNAME_IN_USE)
 
-        user = User.nodes.get(uid=user_id)
+        user = User.nodes.get_or_create(uid=account.id, **account)
         user.name = name
         user.username = name
         user.save()
