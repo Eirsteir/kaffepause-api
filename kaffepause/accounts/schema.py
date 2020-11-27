@@ -2,15 +2,14 @@ import graphene
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.db.transaction import atomic
+from django.utils.translation import gettext_lazy as _
 from graphene import relay
-from graphene_django import DjangoConnectionField
 from graphql_auth import mutations
 
-from kaffepause.accounts.models import Account
 from kaffepause.users.models import User
 from kaffepause.users.types import UserType
 
-UserModel = get_user_model()
+Account = get_user_model()
 
 
 class Register(mutations.Register):
@@ -19,15 +18,19 @@ class Register(mutations.Register):
 
     @classmethod
     def mutate(cls, root, info, name, **input):
-        # TODO: fix this flow, should revert account creation when user is not found or fails
-        with transaction.atomic:
-            registration = cls.resolve_mutation(root, info, **input)
-            email = input.get(UserModel.EMAIL_FIELD, False)
+        registration = cls.resolve_mutation(root, info, **input)
+        if registration.success:
+            email = input.get(Account.EMAIL_FIELD, False)
             account = Account.objects.get(email=email)
+            try:
+                user = User.nodes.get(uid=account.id)
+            except User.DoesNotExist:
+                account.delete()
+                return cls(success=False, errors={_("Failed to create account")})
 
-            user = User.nodes.get(uid=account.id)
             user.name = name
             user.save()
+
         return registration
 
 
