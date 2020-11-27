@@ -7,7 +7,7 @@ from kaffepause.friendships.services import (
     delete_friendship,
     send_friend_request,
 )
-from kaffepause.friendships.types import FriendshipNode
+from kaffepause.friendships.types import FriendshipType
 from kaffepause.users.types import UserType
 
 UserModel = get_user_model()
@@ -62,7 +62,7 @@ class AcceptFriendRequest(Mutation):
     class Arguments:
         from_user = graphene.String(required=True)
 
-    friendship = graphene.Field(FriendshipNode)
+    friendship = graphene.Field(FriendshipType)
 
     @classmethod
     def resolve_mutation(cls, root, info, from_user):

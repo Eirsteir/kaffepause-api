@@ -12,6 +12,7 @@ class BreakInvitationType(DjangoObjectType):
         filter_fields = ("reply", "expiry", "is_seen")
         interfaces = (relay.Node,)
         connection_class = CountingNodeConnection
+        name = "break_invitation"
 
     id = graphene.ID(source="pk", required=True)
 
@@ -26,5 +27,6 @@ class BreakType(DjangoObjectType):
         )
         interfaces = (relay.Node,)
         connection_class = CountingNodeConnection
+        name = "break"
 
     id = graphene.ID(source="pk", required=True)

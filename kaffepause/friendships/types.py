@@ -5,7 +5,7 @@ from graphene_django import DjangoObjectType
 from kaffepause.friendships.models import Friendship, FriendshipStatus
 
 
-class FriendshipNode(DjangoObjectType):
+class FriendshipType(DjangoObjectType):
     class Meta:
         model = Friendship
         filter_fields = {
@@ -14,6 +14,7 @@ class FriendshipNode(DjangoObjectType):
             "status__name": ["exact"],
         }
         interfaces = (relay.Node,)
+        name = "friendship"
 
     since = graphene.DateTime()
 

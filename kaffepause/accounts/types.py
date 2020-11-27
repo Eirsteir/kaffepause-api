@@ -11,3 +11,4 @@ class AccountType(UserNode):
         filter_fields = graphql_auth_settings.USER_NODE_FILTER_FIELDS
         exclude = graphql_auth_settings.USER_NODE_EXCLUDE_FIELDS
         interfaces = (UUIDNode,)
+        name = "account"

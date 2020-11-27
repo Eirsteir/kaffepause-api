@@ -14,14 +14,14 @@ from kaffepause.friendships.selectors import (
     get_incoming_requests,
     get_outgoing_requests,
 )
-from kaffepause.friendships.types import FriendshipNode
+from kaffepause.friendships.types import FriendshipType
 
 UserModel = get_user_model()
 
 
 class Query(graphene.ObjectType):
 
-    friendship = relay.Node.Field(FriendshipNode)
+    friendship = relay.Node.Field(FriendshipType)
     # Get all friends of the user
     # all_friendships = DjangoFilterConnectionField(User, user=graphene.String())
     # friending_possibilities = DjangoFilterConnectionField(User)

@@ -18,6 +18,7 @@ from kaffepause.users.models import User
 class UserType(graphene.ObjectType):
     class Meta:
         interfaces = (relay.Node,)
+        name = "user"
 
     uid = graphene.UUID()
     name = graphene.String()
