@@ -1,11 +1,8 @@
-from typing import Any
-
-from django.utils.translation import gettext_lazy as _
 from neomodel import db
 
 from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
-    InvalidFriendshipDeletion,
+    CannotRejectFriendRequest,
     RelationshipAlreadyExists,
 )
 from kaffepause.relationships.models import FriendRel
@@ -47,43 +44,26 @@ def accept_friend_request(actor: User, requester: User) -> FriendRel:
     if existing_friendship:
         return existing_friendship
 
-    can_accept_friend_request = actor.incoming_friend_requests.relationship(requester)
-    if can_accept_friend_request:
+    if can_reply_to_friend_request(actor, requester):
         return requester.add_friend(actor)
 
     raise CannotAcceptFriendRequest
 
 
-def delete_friendship(actor: User, user: User):
-    """
-    Deletes a friendship from one user to another, following some simple rules.
+def reject_friend_request(actor: User, requester: User) -> User:
+    if can_reply_to_friend_request(actor, requester):
+        return actor.reject_friend_request(requester)
 
-    - Both users should be able to delete a requested friendship
-    - Both users should be able to delete an accepted friendship
-    - Only the one blocking should be able to delete a blocked friendship
-    """
-
-    raise NotImplementedError()
+    raise CannotRejectFriendRequest
 
 
-def _attempt_to_delete_blocked_friendship(actor: User, friendship):
-    """
-    Assures only the one blocking can delete the friendship.
+def can_reply_to_friend_request(actor, requester):
+    """The actor can only reply to a friend request if the requester has sent one."""
+    return actor.incoming_friend_requests.relationship(requester)
 
-    :raises :class:`InvalidFriendshipDeletion` if the friendship status is not blocked
-        or if the one being blocked is acting.
-    """
-    if not friendship.is_blocked:
-        raise InvalidFriendshipDeletion(
-            _("Cannot delete a blocked friendship when the friendship is not blocked")
-        )
 
-    if actor == friendship.from_user:
-        return friendship.delete()
-
-    raise InvalidFriendshipDeletion(
-        _("Only the blocking to_user can delete this friendship")
-    )
+def remove_friend(actor: User, friend: User):
+    return actor.remove_friend(friend)
 
 
 def deny_blocked_relationship(user: User, other: User):

@@ -11,13 +11,5 @@ class CannotAcceptFriendRequest(DefaultError):
     default_message = _("Cannot accept this friend request")
 
 
-class InvalidFriendshipDeletion(DefaultError):
-    pass
-
-
-class InvalidFriendshipStatusChange(DefaultError):
-    pass
-
-
-class UnnecessaryStatusUpdate(DefaultError):
-    pass
+class CannotRejectFriendRequest(DefaultError):
+    default_message = _("Cannot reject this friend request")

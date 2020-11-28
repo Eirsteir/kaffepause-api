@@ -3,11 +3,14 @@ from neomodel import clear_neo4j_database, db
 
 from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
+    CannotRejectFriendRequest,
     RelationshipAlreadyExists,
 )
 from kaffepause.relationships.services import (
     accept_friend_request,
     cancel_friend_request,
+    reject_friend_request,
+    remove_friend,
     send_friend_request,
 )
 from kaffepause.users.test.factories import UserFactory
@@ -24,22 +27,31 @@ def setup_and_teardown():
     clear_neo4j_database(db)
 
 
-def test_send_friend_request():
-    """Should create a 'REQUESTED' relationship between the users."""
-    actor = UserFactory().save()
-    addressee = UserFactory().save()
+@pytest.fixture
+def actor():
+    return UserFactory().save()
 
+
+@pytest.fixture
+def requester():
+    return UserFactory().save()
+
+
+@pytest.fixture
+def addressee():
+    return UserFactory().save()
+
+
+def test_send_friend_request(actor, addressee):
+    """Should create a 'REQUESTED' relationship between the users."""
     send_friend_request(actor, addressee)
 
     assert actor in addressee.incoming_friend_requests
     assert addressee in actor.outgoing_friend_requests
 
 
-def test_send_friend_request_when_users_have_a_connection():
+def test_send_friend_request_when_users_have_a_connection(actor, addressee):
     """Relationship should not be created if a relationship between the users already exists"""
-    actor = UserFactory().save()
-    addressee = UserFactory().save()
-
     actor.friends.connect(addressee)
 
     with pytest.raises(RelationshipAlreadyExists):
@@ -51,10 +63,8 @@ def test_send_friend_request_when_users_are_blocked():
     pass
 
 
-def test_cancel_friend_request():
+def test_cancel_friend_request(actor, addressee):
     """Should delete a 'REQUESTED_FRIEND' relationship between the users."""
-    actor = UserFactory().save()
-    addressee = UserFactory().save()
     send_friend_request(actor, addressee)
 
     cancel_friend_request(actor, addressee)
@@ -63,25 +73,19 @@ def test_cancel_friend_request():
     assert not actor.outgoing_friend_requests.get_or_none(uid=addressee.uid)
 
 
-def test_cancel_friend_request_when_no_request_exists():
+def test_cancel_friend_request_when_no_request_exists(actor, addressee):
     """Should delete a 'REQUESTED_FRIEND' relationship between the users if no such request exists."""
-    actor = UserFactory().save()
-    addressee = UserFactory().save()
-
     cancel_friend_request(actor, addressee)
 
     assert not addressee.incoming_friend_requests.get_or_none(uid=actor.uid)
     assert not actor.outgoing_friend_requests.get_or_none(uid=addressee.uid)
 
 
-def test_accept_friend_request():
+def test_accept_friend_request(actor, requester):
     """
     Should create an 'ARE_FRIENDS' relationship between the users
-    if a 'REQUESTED_FRIEND' relationship exists from actor to the other.
+    if a 'REQUESTED_FRIEND' relationship exists from one to the other.
     """
-    actor = UserFactory().save()
-    requester = UserFactory().save()
-
     send_friend_request(actor=requester, to_user=actor)
 
     accept_friend_request(actor, requester)
@@ -91,20 +95,23 @@ def test_accept_friend_request():
     assert not requester.outgoing_friend_requests.get_or_none(uid=actor.uid)
 
 
-def test_accept_friend_request_without_a_request_having_been_sent():
-    """A user should not be able to accept a friend request if none has been sent."""
-    actor = UserFactory().save()
-    from_user = UserFactory().save()
+def test_only_addressee_can_accept_friend_request(actor, requester):
+    """The requester of a friend request should not be able to also accept it."""
+    send_friend_request(actor=requester, to_user=actor)
 
     with pytest.raises(CannotAcceptFriendRequest):
-        accept_friend_request(actor, from_user)
+        accept_friend_request(actor=requester, requester=actor)
 
 
-def test_accept_friend_request_when_already_friends():
+def test_accept_friend_request_without_a_request_having_been_sent(actor, requester):
+    """A user should not be able to accept a friend request if none has been sent."""
+
+    with pytest.raises(CannotAcceptFriendRequest):
+        accept_friend_request(actor, requester)
+
+
+def test_accept_friend_request_when_already_friends(actor, requester):
     """Should return successfully when the users are already friends."""
-    actor = UserFactory().save()
-    requester = UserFactory().save()
-
     actor.friends.connect(requester)
 
     accept_friend_request(actor, requester)
@@ -112,3 +119,51 @@ def test_accept_friend_request_when_already_friends():
     assert actor.friends.get_or_none(uid=requester.uid)
     assert not actor.incoming_friend_requests.get_or_none(uid=requester.uid)
     assert not requester.outgoing_friend_requests.get_or_none(uid=actor.uid)
+
+
+def test_reject_friend_request(actor, requester):
+    """
+    Should disconnect the 'REQUESTED_FRIEND' relationship between the users
+    if such exists from actor to the other.
+    """
+    send_friend_request(actor=requester, to_user=actor)
+
+    reject_friend_request(actor, requester)
+
+    assert not actor.friends.get_or_none(uid=requester.uid)
+    assert not actor.incoming_friend_requests.get_or_none(uid=requester.uid)
+    assert not requester.outgoing_friend_requests.get_or_none(uid=actor.uid)
+
+
+def test_only_addressee_can_reject_friend_request(actor, requester):
+    """Only the addressee of a friend request should be able to reject it."""
+    send_friend_request(actor=requester, to_user=actor)
+
+    with pytest.raises(CannotRejectFriendRequest):
+        reject_friend_request(actor=requester, requester=actor)
+
+
+def test_reject_friend_request_without_a_request_having_been_sent(actor, requester):
+    """A user should not be able to reject a friend request if none has been sent."""
+
+    with pytest.raises(CannotRejectFriendRequest):
+        reject_friend_request(actor, requester)
+
+
+def test_reject_friend_request_when_already_friends(actor, requester):
+    """Should return successfully when the users are already friends."""
+    actor.friends.connect(requester)
+    accept_friend_request(actor, requester)
+
+    assert actor.friends.get_or_none(uid=requester.uid)
+    assert not actor.incoming_friend_requests.get_or_none(uid=requester.uid)
+    assert not requester.outgoing_friend_requests.get_or_none(uid=actor.uid)
+
+
+def test_remove_friend(actor, addressee):
+    actor.friends.connect(addressee)
+    remove_friend(actor, addressee)
+
+    assert not actor.friends.relationship(addressee)
+    assert not actor.incoming_friend_requests.relationship(addressee)
+    assert not actor.outgoing_friend_requests.relationship(addressee)
