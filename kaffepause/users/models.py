@@ -12,8 +12,8 @@ from kaffepause.relationships.models import FriendRel, RelationshipRel
 
 
 class User(StructuredNode):
-    uid = UniqueIdProperty(
-        index=True
+    uid = (
+        UniqueIdProperty()
     )  # https://neomodel.readthedocs.io/en/latest/properties.html#independent-database-property-name
     name = StringProperty(required=True, index=True)
     username = StringProperty(unique_index=True)
