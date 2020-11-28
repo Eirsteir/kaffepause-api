@@ -1,36 +1,55 @@
 from typing import Any
 
-from django.db.transaction import atomic
 from django.utils.translation import gettext_lazy as _
 from neomodel import db
 
-from kaffepause.relationships.exceptions import InvalidFriendshipDeletion
+from kaffepause.relationships.exceptions import (
+    CannotAcceptFriendRequest,
+    InvalidFriendshipDeletion,
+    RelationshipAlreadyExists,
+)
 from kaffepause.users.models import User
 
 
 def send_friend_request(actor: User, to_user: User) -> User:
-    query = "MATCH (a:User)-[:FRIEND | :REQUESTED_FRIEND]-(b:User) WHERE a.id = {actor_id} AND b.id = {to_user_id} RETURN b"
-    params = dict(actor_id=actor.id, to_user_id=to_user.id)
+    """Connect two users with a requested friendship connection."""
+    if relationship_exists(actor, to_user):
+        raise RelationshipAlreadyExists()
+
+    return actor.send_friend_request(to_user)
+
+
+def relationship_exists(user, other):
+    query = """
+    MATCH (user:User)-[:ARE_FRIENDS| :REQUESTED_TO_FRIEND | :REQUESTED_FROM_FRIEND | :BLOCKED]-(other:User)
+    WHERE user.uid = {user_uid} AND other.uid = {other_uid}
+    RETURN other
+    """
+    params = dict(user_uid=user.uid, other_uid=other.uid)
     results, meta = db.cypher_query(query, params)
     people = [User.inflate(row[0]) for row in results]
-    print(people)
-
-    actor.outgoing_friend_requests.connect(to_user)
-    to_user.incoming_friend_requests.connect(actor)
-    return to_user
+    return people
 
 
-def create_friendship(from_user, to_user):
-    raise NotImplementedError()
+def accept_friend_request(actor: User, requester: User) -> Any:
+    """
+    Create a friendship relationship between given nodes.
+    The requester must first have sent a friend request.
+    """
+    # TODO: fix semantics
+    deny_blocked_relationship(actor, requester)
+
+    existing_friendship = actor.friends.relationship(requester)
+    if existing_friendship:
+        return existing_friendship
+
+    can_accept_friend_request = actor.incoming_friend_requests.relationship(requester)
+    if can_accept_friend_request:
+        return requester.add_friend(actor)
+
+    raise CannotAcceptFriendRequest
 
 
-def accept_friend_request(actor: User, from_user: User) -> Any:
-    """Create a friendship relationship between given nodes."""
-    actor.incoming_friend_requests.relationships(from_user)
-    raise NotImplementedError()
-
-
-@atomic()
 def delete_friendship(actor: User, user: User):
     """
     Deletes a friendship from one user to another, following some simple rules.
@@ -39,6 +58,7 @@ def delete_friendship(actor: User, user: User):
     - Both users should be able to delete an accepted friendship
     - Only the one blocking should be able to delete a blocked friendship
     """
+
     raise NotImplementedError()
 
 
@@ -60,3 +80,7 @@ def _attempt_to_delete_blocked_friendship(actor: User, friendship):
     raise InvalidFriendshipDeletion(
         _("Only the blocking to_user can delete this friendship")
     )
+
+
+def deny_blocked_relationship(user: User, other: User):
+    raise NotImplementedError

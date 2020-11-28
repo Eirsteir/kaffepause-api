@@ -20,13 +20,22 @@ class User(StructuredNode):
 
     friends = Relationship("User", "ARE_FRIENDS", model=FriendRel)
     outgoing_friend_requests = RelationshipTo(
-        "User", "REQUESTED_TO_FRIEND", model=RelationshipRel
+        "User", "REQUESTED_FRIEND", model=RelationshipRel
     )
     incoming_friend_requests = RelationshipFrom(
-        "User", "REQUESTED_FROM_FRIEND", model=RelationshipRel
+        "User", "REQUESTED_FRIEND", model=RelationshipRel
     )
-    blocked_users = RelationshipTo("User", "BLOCKED", model=RelationshipRel)
+    blocking = RelationshipTo("User", "BLOCKED", model=RelationshipRel)
 
     @classmethod
     def get_or_create(cls, object_, *props, **kwargs):
         return super().get_or_create({**object_.__dict__}, **kwargs)
+
+    def send_friend_request(self, to_user):
+        """Send a friend request to the given user."""
+        return self.outgoing_friend_requests.connect(to_user)
+
+    def add_friend(self, other):
+        """Disconnect requesting relationships and connect the users as friends."""
+        self.outgoing_friend_requests.disconnect(other)
+        return self.friends.connect(other)

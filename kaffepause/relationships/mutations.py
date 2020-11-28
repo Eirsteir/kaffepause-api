@@ -68,7 +68,7 @@ class AcceptFriendRequest(Mutation):
     def resolve_mutation(cls, root, info, from_user):
         current_user = info.context.user
         from_user = UserModel.objects.get(id=from_user)
-        friendship = accept_friend_request(actor=current_user, from_user=from_user)
+        friendship = accept_friend_request(actor=current_user, requester=from_user)
 
         return cls(friendship=friendship)
 

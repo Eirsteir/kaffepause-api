@@ -42,12 +42,12 @@ class Command(BaseCommand):
         WITH u, s
         LIMIT 10000
         WHERE rand() < 0.2 AND u <> s
-        MERGE (u)-[:ARE_FRIENDS]->(s);
+        MERGE (u)-[:ARE_FRIENDS]-(s);
         """
         return db.cypher_query(query)
 
     @staticmethod
-    def populate_with_random_data(range_min=1, range_max=100):
+    def populate_with_random_data(range_min=1, range_max=200):
         """ Populate database with a defined number of random users """
         query = """
         WITH {names} AS names_list
