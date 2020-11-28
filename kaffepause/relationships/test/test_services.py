@@ -5,7 +5,11 @@ from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
     RelationshipAlreadyExists,
 )
-from kaffepause.relationships.services import accept_friend_request, send_friend_request
+from kaffepause.relationships.services import (
+    accept_friend_request,
+    cancel_friend_request,
+    send_friend_request,
+)
 from kaffepause.users.test.factories import UserFactory
 
 pytestmark = pytest.mark.django_db
@@ -47,10 +51,33 @@ def test_send_friend_request_when_users_are_blocked():
     pass
 
 
+def test_cancel_friend_request():
+    """Should delete a 'REQUESTED_FRIEND' relationship between the users."""
+    actor = UserFactory().save()
+    addressee = UserFactory().save()
+    send_friend_request(actor, addressee)
+
+    cancel_friend_request(actor, addressee)
+
+    assert not addressee.incoming_friend_requests.get_or_none(uid=actor.uid)
+    assert not actor.outgoing_friend_requests.get_or_none(uid=addressee.uid)
+
+
+def test_cancel_friend_request_when_no_request_exists():
+    """Should delete a 'REQUESTED_FRIEND' relationship between the users if no such request exists."""
+    actor = UserFactory().save()
+    addressee = UserFactory().save()
+
+    cancel_friend_request(actor, addressee)
+
+    assert not addressee.incoming_friend_requests.get_or_none(uid=actor.uid)
+    assert not actor.outgoing_friend_requests.get_or_none(uid=addressee.uid)
+
+
 def test_accept_friend_request():
     """
     Should create an 'ARE_FRIENDS' relationship between the users
-    if a 'REQUESTED_FROM_FRIEND' relationship exists from actor to the other.
+    if a 'REQUESTED_FRIEND' relationship exists from actor to the other.
     """
     actor = UserFactory().save()
     requester = UserFactory().save()

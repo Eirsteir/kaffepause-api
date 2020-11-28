@@ -35,6 +35,10 @@ class User(StructuredNode):
         """Send a friend request to the given user."""
         return self.outgoing_friend_requests.connect(to_user)
 
+    def cancel_friend_request(self, to_user):
+        """Cancel a friend request sent to the given user."""
+        return self.outgoing_friend_requests.disconnect(to_user)
+
     def add_friend(self, other):
         """Disconnect requesting relationships and connect the users as friends."""
         self.outgoing_friend_requests.disconnect(other)

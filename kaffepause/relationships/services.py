@@ -8,15 +8,20 @@ from kaffepause.relationships.exceptions import (
     InvalidFriendshipDeletion,
     RelationshipAlreadyExists,
 )
+from kaffepause.relationships.models import FriendRel
 from kaffepause.users.models import User
 
 
-def send_friend_request(actor: User, to_user: User) -> User:
+def send_friend_request(actor: User, to_user: User) -> FriendRel:
     """Connect two users with a requested friendship connection."""
     if relationship_exists(actor, to_user):
         raise RelationshipAlreadyExists()
 
     return actor.send_friend_request(to_user)
+
+
+def cancel_friend_request(actor: User, to_user: User):
+    return actor.cancel_friend_request(to_user)
 
 
 def relationship_exists(user, other):
@@ -31,13 +36,12 @@ def relationship_exists(user, other):
     return people
 
 
-def accept_friend_request(actor: User, requester: User) -> Any:
+def accept_friend_request(actor: User, requester: User) -> FriendRel:
     """
     Create a friendship relationship between given nodes.
     The requester must first have sent a friend request.
     """
     # TODO: fix semantics
-    deny_blocked_relationship(actor, requester)
 
     existing_friendship = actor.friends.relationship(requester)
     if existing_friendship:
