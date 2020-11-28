@@ -1,4 +1,6 @@
+import factory
 import graphene
+from factory.base import FactoryMetaClass
 from graphene import relay
 from graphql_auth.decorators import verification_required
 
@@ -38,4 +40,25 @@ class VerificationRequiredMixin:
 
 
 class Mutation(VerificationRequiredMixin, Output, graphene.Mutation):
+    pass
+
+
+class NeomodelFactoryMetaClass(FactoryMetaClass):
+    """Factory metaclass for handling neomodel StructuredNode classes."""
+
+    def __call__(cls, **kwargs):
+        """
+        Override the default Factory() syntax to call the default strategy.
+        Returns an instance of the associated class.
+
+        Save the StructuredNode instance if the strategy is create.
+        """
+        instance = super().__call__(**kwargs)
+        if cls._meta.strategy == factory.enums.CREATE_STRATEGY:
+            instance.save()
+
+        return instance
+
+
+class NeomodelFactory(factory.Factory, metaclass=NeomodelFactoryMetaClass):
     pass

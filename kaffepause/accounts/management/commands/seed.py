@@ -2,8 +2,6 @@ from django.core.management.base import BaseCommand
 from neomodel import NeomodelException, db
 
 from kaffepause.accounts.test.factories import AccountFactory, UserStatusFactory
-from kaffepause.users.models import User
-from kaffepause.users.test.factories import UserFactory
 
 NAMES = ["anna", "andrew", "tom", "leroy", "stenli", "jeff", "jack", "karol"]
 

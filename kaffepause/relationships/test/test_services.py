@@ -29,17 +29,17 @@ def setup_and_teardown():
 
 @pytest.fixture
 def actor():
-    return UserFactory().save()
+    return UserFactory()
 
 
 @pytest.fixture
 def requester():
-    return UserFactory().save()
+    return UserFactory()
 
 
 @pytest.fixture
 def addressee():
-    return UserFactory().save()
+    return UserFactory()
 
 
 def test_send_friend_request(actor, addressee):

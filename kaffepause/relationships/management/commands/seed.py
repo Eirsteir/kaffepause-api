@@ -17,12 +17,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("CREATING RELATIONSHIPS")
         for _ in range(options["relationship"] / 2):
-            user = UserFactory().save()
-            other = UserFactory().save()
+            user = UserFactory()
+            other = UserFactory()
             user.friends.connect(other)
 
         for _ in range(options["relationship"] / 2):
-            user = UserFactory().save()
-            other = UserFactory().save()
+            user = UserFactory()
+            other = UserFactory()
             user.outgoing_friend_requests.connect(other)
             other.incoming_friend_requests.connect(user)

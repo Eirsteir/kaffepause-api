@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Iterable, List
 
 from neomodel import db
 
@@ -10,31 +10,31 @@ from kaffepause.relationships.enums import (
 from kaffepause.users.models import User
 
 
-def get_friends(user: User) -> Iterable[User]:
+def get_friends(user: User) -> List[User]:
     return user.friends.all()
 
 
 def get_incoming_requests(
     user: User,
-) -> Iterable[User]:
+) -> List[User]:
     return user.incoming_friend_requests.all()
 
 
 def get_outgoing_requests(
     user: User,
-) -> Iterable[User]:
+) -> List[User]:
     return user.outgoing_friend_requests.all()
 
 
 def get_outgoing_blocks(
     user: User,
-) -> Iterable[User]:
+) -> List[User]:
     return user.blocking.all()
 
 
 def get_incoming_blocks(
     user: User,
-) -> Iterable[User]:
+) -> List[User]:
     raise NotImplementedError()
 
 
@@ -70,6 +70,15 @@ def _get_friendship_status_for_existing_friendship(
     raise NotImplementedError
 
 
-def get_mutual_friends(actor: User, user: User) -> Iterable[User]:
+def get_mutual_friends_count(actor: User, user: User) -> Iterable[User]:
     """Returns the mutual friends for the given users."""
-    raise NotImplementedError
+    query = """
+    MATCH (user:User {uid: {user_id})
+    -[:ARE_FRIENDS]-(n)-(other:User {uid: {other_uid})
+    WHERE user <> n
+    RETURN count(n)
+    """
+    params = dict(user_uid=actor.uid, other_uid=user.uid)
+    results, meta = db.cypher_query(query, params)
+    mutual_friends_count = [User.inflate(row[0]) for row in results]
+    return mutual_friends_count
