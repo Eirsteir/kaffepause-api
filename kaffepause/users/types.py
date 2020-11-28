@@ -29,27 +29,27 @@ class UserType(graphene.ObjectType):
     def resolve_name(parent, info):
         return parent.name
 
-    # friends_count = graphene.List(UserNode)
-    #
-    # # profile_action = graphene.Field(ProfileAction)
-    #
-    # friendship_status = graphene.String()
-    # social_context = graphene.String()
-    #
-    # def resolve_friendship_status(parent, info):
-    #     current_user = info.context.user
-    #     status = get_friendship_status(actor=current_user, user=parent)
-    #     return status.name
-    #
-    # def resolve_friends_count(parent, info):
-    #
-    #     return get_friends(parent).count()
-    #
-    # def resolve_social_context(parent, info):
-    #     current_user = info.context.user
-    #     mutual_friends = get_mutual_friends(actor=current_user, user=parent)
-    #     mutual_friends_count = mutual_friends.count()
-    #     return _(f"{mutual_friends_count} mutual friends")
+    friends_count = graphene.List(UserNode)
+
+    # profile_action = graphene.Field(ProfileAction)
+
+    friendship_status = graphene.String()
+    social_context = graphene.String()
+
+    def resolve_friendship_status(parent, info):
+        current_user = info.context.user
+        status = get_friendship_status(actor=current_user, user=parent)
+        return status.name
+
+    def resolve_friends_count(parent, info):
+
+        return get_friends(parent).count()
+
+    def resolve_social_context(parent, info):
+        current_user = info.context.user
+        mutual_friends = get_mutual_friends(actor=current_user, user=parent)
+        mutual_friends_count = mutual_friends.count()
+        return _(f"{mutual_friends_count} mutual friends")
 
 
 class UserConnection(CountingNodeConnection, relay.Connection):

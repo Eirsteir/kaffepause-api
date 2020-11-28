@@ -14,29 +14,35 @@ from kaffepause.relationships.selectors import (
     get_outgoing_requests,
 )
 from kaffepause.relationships.types import FriendshipType
-
-UserModel = get_user_model()
+from kaffepause.users.models import User
+from kaffepause.users.selectors import get_user_from_account
+from kaffepause.users.types import UserConnection
 
 
 class Query(graphene.ObjectType):
 
     friendship = relay.Node.Field(FriendshipType)
     # Get all friends of the user
-    # all_friendships = DjangoFilterConnectionField(User, user=graphene.String())
-    # friending_possibilities = DjangoFilterConnectionField(User)
-    # outgoing_friend_requests = DjangoFilterConnectionField(User)
+    all_friendships = relay.ConnectionField(UserConnection, user=graphene.String())
+    friending_possibilities = relay.ConnectionField(UserConnection)
+    outgoing_friend_requests = relay.ConnectionField(UserConnection)
 
     def resolve_all_friendships(root, info, user):
-        user = UserModel.objects.get(id=user)
+        user = User.nodes.get(uid=user)
         return get_friends(user)
 
     def resolve_friending_possibilities(root, info):
-        user = info.context.user
+        account = root._get_account(info)
+        user = get_user_from_account(account)
         return get_incoming_requests(user)
 
     def resolve_outgoing_friend_requests(root, info):
-        user = info.context.user
+        account = root._get_account(info)
+        user = get_user_from_account(account)
         return get_outgoing_requests(user)
+
+    def _get_account(self, info):
+        return info.context.user
 
 
 class Mutation(graphene.ObjectType):
