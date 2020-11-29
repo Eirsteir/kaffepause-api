@@ -70,15 +70,15 @@ def _get_friendship_status_for_existing_friendship(
     raise NotImplementedError
 
 
-def get_mutual_friends_count(actor: User, user: User) -> Iterable[User]:
+def get_mutual_friends_count(actor: User, user: User) -> int:
     """Returns the mutual friends for the given users."""
     query = """
-    MATCH (user:User {uid: {user_id})
-    -[:ARE_FRIENDS]-(n)-(other:User {uid: {other_uid})
+    MATCH (user:User {uid: {user_uid}})-[:ARE_FRIENDS]-(n)-[:ARE_FRIENDS]-(other:User {uid: {other_uid}})
     WHERE user <> n
     RETURN count(n)
     """
     params = dict(user_uid=actor.uid, other_uid=user.uid)
     results, meta = db.cypher_query(query, params)
-    mutual_friends_count = [User.inflate(row[0]) for row in results]
+    mutual_friends_count = results[0][0]
+
     return mutual_friends_count
