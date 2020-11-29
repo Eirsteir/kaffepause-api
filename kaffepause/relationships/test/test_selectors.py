@@ -79,3 +79,8 @@ def test_get_friendship_status_when_not_connected():
     friendship_status = get_friendship_status(actor, user)
 
     assert friendship_status == CAN_REQUEST
+
+
+def test_get_friendship_status_when_friend_is_self():
+    """Should return None when actor is requesting friendship status to itself."""
+    pass

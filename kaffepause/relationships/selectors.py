@@ -64,10 +64,14 @@ def get_friendship_status(actor: User, user: User) -> object:
     Returns the friendship status as viewed by the actor.
     If no such friendship exists, a default value of 'CAN_REQUEST' is returned.
     """
+    if actor == user:
+        return
+
     query = f"""
     MATCH (subject:User {{uid: {{subject_uid}}}})-[r:{ARE_FRIENDS} | :{REQUESTING_FRIENDSHIP}]-(person:User {{uid: {{person_uid}}}})
     return TYPE(r)
     """
+
     params = dict(subject_uid=actor.uid, person_uid=user.uid)
     results, meta = db.cypher_query(query, params)
     status = results[0][0] if results else None
