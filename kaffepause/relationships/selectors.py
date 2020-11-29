@@ -70,19 +70,12 @@ def get_friendship_status(actor: User, user: User) -> object:
     """
     params = dict(subject_uid=actor.uid, person_uid=user.uid)
     results, meta = db.cypher_query(query, params)
-    status = results[0][0]
+    status = results[0][0] if results else None
 
     if status:
         return _(status)
 
     return CAN_REQUEST
-
-
-def _get_friendship_status_for_existing_friendship(
-    actor: User, user: User
-) -> UserRelationship:
-    """Returns the friendship status for the given users."""
-    raise NotImplementedError
 
 
 def get_social_context_between(actor: User, other: User) -> str:

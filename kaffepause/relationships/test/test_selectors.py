@@ -1,5 +1,11 @@
 import pytest
 
+from kaffepause.relationships.enums import (
+    ARE_FRIENDS,
+    CAN_REQUEST,
+    CANNOT_REQUEST,
+    REQUESTING_FRIENDSHIP,
+)
 from kaffepause.relationships.selectors import (
     get_friendship_status,
     get_mutual_friends_count,
@@ -30,14 +36,46 @@ def test_get_mutual_friends_count():
 
 
 def test_get_friendship_status():
+    """Should return the correct relationship type when user are friends."""
     actor = UserFactory()
     user = UserFactory()
 
     actor.friends.connect(user)
 
-    rels = get_friendship_status(actor, user)
-    print(rels)
-    from kaffepause.relationships.enums import UserRelationship
+    friendship_status = get_friendship_status(actor, user)
 
-    print(UserRelationship.ARE_FRIENDS)
-    assert False
+    assert friendship_status == ARE_FRIENDS
+
+
+def test_get_friendship_status_when_incoming_request():
+    """Should return the correct relationship type when one user has requested the friendship of the actor."""
+    actor = UserFactory()
+    user = UserFactory()
+
+    actor.incoming_friend_requests.connect(user)
+
+    friendship_status = get_friendship_status(actor, user)
+
+    assert friendship_status == REQUESTING_FRIENDSHIP
+
+
+def test_get_friendship_status_when_outgoing_request():
+    """Should return the 'CANNOT_REQUEST'relationship type when one actor has requested the friendship of the user."""
+    actor = UserFactory()
+    user = UserFactory()
+
+    actor.incoming_friend_requests.connect(user)
+
+    friendship_status = get_friendship_status(actor, user)
+
+    assert friendship_status == CANNOT_REQUEST
+
+
+def test_get_friendship_status_when_not_connected():
+    """Should return the defaUlt 'CAN_REQUEST' relationship type when not connected."""
+    actor = UserFactory()
+    user = UserFactory()
+
+    friendship_status = get_friendship_status(actor, user)
+
+    assert friendship_status == CAN_REQUEST
