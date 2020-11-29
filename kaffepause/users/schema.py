@@ -1,20 +1,14 @@
 import graphene
 from graphene import relay
 
-from kaffepause.common.types import CountingNodeConnection
 from kaffepause.users import mutations
 from kaffepause.users.models import User
-from kaffepause.users.types import UserType
-
-
-class UserConnection(CountingNodeConnection, relay.Connection):
-    class Meta:
-        node = UserType
+from kaffepause.users.types import UserConnection, UserNode
 
 
 class UserQuery(graphene.ObjectType):
 
-    user = graphene.Field(UserType, id=graphene.String())
+    user = graphene.Field(UserNode, id=graphene.String())
     users = relay.ConnectionField(UserConnection)
 
     def resolve_user(root, info, id):
@@ -25,7 +19,7 @@ class UserQuery(graphene.ObjectType):
 
 
 class MeQuery(graphene.ObjectType):
-    me = graphene.Field(UserType)
+    me = graphene.Field(UserNode)
 
     def resolve_me(self, info):
         user = info.context.user

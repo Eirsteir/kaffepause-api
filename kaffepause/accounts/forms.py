@@ -8,6 +8,7 @@ Account = get_user_model()
 class AccountChangeForm(admin_forms.UserChangeForm):
     class Meta(admin_forms.UserChangeForm.Meta):
         model = Account
+        fields = ("email",)
 
 
 class AccountCreationForm(admin_forms.UserCreationForm):

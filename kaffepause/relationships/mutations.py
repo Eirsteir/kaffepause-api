@@ -8,9 +8,9 @@ from kaffepause.relationships.services import (
     send_friend_request,
     unfriend_user,
 )
-from kaffepause.relationships.types import FriendshipType
-from kaffepause.users.types import UserType
+from kaffepause.users.types import UserNode
 
+# TODO: Use User node
 UserModel = get_user_model()
 
 
@@ -18,7 +18,7 @@ class SendFriendRequest(Mutation):
     class Arguments:
         to_friend = graphene.String(required=True)
 
-    friendship = graphene.Field(UserType)
+    friendship = graphene.Field(UserNode)
 
     @classmethod
     def resolve_mutation(cls, root, info, to_friend):
@@ -33,7 +33,7 @@ class CancelFriendRequest(Mutation):
     class Arguments:
         to_friend = graphene.String(required=True)
 
-    cancelled_friend_requestee = graphene.Field(UserType)
+    cancelled_friend_requestee = graphene.Field(UserNode)
 
     @classmethod
     def resolve_mutation(cls, root, info, to_friend):
@@ -48,7 +48,7 @@ class UnfriendUser(Mutation):
     class Arguments:
         friend = graphene.String(required=True)
 
-    unfriended_user = graphene.Field(UserType)
+    unfriended_user = graphene.Field(UserNode)
 
     @classmethod
     def resolve_mutation(cls, root, info, friend):
@@ -63,7 +63,7 @@ class AcceptFriendRequest(Mutation):
     class Arguments:
         from_user = graphene.String(required=True)
 
-    friendship = graphene.Field(FriendshipType)
+    # friendship = graphene.Field(FriendshipType)
 
     @classmethod
     def resolve_mutation(cls, root, info, from_user):

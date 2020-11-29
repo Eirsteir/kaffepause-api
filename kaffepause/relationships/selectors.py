@@ -8,7 +8,6 @@ from kaffepause.relationships.enums import (
     BLOCKING,
     CAN_REQUEST,
     REQUESTING_FRIENDSHIP,
-    NonRelatedRelationship,
     UserRelationship,
 )
 from kaffepause.users.models import User
@@ -19,6 +18,7 @@ def get_friends_count(user: User) -> int:
 
 
 def get_friends(user: User) -> List[User]:
+    # TODO: exclude current user
     return user.friends.all()
 
 

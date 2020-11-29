@@ -1,10 +1,14 @@
+from uuid import uuid4
+
 from django.core.management.base import BaseCommand
 from neomodel import NeomodelException, db
 
 from kaffepause.accounts.test.factories import AccountFactory, UserStatusFactory
 from kaffepause.relationships.enums import ARE_FRIENDS
+from kaffepause.users.test.factories import UserFactory
 
 NAMES = ["anna", "andrew", "tom", "leroy", "stenli", "jeff", "jack", "karol"]
+UUIDS = [uuid4() for _ in range(8)]
 
 
 class Command(BaseCommand):
@@ -21,6 +25,11 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        for uuid in UUIDS:
+            account = AccountFactory(id=uuid)
+            UserStatusFactory(user=account)
+            UserFactory(uid=uuid)
+
         for _ in range(options["accounts"]):
             account = AccountFactory()
             UserStatusFactory(user=account)

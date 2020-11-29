@@ -41,4 +41,5 @@ class UserStatusFactory(DjangoModelFactory):
         model = UserStatus
         django_get_or_create = ("user",)
 
+    verified = True
     user = SubFactory(AccountFactory)

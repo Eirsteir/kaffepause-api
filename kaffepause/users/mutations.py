@@ -3,7 +3,7 @@ import graphene
 from kaffepause.common.bases import Mutation
 from kaffepause.common.constants import Messages
 from kaffepause.users.models import User
-from kaffepause.users.types import UserType
+from kaffepause.users.types import UserNode
 
 
 class UpdateProfile(Mutation):
@@ -11,7 +11,7 @@ class UpdateProfile(Mutation):
         name = graphene.String(required=True)
         username = graphene.String(required=True)
 
-    user = graphene.Field(UserType)
+    user = graphene.Field(UserNode)
 
     @classmethod
     def resolve_mutation(cls, root, info, name, username):

@@ -18,6 +18,7 @@ class Register(mutations.Register):
     @classmethod
     def mutate(cls, root, info, name, **input):
         registration = cls.resolve_mutation(root, info, **input)
+        # TODO: put in service
         if registration.success:
             email = input.get(Account.EMAIL_FIELD, False)
             account = Account.objects.get(email=email)
