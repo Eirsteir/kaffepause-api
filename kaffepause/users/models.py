@@ -8,6 +8,7 @@ from neomodel import (
     UniqueIdProperty,
 )
 
+from kaffepause.relationships.enums import ARE_FRIENDS, BLOCKING, REQUESTING_FRIENDSHIP
 from kaffepause.relationships.models import FriendRel, RelationshipRel
 
 
@@ -18,14 +19,14 @@ class User(StructuredNode):
     name = StringProperty(required=True, index=True)
     username = StringProperty(unique_index=True)
 
-    friends = Relationship("User", "ARE_FRIENDS", model=FriendRel)
+    friends = Relationship("User", ARE_FRIENDS, model=FriendRel)
     outgoing_friend_requests = RelationshipTo(
-        "User", "REQUESTED_FRIEND", model=RelationshipRel
+        "User", REQUESTING_FRIENDSHIP, model=RelationshipRel
     )
     incoming_friend_requests = RelationshipFrom(
-        "User", "REQUESTED_FRIEND", model=RelationshipRel
+        "User", REQUESTING_FRIENDSHIP, model=RelationshipRel
     )
-    blocking = RelationshipTo("User", "BLOCKED", model=RelationshipRel)
+    blocking = RelationshipTo("User", BLOCKING, model=RelationshipRel)
 
     @classmethod
     def get_or_create(cls, object_, *props, **kwargs):

@@ -10,8 +10,8 @@ from kaffepause.relationships.services import (
     accept_friend_request,
     cancel_friend_request,
     reject_friend_request,
-    remove_friend,
     send_friend_request,
+    unfriend_user,
 )
 from kaffepause.users.test.factories import UserFactory
 
@@ -162,7 +162,7 @@ def test_reject_friend_request_when_already_friends(actor, requester):
 
 def test_remove_friend(actor, addressee):
     actor.friends.connect(addressee)
-    remove_friend(actor, addressee)
+    unfriend_user(actor, addressee)
 
     assert not actor.friends.relationship(addressee)
     assert not actor.incoming_friend_requests.relationship(addressee)

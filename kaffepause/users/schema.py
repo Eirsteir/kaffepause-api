@@ -1,9 +1,15 @@
 import graphene
 from graphene import relay
 
+from kaffepause.common.types import CountingNodeConnection
 from kaffepause.users import mutations
 from kaffepause.users.models import User
-from kaffepause.users.types import UserConnection, UserType
+from kaffepause.users.types import UserType
+
+
+class UserConnection(CountingNodeConnection, relay.Connection):
+    class Meta:
+        node = UserType
 
 
 class UserQuery(graphene.ObjectType):

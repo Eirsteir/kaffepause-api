@@ -49,7 +49,7 @@ def can_reply_to_friend_request(actor, requester):
     return actor.incoming_friend_requests.relationship(requester)
 
 
-def remove_friend(actor: User, friend: User):
+def unfriend_user(actor: User, friend: User):
     return actor.remove_friend(friend)
 
 

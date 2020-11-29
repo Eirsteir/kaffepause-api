@@ -4,8 +4,9 @@ from django.contrib.auth import get_user_model
 from kaffepause.common.bases import Mutation
 from kaffepause.relationships.services import (
     accept_friend_request,
-    delete_friendship,
+    cancel_friend_request,
     send_friend_request,
+    unfriend_user,
 )
 from kaffepause.relationships.types import FriendshipType
 from kaffepause.users.types import UserType
@@ -38,7 +39,7 @@ class CancelFriendRequest(Mutation):
     def resolve_mutation(cls, root, info, to_friend):
         current_user = info.context.user
         to_friend = UserModel.objects.get(id=to_friend)
-        delete_friendship(actor=current_user, user=to_friend)
+        cancel_friend_request(actor=current_user, to_user=to_friend)
 
         return cls(cancelled_friend_requestee=to_friend)
 
@@ -53,7 +54,7 @@ class UnfriendUser(Mutation):
     def resolve_mutation(cls, root, info, friend):
         current_user = info.context.user
         friend = UserModel.objects.get(id=friend)
-        delete_friendship(actor=current_user, user=friend)
+        unfriend_user(actor=current_user, friend=friend)
 
         return cls(unfriended_user=friend)
 
@@ -79,7 +80,7 @@ class BlockUser(Mutation):
 
     @classmethod
     def resolve_mutation(cls, root, info, user):
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 class UnblockUser(Mutation):
@@ -88,4 +89,4 @@ class UnblockUser(Mutation):
 
     @classmethod
     def resolve_mutation(cls, root, info, user):
-        raise NotImplementedError()
+        raise NotImplementedError

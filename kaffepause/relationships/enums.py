@@ -1,58 +1,27 @@
-from kaffepause.common.enums import BaseStatusEnum
+from enum import Enum
+
+from django.utils.translation import gettext_lazy as _
 
 
-class BaseFriendshipStatusEnum(BaseStatusEnum):
-    """
-    Mirrors :class:`FriendshipStatus` in which subclasses have to define
-    member variables in the form of a tuple (verb, slug, from_slug, to_slug).
-    The name member variable is inferred from the name of the attribute.
-    """
+class UserRelationship(Enum):
+    ARE_FRIENDS = _("Are friends")
+    REQUESTING_FRIENDSHIP = _("Requested")
+    BLOCKING = _("Blocking")
 
-    @property
-    def from_slug(self):
-        return self.value[2]
-
-    @property
-    def to_slug(self):
-        return self.value[3]
-
-    @classmethod
-    def from_name(cls, name):
-        return cls[name]
+    def __str__(self):
+        return self.name
 
 
-class DefaultFriendshipStatus(BaseFriendshipStatusEnum):
-    ARE_FRIENDS = (
-        "are friends",
-        "friends",
-        "friends_with",
-        "friended_by",
-    )
-    REQUESTED = (
-        "requesting",
-        "requested",
-        "requested_to",
-        "requested_by",
-    )
-    BLOCKED = (
-        "blocking",
-        "blocked",
-        "blocking",
-        "blocked",
-    )
+class NonRelatedRelationship(Enum):
+    CAN_REQUEST = _("Can request")
+    CANNOT_REQUEST = _("Cannot request")
+
+    def __str__(self):
+        return self.name
 
 
-# TODO: Misleading name?
-class NonFriendsFriendshipStatus(BaseFriendshipStatusEnum):
-    CAN_REQUEST = (
-        "Can request",
-        "can_request_to",
-        "can_be_requested_by",
-        "can_request",
-    )
-    CANNOT_REQUEST = (
-        "Cannot request",
-        "cannot_request_to",
-        "cannot_be_requested_by",
-        "cannot_request",
-    )
+ARE_FRIENDS = UserRelationship.ARE_FRIENDS
+REQUESTING_FRIENDSHIP = UserRelationship.REQUESTING_FRIENDSHIP
+BLOCKING = UserRelationship.BLOCKING
+CAN_REQUEST = NonRelatedRelationship.CAN_REQUEST
+CANNOT_REQUEST = NonRelatedRelationship.CANNOT_REQUEST

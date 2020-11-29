@@ -1,18 +1,13 @@
 import graphene
-from django.contrib.auth import get_user_model
-from django.utils.translation import gettext_lazy as _
 from graphene import relay
-from graphql_auth.schema import UserNode
-from graphql_auth.settings import graphql_auth_settings
 
-from kaffepause.common.bases import UUIDNode
-from kaffepause.common.types import CountingNodeConnection
 from kaffepause.relationships.selectors import (
     get_friends,
-    get_friendship_status,
-    get_mutual_friends_count,
+    get_friends_count,
+    get_social_context_between,
 )
-from kaffepause.users.models import User
+from kaffepause.users.schema import UserConnection
+from kaffepause.users.selectors import get_user_from_account
 
 
 class UserType(graphene.ObjectType):
@@ -30,7 +25,7 @@ class UserType(graphene.ObjectType):
         return parent.name
 
     friends_count = graphene.Int()
-
+    friends = relay.Connection(UserConnection)
     # profile_action = graphene.Field(ProfileAction)
 
     # friendship_status = graphene.String()
@@ -42,15 +37,12 @@ class UserType(graphene.ObjectType):
     #     return status.name
 
     def resolve_friends_count(parent, info):
-        return len(get_friends(parent))
+        return get_friends_count(parent)
+
+    def resolve_friends(parent, info):
+        return get_friends(parent)
 
     def resolve_social_context(parent, info):
-        current_user = info.context.user
-        mutual_friends = get_mutual_friends_count(actor=current_user, user=parent)
-        mutual_friends_count = mutual_friends.count()
-        return _(f"{mutual_friends_count} mutual friends")
-
-
-class UserConnection(CountingNodeConnection, relay.Connection):
-    class Meta:
-        node = UserType
+        current_user_account = info.context.user
+        current_user = get_user_from_account(current_user_account)
+        return get_social_context_between(actor=current_user, other=parent)

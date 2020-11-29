@@ -1,5 +1,4 @@
 import graphene
-from django.contrib.auth import get_user_model
 from graphene import relay
 
 from kaffepause.relationships.mutations import (

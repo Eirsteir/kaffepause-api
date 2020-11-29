@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.db import IntegrityError
 
 from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory
-from kaffepause.relationships.enums import DefaultFriendshipStatus
+from kaffepause.relationships.enums import UserRelationship
 from kaffepause.relationships.test.factories import (
     FriendshipFactory,
     FriendshipStatusFactory,

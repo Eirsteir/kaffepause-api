@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from neomodel import NeomodelException, db
 
 from kaffepause.accounts.test.factories import AccountFactory, UserStatusFactory
+from kaffepause.relationships.enums import ARE_FRIENDS
 
 NAMES = ["anna", "andrew", "tom", "leroy", "stenli", "jeff", "jack", "karol"]
 
@@ -35,12 +36,12 @@ class Command(BaseCommand):
         """
         Populate actual database with random connections between users
         """
-        query = """
+        query = f"""
         MATCH (u:User), (s:User)
         WITH u, s
         LIMIT 10000
         WHERE rand() < 0.2 AND u <> s
-        MERGE (u)-[:ARE_FRIENDS]-(s);
+        MERGE (u)-[:{ARE_FRIENDS}]-(s);
         """
         return db.cypher_query(query)
 
