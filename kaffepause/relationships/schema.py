@@ -12,7 +12,6 @@ from kaffepause.relationships.selectors import (
     get_incoming_requests,
     get_outgoing_requests,
 )
-from kaffepause.relationships.types import FriendshipNode
 from kaffepause.users.models import User
 from kaffepause.users.selectors import get_user_from_account
 from kaffepause.users.types import UserConnection
@@ -20,13 +19,11 @@ from kaffepause.users.types import UserConnection
 
 class Query(graphene.ObjectType):
 
-    friendship = relay.Node.Field(FriendshipNode)
-    # Get all friends of the user
-    all_friendships = relay.ConnectionField(UserConnection, user=graphene.String())
+    friendships = relay.ConnectionField(UserConnection, user=graphene.String())
     friending_possibilities = relay.ConnectionField(UserConnection)
     outgoing_friend_requests = relay.ConnectionField(UserConnection)
 
-    def resolve_all_friendships(root, info, user):
+    def resolve_all_relationships(root, info, user):
         user = User.nodes.get(uid=user)
         return get_friends(user)
 
