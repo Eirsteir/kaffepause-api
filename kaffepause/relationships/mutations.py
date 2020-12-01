@@ -1,5 +1,4 @@
 import graphene
-from django.contrib.auth import get_user_model
 
 from kaffepause.common.bases import Mutation, NeomodelGraphQLMixin
 from kaffepause.relationships.exceptions import RelationshipAlreadyExists
@@ -74,21 +73,3 @@ class AcceptFriendRequest(NeomodelGraphQLMixin, Mutation):
         accept_friend_request(actor=current_user, requester=requester)
 
         return cls(success=True, friend=requester)
-
-
-class BlockUser(Mutation):
-    class Arguments:
-        user = graphene.String(required=True)
-
-    @classmethod
-    def resolve_mutation(cls, root, info, user):
-        raise NotImplementedError
-
-
-class UnblockUser(Mutation):
-    class Arguments:
-        user = graphene.String(required=True)
-
-    @classmethod
-    def resolve_mutation(cls, root, info, user):
-        raise NotImplementedError

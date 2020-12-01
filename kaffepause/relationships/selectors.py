@@ -5,10 +5,8 @@ from neomodel import db
 
 from kaffepause.relationships.enums import (
     ARE_FRIENDS,
-    BLOCKING,
     CAN_REQUEST,
     REQUESTING_FRIENDSHIP,
-    UserRelationship,
 )
 from kaffepause.users.models import User
 
@@ -34,22 +32,10 @@ def get_outgoing_requests(
     return user.outgoing_friend_requests.all()
 
 
-def get_outgoing_blocks(
-    user: User,
-) -> List[User]:
-    return user.blocking.all()
-
-
-def get_incoming_blocks(
-    user: User,
-) -> List[User]:
-    raise NotImplementedError
-
-
 def relationship_exists(user, other):
     """Returns boolean whether or not a relationship of any kind exists between the given users."""
     query = f"""
-    MATCH (user:User)-[:{ARE_FRIENDS}| :{REQUESTING_FRIENDSHIP} | :{BLOCKING}]-(other:User)
+    MATCH (user:User)-[:{ARE_FRIENDS}| :{REQUESTING_FRIENDSHIP}]-(other:User)
     WHERE user.uid = {{user_uid}} AND other.uid = {{other_uid}}
     RETURN other
     """
@@ -64,6 +50,7 @@ def get_friendship_status(actor: User, user: User) -> object:
     Returns the friendship status as viewed by the actor.
     If no such friendship exists, a default value of 'CAN_REQUEST' is returned.
     """
+    # TODO: Differ between requested direction
     if actor == user:
         return
 

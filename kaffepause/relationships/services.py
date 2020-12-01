@@ -51,7 +51,3 @@ def can_reply_to_friend_request(actor, requester):
 
 def unfriend_user(actor: User, friend: User):
     return actor.remove_friend(friend)
-
-
-def deny_blocked_relationship(user: User, other: User):
-    raise NotImplementedError
