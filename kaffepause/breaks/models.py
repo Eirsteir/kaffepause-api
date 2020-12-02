@@ -53,16 +53,6 @@ class BreakInvitation(StructuredNode):
     acceptees = RelationshipFrom(USER, BreakRelationship.ACCEPTED)
     declinees = RelationshipFrom(USER, BreakRelationship.DECLINED)
 
-    # def save(self, *args, **kwargs):
-    #     self.clean_fields()
-    #     super().__init__(*args, **kwargs)
-    #
-    # def clean_fields(self):
-    #     if self.is_expired:
-    #         raise InvalidInvitationExpiration(
-    #             _("Invitation expiry must be in the future")
-    #         )
-
     @property
     def is_expired(self):
         return self.subject.single().is_expired
