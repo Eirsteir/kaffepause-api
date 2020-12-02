@@ -1,11 +1,9 @@
 import pytest
-from django.contrib.auth import get_user_model
 
-from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.breaks.models import Break, BreakInvitation
 from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory
-
-Account = get_user_model()
+from kaffepause.users.models import User
+from kaffepause.users.test.factories import UserFactory
 
 
 @pytest.fixture(autouse=True)
@@ -14,15 +12,19 @@ def media_storage(settings, tmpdir):
 
 
 @pytest.fixture
-def user() -> Account:
-    return AccountFactory()
+def user() -> User:
+    return UserFactory()
 
 
 @pytest.fixture(autouse=True)
-def study_break() -> Break:
-    return BreakFactory(participants=(AccountFactory(),))
+def break_() -> Break:
+    break_ = BreakFactory()
+    break_.participants.connect(UserFactory())
+    return break_
 
 
 @pytest.fixture(autouse=True)
-def break_invitation(study_break) -> BreakInvitation:
-    return BreakInvitationFactory(subject=study_break, reply=None)
+def break_invitation(break_) -> BreakInvitation:
+    break_invitation = BreakInvitationFactory()
+    break_invitation.subject.connect(break_)
+    return break_invitation

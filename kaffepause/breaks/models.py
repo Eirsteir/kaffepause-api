@@ -21,49 +21,51 @@ from kaffepause.breaks.exceptions import (
     InvitationExpired,
     InvitationNotAddressedAtUser,
 )
-from kaffepause.common.enums import Node
+from kaffepause.common.enums import BREAK, USER
 from kaffepause.common.utils import fifteen_minutes_from_now, time_from_now
 
 
 class Break(StructuredNode):
     uid = UniqueIdProperty()
     start_time = DateTimeProperty(default=lambda: fifteen_minutes_from_now())
-    participants = RelationshipFrom(Node.USER, BreakRelationship.PARTICIPATED_IN)
+    participants = RelationshipFrom(USER, BreakRelationship.PARTICIPATED_IN)
 
-    def clean_fields(self, *args, **kwargs):
+    def clean_fields(self):
         if not self.start_time:
             self.start_time = fifteen_minutes_from_now()
-        return super().clean_fields(*args, **kwargs)
 
     def clean(self):
         if timezone.now() >= self.start_time:
             raise InvalidBreakStartTime
 
+    @property
+    def is_expired(self):
+        return time_from_now(minutes=5) >= self.start_time
+
 
 class BreakInvitation(StructuredNode):
     uid = UniqueIdProperty()
     created = DateTimeProperty(default=lambda: datetime.now(pytz.utc))
-    sender = RelationshipFrom(Node.USER, BreakRelationship.SENT, cardinality=One)
-    addressees = RelationshipTo(Node.USER, BreakRelationship.TO, cardinality=OneOrMore)
-    subject = RelationshipTo(Node.BREAK, BreakRelationship.REGARDING, cardinality=One)
+    sender = RelationshipFrom(USER, BreakRelationship.SENT, cardinality=One)
+    addressees = RelationshipTo(USER, BreakRelationship.TO, cardinality=OneOrMore)
+    subject = RelationshipTo(BREAK, BreakRelationship.REGARDING, cardinality=One)
 
-    acceptees = RelationshipFrom(Node.USER, BreakRelationship.ACCEPTED)
-    declinees = RelationshipFrom(Node.USER, BreakRelationship.DECLINED)
+    acceptees = RelationshipFrom(USER, BreakRelationship.ACCEPTED)
+    declinees = RelationshipFrom(USER, BreakRelationship.DECLINED)
 
-    def clean_fields(self, *args, **kwargs):
-        if self.is_expired:
-            raise InvalidInvitationExpiration(
-                _("Invitation expiry must be in the future")
-            )
-        return super().clean_fields(*args, **kwargs)
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        return super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.clean_fields()
+    #     super().__init__(*args, **kwargs)
+    #
+    # def clean_fields(self):
+    #     if self.is_expired:
+    #         raise InvalidInvitationExpiration(
+    #             _("Invitation expiry must be in the future")
+    #         )
 
     @property
     def is_expired(self):
-        return time_from_now(minutes=5) >= self.subject
+        return self.subject.single().is_expired
 
     def accept_on_behalf_of(self, user):
         self.acceptees.connect(user)

@@ -9,7 +9,7 @@ from neomodel import (
 )
 
 from kaffepause.breaks.enums import BreakRelationship
-from kaffepause.common.enums import Node
+from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER
 from kaffepause.relationships.enums import UserRelationship
 from kaffepause.relationships.models import FriendRel, RelationshipRel
 
@@ -21,29 +21,27 @@ class User(StructuredNode):
     name = StringProperty(required=True, index=True)
     username = StringProperty(unique_index=True)
 
-    friends = Relationship(Node.USER, UserRelationship.ARE_FRIENDS, model=FriendRel)
-    following = RelationshipTo(Node.USER, UserRelationship.FOLLOWING, model=FriendRel)
+    friends = Relationship(USER, UserRelationship.ARE_FRIENDS, model=FriendRel)
+    following = RelationshipTo(USER, UserRelationship.FOLLOWING, model=RelationshipRel)
     followed_by = RelationshipFrom(
-        Node.USER, UserRelationship.FOLLOWING, model=FriendRel
+        USER, UserRelationship.FOLLOWING, model=RelationshipRel
     )
 
     outgoing_friend_requests = RelationshipTo(
-        Node.USER, UserRelationship.REQUESTING_FRIENDSHIP, model=RelationshipRel
+        USER, UserRelationship.REQUESTING_FRIENDSHIP, model=RelationshipRel
     )
     incoming_friend_requests = RelationshipFrom(
-        Node.USER, UserRelationship.REQUESTING_FRIENDSHIP, model=RelationshipRel
+        USER, UserRelationship.REQUESTING_FRIENDSHIP, model=RelationshipRel
     )
 
-    breaks = RelationshipTo(Node.BREAK, BreakRelationship.PARTICIPATED_IN)
-    break_invitations = RelationshipFrom(Node.BREAK_INVITATION, BreakRelationship.TO)
-    sent_break_invitations = RelationshipTo(
-        Node.BREAK_INVITATION, BreakRelationship.SENT
-    )
+    breaks = RelationshipTo(BREAK, BreakRelationship.PARTICIPATED_IN)
+    break_invitations = RelationshipFrom(BREAK_INVITATION, BreakRelationship.TO)
+    sent_break_invitations = RelationshipTo(BREAK_INVITATION, BreakRelationship.SENT)
     accepted_break_invitations = RelationshipTo(
-        Node.BREAK_INVITATION, BreakRelationship.ACCEPTED
+        BREAK_INVITATION, BreakRelationship.ACCEPTED
     )
     declined_break_invitations = RelationshipTo(
-        Node.BREAK_INVITATION, BreakRelationship.DECLINED
+        BREAK_INVITATION, BreakRelationship.DECLINED
     )
 
     @classmethod

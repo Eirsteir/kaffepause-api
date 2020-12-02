@@ -106,8 +106,8 @@ def test_accept_friend_request_makes_users_follow_each_other(actor, requester):
     assert actor.following.get_or_none(uid=requester.uid)
     assert requester.following.get_or_none(uid=actor.uid)
 
-    assert actor.followed_by.get_or_none(uid=requester.id)
-    assert requester.followed_by.get_or_none(uid=actor.id)
+    assert actor.followed_by.get_or_none(uid=requester.uid)
+    assert requester.followed_by.get_or_none(uid=actor.uid)
 
 
 def test_only_addressee_can_accept_friend_request(actor, requester):

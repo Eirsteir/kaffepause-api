@@ -3,11 +3,7 @@ from typing import List
 from django.utils.translation import gettext_lazy as _
 from neomodel import db
 
-from kaffepause.relationships.enums import (
-    ARE_FRIENDS,
-    CAN_REQUEST,
-    REQUESTING_FRIENDSHIP,
-)
+from kaffepause.relationships.enums import NonRelatedRelationship, UserRelationship
 from kaffepause.users.models import User
 
 
@@ -35,7 +31,7 @@ def get_outgoing_requests(
 def relationship_exists(user, other):
     """Returns boolean whether or not a relationship of any kind exists between the given users."""
     query = f"""
-    MATCH (user:User)-[:{ARE_FRIENDS}| :{REQUESTING_FRIENDSHIP}]-(other:User)
+    MATCH (user:User)-[:{UserRelationship.ARE_FRIENDS}| :{UserRelationship.REQUESTING_FRIENDSHIP}]-(other:User)
     WHERE user.uid = {{user_uid}} AND other.uid = {{other_uid}}
     RETURN other
     """
@@ -55,7 +51,7 @@ def get_friendship_status(actor: User, user: User) -> object:
         return
 
     query = f"""
-    MATCH (subject:User {{uid: {{subject_uid}}}})-[r:{ARE_FRIENDS} | :{REQUESTING_FRIENDSHIP}]-(person:User {{uid: {{person_uid}}}})
+    MATCH (subject:User {{uid: {{subject_uid}}}})-[r:{UserRelationship.ARE_FRIENDS} | :{UserRelationship.REQUESTING_FRIENDSHIP}]-(person:User {{uid: {{person_uid}}}})
     return TYPE(r)
     """
 
@@ -66,7 +62,7 @@ def get_friendship_status(actor: User, user: User) -> object:
     if status:
         return _(status)
 
-    return CAN_REQUEST
+    return NonRelatedRelationship.CAN_REQUEST
 
 
 def get_social_context_between(actor: User, other: User) -> str:
@@ -78,7 +74,7 @@ def get_social_context_between(actor: User, other: User) -> str:
 def get_mutual_friends_count(actor: User, user: User) -> int:
     """Returns the mutual friends for the given users."""
     query = f"""
-    MATCH (subject:User {{uid: {{subject_uid}}}})-[:{ARE_FRIENDS}]-(n)-[:{ARE_FRIENDS}]-(person:User {{uid: {{person_uid}}}})
+    MATCH (subject:User {{uid: {{subject_uid}}}})-[:{UserRelationship.ARE_FRIENDS}]-(n)-[:{UserRelationship.ARE_FRIENDS}]-(person:User {{uid: {{person_uid}}}})
     WHERE subject <> n
     RETURN count(n)
     """

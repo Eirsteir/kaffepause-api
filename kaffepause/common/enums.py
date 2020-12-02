@@ -21,7 +21,7 @@ class BaseStatusEnum(Enum):
         return self.value[1]
 
 
-class Node(Enum):
-    USER = "User"
-    BREAK = "Break"
-    BREAK_INVITATION = "BreakInvitation"
+# TODO: put in settings
+USER = "kaffepause.users.models.User"
+BREAK = "kaffepause.breaks.models.Break"
+BREAK_INVITATION = "kaffepause.breaks.models.BreakInvitation"

@@ -1,11 +1,6 @@
 import pytest
 
-from kaffepause.relationships.enums import (
-    ARE_FRIENDS,
-    CAN_REQUEST,
-    CANNOT_REQUEST,
-    REQUESTING_FRIENDSHIP,
-)
+from kaffepause.relationships.enums import NonRelatedRelationship, UserRelationship
 from kaffepause.relationships.selectors import (
     get_friendship_status,
     get_mutual_friends_count,
@@ -44,7 +39,7 @@ def test_get_friendship_status():
 
     friendship_status = get_friendship_status(actor, user)
 
-    assert friendship_status == ARE_FRIENDS
+    assert friendship_status == UserRelationship.ARE_FRIENDS
 
 
 def test_get_friendship_status_when_incoming_request():
@@ -56,7 +51,7 @@ def test_get_friendship_status_when_incoming_request():
 
     friendship_status = get_friendship_status(actor, user)
 
-    assert friendship_status == REQUESTING_FRIENDSHIP
+    assert friendship_status == UserRelationship.REQUESTING_FRIENDSHIP
 
 
 def test_get_friendship_status_when_outgoing_request():
@@ -68,7 +63,7 @@ def test_get_friendship_status_when_outgoing_request():
 
     friendship_status = get_friendship_status(actor, user)
 
-    assert friendship_status == CANNOT_REQUEST
+    assert friendship_status == NonRelatedRelationship.CANNOT_REQUEST
 
 
 def test_get_friendship_status_when_not_connected():
@@ -78,7 +73,7 @@ def test_get_friendship_status_when_not_connected():
 
     friendship_status = get_friendship_status(actor, user)
 
-    assert friendship_status == CAN_REQUEST
+    assert friendship_status == NonRelatedRelationship.CAN_REQUEST
 
 
 def test_get_friendship_status_when_friend_is_self():
