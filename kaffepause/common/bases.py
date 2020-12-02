@@ -73,7 +73,15 @@ class NeomodelFactoryMetaClass(FactoryMetaClass):
 
 
 class NeomodelFactory(factory.Factory, metaclass=NeomodelFactoryMetaClass):
-    pass
+    @classmethod
+    def create(cls, **kwargs):
+        """
+        Override the default create strategy to save the create node.
+        Returns an instance of the associated class.
+        """
+        instance = super().create(**kwargs)
+        instance.save()
+        return instance
 
 
 class NeomodelRelationshipEnum(Enum):
@@ -84,3 +92,5 @@ class NeomodelRelationshipEnum(Enum):
 
     def __str__(self):
         return self.name
+
+    __repr__ = __str__

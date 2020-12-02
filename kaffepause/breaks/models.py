@@ -30,9 +30,9 @@ class Break(StructuredNode):
     participants = RelationshipFrom(USER, BreakRelationship.PARTICIPATED_IN)
 
     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.clean_fields()
         self.clean()
-        super().__init__(*args, **kwargs)
 
     def clean_fields(self):
         if not self.start_time:
