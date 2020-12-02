@@ -11,7 +11,7 @@ def get_first_matching_attr(obj, *attrs, default=None):
     return default
 
 
-def thirty_minutes_from_now():
+def fifteen_minutes_from_now():
     return time_from_now(minutes=30)
 
 

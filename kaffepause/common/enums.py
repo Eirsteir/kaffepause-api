@@ -19,3 +19,9 @@ class BaseStatusEnum(Enum):
     @property
     def slug(self):
         return self.value[1]
+
+
+class Node(Enum):
+    USER = "User"
+    BREAK = "Break"
+    BREAK_INVITATION = "BreakInvitation"

@@ -34,37 +34,6 @@ def test_save_with_invalid_expiry():
         BreakInvitationFactory(expiry=expiry)
 
 
-def test_reply(break_invitation):
-    """Should update the invitation reply if not expired and not already replied to."""
-    reply = InvitationReply.ACCEPTED
-    break_invitation._reply(reply)
-
-    assert break_invitation.reply == reply
-
-
-def test_reply_when_invitation_has_expired():
-    """Should not update the invitation when it has expired."""
-    now = timezone.now()
-    expiry = now + timedelta(hours=-1)
-
-    invitation = BreakInvitationFactory(reply=None)
-    invitation.expiry = expiry
-
-    reply = InvitationReply.ACCEPTED
-
-    with pytest.raises(InvitationExpired):
-        invitation._reply(reply)
-
-
-def test_reply_when_invitation_has_already_been_replied_to():
-    """Should not update the invitation then it has already been replied to."""
-    reply = InvitationReply.ACCEPTED
-    invitation = BreakInvitationFactory(reply=reply)
-
-    with pytest.raises(AlreadyReplied):
-        invitation._reply(reply)
-
-
 def test_accept():
     """Should update the invitation reply to accepted and add the recipient to break participants."""
     invitation = BreakInvitationFactory(reply=None)

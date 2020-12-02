@@ -27,3 +27,7 @@ class InvalidInvitationUpdate(DefaultError):
 
 class InvalidBreakStartTime(DefaultError):
     default_message = _("The break start time must be in the future")
+
+
+class InvitationNotAddressedAtUser(DefaultError):
+    default_message = _("Invitation is not addressed at this user")

@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
-                ('start_time', models.DateTimeField(default=kaffepause.common.utils.thirty_minutes_from_now)),
+                ('start_time', models.DateTimeField(default=kaffepause.common.utils.fifteen_minutes_from_now)),
                 ('participants', models.ManyToManyField(related_name='breaks', related_query_name='break', to=settings.AUTH_USER_MODEL)),
             ],
             options={

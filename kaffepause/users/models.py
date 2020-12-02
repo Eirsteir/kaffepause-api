@@ -8,7 +8,13 @@ from neomodel import (
     UniqueIdProperty,
 )
 
-from kaffepause.relationships.enums import ARE_FRIENDS, REQUESTING_FRIENDSHIP
+from kaffepause.breaks.enums import BreakRelationship
+from kaffepause.common.enums import Node
+from kaffepause.relationships.enums import (
+    ARE_FRIENDS,
+    REQUESTING_FRIENDSHIP,
+    UserRelationship,
+)
 from kaffepause.relationships.models import FriendRel, RelationshipRel
 
 
@@ -19,12 +25,24 @@ class User(StructuredNode):
     name = StringProperty(required=True, index=True)
     username = StringProperty(unique_index=True)
 
-    friends = Relationship("User", ARE_FRIENDS, model=FriendRel)
+    friends = Relationship(Node.USER, UserRelationship.ARE_FRIENDS, model=FriendRel)
     outgoing_friend_requests = RelationshipTo(
-        "User", REQUESTING_FRIENDSHIP, model=RelationshipRel
+        Node.USER, UserRelationship.REQUESTING_FRIENDSHIP, model=RelationshipRel
     )
     incoming_friend_requests = RelationshipFrom(
-        "User", REQUESTING_FRIENDSHIP, model=RelationshipRel
+        Node.USER, UserRelationship.REQUESTING_FRIENDSHIP, model=RelationshipRel
+    )
+
+    breaks = RelationshipTo(Node.BREAK, BreakRelationship.PARTICIPATED_IN)
+    break_invitations = RelationshipFrom(Node.BREAK_INVITATION, BreakRelationship.TO)
+    sent_break_invitations = RelationshipTo(
+        Node.BREAK_INVITATION, BreakRelationship.SENT
+    )
+    accepted_break_invitations = RelationshipTo(
+        Node.BREAK_INVITATION, BreakRelationship.ACCEPTED
+    )
+    declined_break_invitations = RelationshipTo(
+        Node.BREAK_INVITATION, BreakRelationship.DECLINED
     )
 
     @classmethod

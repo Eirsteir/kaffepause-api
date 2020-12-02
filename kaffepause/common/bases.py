@@ -1,3 +1,5 @@
+from enum import Enum
+
 import factory
 import graphene
 from factory.base import FactoryMetaClass
@@ -71,3 +73,13 @@ class NeomodelFactoryMetaClass(FactoryMetaClass):
 
 class NeomodelFactory(factory.Factory, metaclass=NeomodelFactoryMetaClass):
     pass
+
+
+class NeomodelRelationshipEnum(Enum):
+    """
+    Base enum class for neomodel relationships.
+    Allows for simple direct use of the enums name.
+    """
+
+    def __str__(self):
+        return self.name
