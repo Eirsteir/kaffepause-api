@@ -70,6 +70,5 @@ class User(StructuredNode):
     def remove_friend(self, friend):  # Returns None if not friends - ok?
         """Disconnect self and friend."""
         self.following.disconnect(friend)
-        self.following.disconnect(friend)
         friend.following.disconnect(self)
         return self.friends.disconnect(friend)

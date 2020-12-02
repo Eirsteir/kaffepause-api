@@ -30,7 +30,7 @@ def test_get_mutual_friends_count():
     assert mutual_friends_count == 1
 
 
-def test_get_friendship_status():
+def test_get_friendship_status_when_friends():
     """Should return the correct relationship type when user are friends."""
     actor = UserFactory()
     user = UserFactory()
@@ -39,7 +39,7 @@ def test_get_friendship_status():
 
     friendship_status = get_friendship_status(actor, user)
 
-    assert friendship_status == UserRelationship.ARE_FRIENDS
+    assert friendship_status == str(UserRelationship.ARE_FRIENDS)
 
 
 def test_get_friendship_status_when_incoming_request():
@@ -51,19 +51,19 @@ def test_get_friendship_status_when_incoming_request():
 
     friendship_status = get_friendship_status(actor, user)
 
-    assert friendship_status == UserRelationship.REQUESTING_FRIENDSHIP
+    assert friendship_status == str(UserRelationship.REQUESTING_FRIENDSHIP)
 
 
 def test_get_friendship_status_when_outgoing_request():
-    """Should return the 'CANNOT_REQUEST'relationship type when one actor has requested the friendship of the user."""
+    """Should return the 'CANNOT_REQUEST' relationship type when one actor has requested the friendship of the user."""
     actor = UserFactory()
     user = UserFactory()
 
-    actor.incoming_friend_requests.connect(user)
+    actor.outgoing_friend_requests.connect(user)
 
     friendship_status = get_friendship_status(actor, user)
 
-    assert friendship_status == NonRelatedRelationship.CANNOT_REQUEST
+    assert friendship_status == str(NonRelatedRelationship.CANNOT_REQUEST)
 
 
 def test_get_friendship_status_when_not_connected():
@@ -73,7 +73,7 @@ def test_get_friendship_status_when_not_connected():
 
     friendship_status = get_friendship_status(actor, user)
 
-    assert friendship_status == NonRelatedRelationship.CAN_REQUEST
+    assert friendship_status == str(NonRelatedRelationship.CAN_REQUEST)
 
 
 def test_get_friendship_status_when_friend_is_self():

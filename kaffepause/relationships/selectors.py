@@ -51,18 +51,20 @@ def get_friendship_status(actor: User, user: User) -> object:
         return
 
     query = f"""
-    MATCH (subject:User {{uid: {{subject_uid}}}})-[r:{UserRelationship.ARE_FRIENDS} | :{UserRelationship.REQUESTING_FRIENDSHIP}]-(person:User {{uid: {{person_uid}}}})
+    MATCH (subject:User {{uid: {{subject_uid}}}})
+    -[r:{UserRelationship.ARE_FRIENDS} | :{UserRelationship.REQUESTING_FRIENDSHIP}]
+    -(person:User {{uid: {{person_uid}}}})
     return TYPE(r)
     """
 
     params = dict(subject_uid=actor.uid, person_uid=user.uid)
     results, meta = db.cypher_query(query, params)
-    status = results[0][0] if results else None
+    status = results[0][0] if results else str(NonRelatedRelationship.CAN_REQUEST)
 
-    if status:
-        return _(status)
+    if actor.outgoing_friend_requests.is_connected(user):
+        status = str(NonRelatedRelationship.CANNOT_REQUEST)
 
-    return NonRelatedRelationship.CAN_REQUEST
+    return _(status)
 
 
 def get_social_context_between(actor: User, other: User) -> str:
