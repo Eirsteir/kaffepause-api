@@ -7,7 +7,6 @@ from graphene import relay
 from graphql_auth.decorators import verification_required
 
 from kaffepause.common.types import OutputErrorType
-from kaffepause.users.models import User
 
 
 class UUIDNode(relay.Node):
@@ -49,6 +48,8 @@ class Mutation(VerificationRequiredMixin, Output, graphene.Mutation):
 class NeomodelGraphQLMixin:
     @classmethod
     def get_current_user(cls, info):
+        from kaffepause.users.models import User
+
         current_user_account = info.context.user
         current_user = User.nodes.get(uid=current_user_account.id)
         return current_user

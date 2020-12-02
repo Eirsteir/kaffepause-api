@@ -95,6 +95,21 @@ def test_accept_friend_request(actor, requester):
     assert not requester.outgoing_friend_requests.get_or_none(uid=actor.uid)
 
 
+def test_accept_friend_request_makes_users_follow_each_other(actor, requester):
+    """
+    Friends should follow each other when a friendship is initiated.
+    """
+    send_friend_request(actor=requester, to_user=actor)
+
+    accept_friend_request(actor, requester)
+
+    assert actor.following.get_or_none(uid=requester.uid)
+    assert requester.following.get_or_none(uid=actor.uid)
+
+    assert actor.followed_by.get_or_none(uid=requester.id)
+    assert requester.followed_by.get_or_none(uid=actor.id)
+
+
 def test_only_addressee_can_accept_friend_request(actor, requester):
     """The requester of a friend request should not be able to also accept it."""
     send_friend_request(actor=requester, to_user=actor)

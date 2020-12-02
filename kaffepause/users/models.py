@@ -10,11 +10,7 @@ from neomodel import (
 
 from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.common.enums import Node
-from kaffepause.relationships.enums import (
-    ARE_FRIENDS,
-    REQUESTING_FRIENDSHIP,
-    UserRelationship,
-)
+from kaffepause.relationships.enums import UserRelationship
 from kaffepause.relationships.models import FriendRel, RelationshipRel
 
 
@@ -26,6 +22,11 @@ class User(StructuredNode):
     username = StringProperty(unique_index=True)
 
     friends = Relationship(Node.USER, UserRelationship.ARE_FRIENDS, model=FriendRel)
+    following = RelationshipTo(Node.USER, UserRelationship.FOLLOWING, model=FriendRel)
+    followed_by = RelationshipFrom(
+        Node.USER, UserRelationship.FOLLOWING, model=FriendRel
+    )
+
     outgoing_friend_requests = RelationshipTo(
         Node.USER, UserRelationship.REQUESTING_FRIENDSHIP, model=RelationshipRel
     )
@@ -64,8 +65,13 @@ class User(StructuredNode):
     def add_friend(self, other):
         """Disconnect requesting relationships and connect the users as friends."""
         self.outgoing_friend_requests.disconnect(other)
+        self.following.connect(other)
+        other.following.connect(self)
         return self.friends.connect(other)
 
     def remove_friend(self, friend):  # Returns None if not friends - ok?
         """Disconnect self and friend."""
+        self.following.disconnect(friend)
+        self.following.disconnect(friend)
+        friend.following.disconnect(self)
         return self.friends.disconnect(friend)
