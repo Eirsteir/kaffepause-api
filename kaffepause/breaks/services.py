@@ -1,19 +1,65 @@
 from datetime import datetime
-from typing import Callable
+from typing import Callable, List
 
+from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.breaks.models import Break, BreakInvitation
+from kaffepause.relationships.enums import UserRelationship
 from kaffepause.users.models import User
 
 
-def create_and_invite_friends_to_a_break(
+def create_break_and_invitations(
+    actor: User, addressees: List[int], start_time: datetime = None
+) -> Break:
+    """
+    Create a break and an invitation to given addressees, optionally at the given start time.
+    Will not send an invitation to addressees which are not following the actor.
+    """
+    follower_selection = actor.followed_by.filter(uid__in=addressees)
+    return _create_break_and_invitation(actor, follower_selection, start_time)
+
+
+def create_and_invite_followers_to_a_break(
     actor: User, start_time: datetime = None
 ) -> Break:
-    raise NotImplementedError
+    """Create a break and an invitation all of the users followers, optionally at the given start time."""
+    followers = actor.followed_by.all()
+    return _create_break_and_invitation(actor, followers, start_time)
 
 
-def _invite_friends_to_break(actor: User, subject: Break) -> None:
-    """Create an invitation to given break to all friends of the actor."""
-    raise NotImplementedError
+def _create_break_and_invitation(
+    actor: User, followers: List[User], start_time: datetime = None
+) -> Break:
+    break_ = _create_break(actor, start_time)
+    _create_invitation(actor, break_, followers)
+    return break_
+
+
+def _create_break(actor: User, start_time: datetime) -> Break:
+    break_ = Break(start_time=start_time).save()
+    break_.participants.connect(actor)
+    return break_
+
+
+def _create_invitation(actor: User, break_: Break, addressees) -> None:
+    break_invitation = BreakInvitation().save()
+    break_invitation.sender.connect(actor)
+    break_invitation.subject.connect(break_)
+    map(lambda addressee: break_.addressees.connect(addressee), addressees)
+
+    # query = f"""
+    # MATCH (subject:User {{id: {actor.id}})
+    # CREATE (break_:Break {{start_time: {start_time}}})
+    # CREATE (subject)-[:{BreakRelationship.PARTICIPATED_IN}]->(break_)
+    # CREATE (invitation:BreakInvitation)
+    # CREATE (subject)-[:{BreakRelationship.SENT}]->(invitation)
+    # CREATE (invitation)-[:{BreakRelationship.REGARDING}]->(break_)
+    # -- SPLIT QUERY HERE ? --
+    # UNWIND {addressees} as user
+    # MATCH (addressee:User {{id: user.id}})
+    # CREATE (invitation)-[:{BreakRelationship.TO}]->(addressee)
+    # MATCH (subject)-[r:{UserRelationship.ARE_FRIENDS}]-(addressee)
+    # SET r.weight += 1
+    # """
 
 
 def accept_break_invitation(

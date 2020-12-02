@@ -17,7 +17,6 @@ from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.breaks.exceptions import (
     AlreadyReplied,
     InvalidBreakStartTime,
-    InvalidInvitationExpiration,
     InvitationExpired,
     InvitationNotAddressedAtUser,
 )
@@ -29,6 +28,11 @@ class Break(StructuredNode):
     uid = UniqueIdProperty()
     start_time = DateTimeProperty(default=lambda: fifteen_minutes_from_now())
     participants = RelationshipFrom(USER, BreakRelationship.PARTICIPATED_IN)
+
+    def __init__(self, *args, **kwargs):
+        self.clean_fields()
+        self.clean()
+        super().__init__(*args, **kwargs)
 
     def clean_fields(self):
         if not self.start_time:
