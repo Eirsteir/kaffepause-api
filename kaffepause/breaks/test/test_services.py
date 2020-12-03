@@ -3,7 +3,6 @@ import pytest
 from kaffepause.breaks.services import (
     accept_break_invitation,
     create_break_and_invitation,
-    create_break_and_invite_followers,
     decline_break_invitation,
 )
 from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory
@@ -64,7 +63,7 @@ def test_create_and_invite_followers_to_a_break_creates_break_and_invites_all_th
     actor, actor_friends, non_following_user
 ):
     """When a break is created without specifying addressees, all of the actors followers should be invited."""
-    break_ = create_break_and_invite_followers(actor)
+    break_ = create_break_and_invitation(actor)
     break_invitation = break_.invitation.single()
 
     actual_addressees = break_invitation.addressees.all()

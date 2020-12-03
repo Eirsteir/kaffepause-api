@@ -6,22 +6,19 @@ from kaffepause.users.models import User
 
 
 def create_break_and_invitation(
-    actor: User, addressees: List[int], start_time: datetime = None
+    actor: User, addressees: List[int] = None, start_time: datetime = None
 ) -> Break:
     """
     Create a break and an invitation to given addressees, optionally at the given start time.
-    Will not send an invitation to addressees which are not following the actor.
+    If addressees are specified, only send the invitation to the ones who are following the users.
+    If not, send to all followers
     """
-    follower_selection = actor.followed_by.filter(uid__in=addressees)
-    return _create_break_and_invitation(actor, follower_selection, start_time)
+    if addressees:
+        addressees = actor.followed_by.filter(uid__in=addressees)
+    else:
+        addressees = actor.followed_by.all()
 
-
-def create_break_and_invite_followers(
-    actor: User, start_time: datetime = None
-) -> Break:
-    """Create a break and an invitation all of the users followers, optionally at the given start time."""
-    followers = actor.followed_by.all()
-    return _create_break_and_invitation(actor, followers, start_time)
+    return _create_break_and_invitation(actor, addressees, start_time)
 
 
 def _create_break_and_invitation(
