@@ -1,9 +1,12 @@
 import pytest
 
 from kaffepause.breaks.services import (
+    accept_break_invitation,
     create_break_and_invitation,
     create_break_and_invite_followers,
+    decline_break_invitation,
 )
+from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory
 from kaffepause.users.test.factories import UserFactory
 
 pytestmark = pytest.mark.django_db
@@ -108,3 +111,29 @@ def test_create_invitation_creates_invitation_with_correct_connections(
     assert actor_with_single_follower, follower in break_invitation.sender
     assert follower in break_invitation.addressees
     assert break_ in break_invitation.subject
+
+
+def test_accept_break_invitation_connects_acceptee_to_acceptees(actor):
+    """Should connect the actor to the invitations acceptees and the breaks participants."""
+    break_invitation = BreakInvitationFactory()
+    break_invitation.subject.connect(BreakFactory())
+    break_invitation.addressees.connect(actor)
+
+    actual_invitation = accept_break_invitation(actor, break_invitation)
+    actual_break = actual_invitation.get_subject()
+
+    assert actor in actual_invitation.acceptees
+    assert actor in actual_break.participants
+
+
+def test_decline_break_invitation_connects_declinee_to_declinees(actor):
+    """Should connect the actor to the invitations declinees."""
+    break_invitation = BreakInvitationFactory()
+    break_invitation.subject.connect(BreakFactory())
+    break_invitation.addressees.connect(actor)
+
+    actual_invitation = decline_break_invitation(actor, break_invitation)
+    actual_break = actual_invitation.get_subject()
+
+    assert actor in actual_invitation.declinees
+    assert actor not in actual_break.participants

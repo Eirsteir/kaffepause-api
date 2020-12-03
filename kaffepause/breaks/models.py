@@ -60,6 +60,9 @@ class BreakInvitation(StructuredNode):
     def is_expired(self):
         return self.subject.single().is_expired
 
+    def get_subject(self):
+        return self.subject.single()
+
     def accept_on_behalf_of(self, user):
         self.acceptees.connect(user)
 

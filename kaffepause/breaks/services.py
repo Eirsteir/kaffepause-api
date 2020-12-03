@@ -55,7 +55,7 @@ def accept_break_invitation(
     actor: User, invitation: BreakInvitation
 ) -> BreakInvitation:
     __reply_to_invitation(actor, invitation, invitation.accept_on_behalf_of)
-    invitation.subject.participants.connect(actor)
+    invitation.get_subject().participants.connect(actor)
     return invitation
 
 
