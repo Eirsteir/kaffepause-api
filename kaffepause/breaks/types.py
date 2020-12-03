@@ -1,32 +1,27 @@
 import graphene
 from graphene import relay
-from graphene_django import DjangoObjectType
 
-from kaffepause.breaks.models import Break, BreakInvitation
-from kaffepause.common.types import CountingNodeConnection
+from kaffepause.users.types import UserNode
 
 
-class BreakInvitationType(DjangoObjectType):
+class BreakInvitationNode(graphene.ObjectType):
     class Meta:
-        model = BreakInvitation
-        filter_fields = ("reply", "expiry", "is_seen")
         interfaces = (relay.Node,)
-        connection_class = CountingNodeConnection
-        name = "break_invitation"
+        name = "Break Invitation"
 
-    id = graphene.ID(source="pk", required=True)
+    uid = graphene.String()
+    created = graphene.DateTime()
+    sender = graphene.Field(UserNode)
+    addressee_count = graphene.Int()
+    subject = graphene.Field(lambda: BreakNode)
 
 
-class BreakType(DjangoObjectType):
+class BreakNode(graphene.ObjectType):
     class Meta:
-        model = Break
-        fields = (
-            "id",
-            "participants",
-            "start_time",
-        )
         interfaces = (relay.Node,)
-        connection_class = CountingNodeConnection
-        name = "break"
+        name = "Break"
 
-    id = graphene.ID(source="pk", required=True)
+    uid = graphene.String()
+    start_time = graphene.DateTime()
+    participants = relay.ConnectionField(UserNode)
+    invitation = graphene.Field(BreakInvitationNode)

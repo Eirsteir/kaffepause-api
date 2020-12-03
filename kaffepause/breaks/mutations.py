@@ -8,7 +8,7 @@ from kaffepause.breaks.services import (
     decline_break_invitation,
     ignore_break_invitation,
 )
-from kaffepause.breaks.types import BreakInvitationType, BreakType
+from kaffepause.breaks.types import BreakInvitationNode, BreakNode
 from kaffepause.common.bases import Mutation
 
 UserModel = get_user_model()
@@ -18,7 +18,7 @@ class InviteFriendsToABreak(Mutation):
     class Arguments:
         start_time = graphene.DateTime(required=False)
 
-    subject = graphene.Field(BreakType)
+    subject = graphene.Field(BreakNode)
 
     @classmethod
     def resolve_mutation(cls, root, info, start_time=None):
@@ -35,8 +35,8 @@ class BreakInvitationAction(Mutation):
 
     _invitation_action = None
 
-    subject = graphene.Field(BreakType)
-    invitation = graphene.Field(BreakInvitationType)
+    subject = graphene.Field(BreakNode)
+    invitation = graphene.Field(BreakInvitationNode)
 
     @classmethod
     def resolve_mutation(cls, root, info, invitation):  # TODO: Handle errors

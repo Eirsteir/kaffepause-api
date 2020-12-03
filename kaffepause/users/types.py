@@ -14,7 +14,7 @@ from kaffepause.users.selectors import get_user_from_account
 class UserNode(graphene.ObjectType):
     class Meta:
         interfaces = (relay.Node,)
-        name = "user"
+        name = "User"
 
     uid = graphene.UUID()
     name = graphene.String()

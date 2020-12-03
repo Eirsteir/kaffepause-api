@@ -13,7 +13,7 @@ from kaffepause.breaks.selectors import (
     get_expired_break_invitations,
     get_outgoing_break_invitations,
 )
-from kaffepause.breaks.types import BreakInvitationType
+from kaffepause.breaks.types import BreakInvitationNode
 
 UserModel = get_user_model()
 
