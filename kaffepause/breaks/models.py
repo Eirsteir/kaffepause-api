@@ -21,6 +21,7 @@ from kaffepause.breaks.exceptions import (
     InvitationNotAddressedAtUser,
 )
 from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER
+from kaffepause.common.models import TimeStampedRel
 from kaffepause.common.utils import fifteen_minutes_from_now, time_from_now
 
 
@@ -55,9 +56,8 @@ class BreakInvitation(StructuredNode):
     addressees = RelationshipTo(USER, BreakRelationship.TO, cardinality=OneOrMore)
     subject = RelationshipTo(BREAK, BreakRelationship.REGARDING, cardinality=One)
 
-    # TODO: add rel model
-    acceptees = RelationshipFrom(USER, BreakRelationship.ACCEPTED)
-    declinees = RelationshipFrom(USER, BreakRelationship.DECLINED)
+    acceptees = RelationshipFrom(USER, BreakRelationship.ACCEPTED, model=TimeStampedRel)
+    declinees = RelationshipFrom(USER, BreakRelationship.DECLINED, model=TimeStampedRel)
 
     @property
     def is_expired(self):

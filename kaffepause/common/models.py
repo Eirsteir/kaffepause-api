@@ -1,6 +1,10 @@
+from datetime import datetime
+
+import pytz
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
+from neomodel import DateTimeProperty, StructuredRel
 
 from kaffepause.common.enums import BaseStatusEnum
 
@@ -26,3 +30,7 @@ class StatusModel(TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+
+class TimeStampedRel(StructuredRel):
+    created = DateTimeProperty(default=lambda: datetime.now(pytz.utc))
