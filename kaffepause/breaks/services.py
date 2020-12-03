@@ -1,13 +1,15 @@
 from datetime import datetime
 from typing import Callable, List
 
+from neomodel import db
+
 from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.breaks.models import Break, BreakInvitation
 from kaffepause.relationships.enums import UserRelationship
 from kaffepause.users.models import User
 
 
-def create_break_and_invitations(
+def create_break_and_invitation(
     actor: User, addressees: List[int], start_time: datetime = None
 ) -> Break:
     """
@@ -18,7 +20,7 @@ def create_break_and_invitations(
     return _create_break_and_invitation(actor, follower_selection, start_time)
 
 
-def create_and_invite_followers_to_a_break(
+def create_break_and_invite_followers(
     actor: User, start_time: datetime = None
 ) -> Break:
     """Create a break and an invitation all of the users followers, optionally at the given start time."""
@@ -40,26 +42,12 @@ def _create_break(actor: User, start_time: datetime) -> Break:
     return break_
 
 
-def _create_invitation(actor: User, break_: Break, addressees) -> None:
+def _create_invitation(actor: User, break_: Break, addressees: List[User]) -> None:
     break_invitation = BreakInvitation().save()
     break_invitation.sender.connect(actor)
     break_invitation.subject.connect(break_)
-    map(lambda addressee: break_.addressees.connect(addressee), addressees)
-
-    # query = f"""
-    # MATCH (subject:User {{id: {actor.id}})
-    # CREATE (break_:Break {{start_time: {start_time}}})
-    # CREATE (subject)-[:{BreakRelationship.PARTICIPATED_IN}]->(break_)
-    # CREATE (invitation:BreakInvitation)
-    # CREATE (subject)-[:{BreakRelationship.SENT}]->(invitation)
-    # CREATE (invitation)-[:{BreakRelationship.REGARDING}]->(break_)
-    # -- SPLIT QUERY HERE ? --
-    # UNWIND {addressees} as user
-    # MATCH (addressee:User {{id: user.id}})
-    # CREATE (invitation)-[:{BreakRelationship.TO}]->(addressee)
-    # MATCH (subject)-[r:{UserRelationship.ARE_FRIENDS}]-(addressee)
-    # SET r.weight += 1
-    # """
+    for addressee in addressees:
+        break_invitation.addressees.connect(addressee)
 
 
 def accept_break_invitation(

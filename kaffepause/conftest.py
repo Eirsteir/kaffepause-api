@@ -1,14 +1,15 @@
 import pytest
+from neomodel import clear_neo4j_database, db
 
-from kaffepause.breaks.models import Break, BreakInvitation
-from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory
 from kaffepause.users.models import User
 from kaffepause.users.test.factories import UserFactory
 
 
 @pytest.fixture(autouse=True)
-def media_storage(settings, tmpdir):
-    settings.MEDIA_ROOT = tmpdir.strpath
+def setup_and_teardown():
+    clear_neo4j_database(db)
+    yield
+    clear_neo4j_database(db)
 
 
 @pytest.fixture

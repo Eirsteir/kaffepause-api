@@ -20,13 +20,6 @@ pytestmark = pytest.mark.django_db
 # https://github.com/hspandher/django-test-addons#testing-neo4j-graph-database
 
 
-@pytest.fixture(autouse=True)
-def setup_and_teardown():
-    clear_neo4j_database(db)
-    yield
-    clear_neo4j_database(db)
-
-
 @pytest.fixture
 def actor():
     return UserFactory()
