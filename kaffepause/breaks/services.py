@@ -33,12 +33,17 @@ def _create_break_and_invitation(
 
 
 def _create_break(actor: User, start_time: datetime) -> Break:
+    """Create break with given start time and connect actor to its participants."""
     break_ = Break(start_time=start_time).save()
     break_.participants.connect(actor)
     return break_
 
 
 def _create_invitation(actor: User, break_: Break, addressees: List[User]) -> None:
+    """
+    Create an invitation for given break and connect the actor as its sender and the break as its subject.
+    Will be addressed to all given addressees.
+    """
     break_invitation = BreakInvitation().save()
     break_invitation.sender.connect(actor)
     break_invitation.subject.connect(break_)
