@@ -12,7 +12,7 @@ def get_first_matching_attr(obj, *attrs, default=None):
 
 
 def fifteen_minutes_from_now():
-    return time_from_now(minutes=30)
+    return time_from_now(minutes=15)
 
 
 def three_hours_from_now():
@@ -20,6 +20,7 @@ def three_hours_from_now():
 
 
 def time_from_now(hours=0, minutes=0):
+    """Returns the time from now. If now plus given time is in the past, it wraps around to the next day."""
     now = timezone.now()
     start = now + timedelta(hours=hours, minutes=minutes)
     return start if start > now else start + timedelta(days=1)

@@ -1,30 +1,16 @@
-from datetime import timedelta
 from unittest.mock import PropertyMock, patch
 
 import pytest
-from django.utils import timezone
 
 from kaffepause.breaks.exceptions import (
     AlreadyReplied,
     InvitationExpired,
     InvitationNotAddressedAtUser,
 )
-from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory
+from kaffepause.breaks.test.factories import BreakInvitationFactory
 from kaffepause.users.test.factories import UserFactory
 
 pytestmark = pytest.mark.django_db
-
-
-@pytest.mark.parametrize("expires_in_hours, expected", [(-1, True), (1, False)])
-def test_is_expired(expires_in_hours, expected):
-    """Should return whether the invitation has expired."""
-    now = timezone.now()
-    expiry = now + timedelta(hours=expires_in_hours)
-
-    invitation = BreakInvitationFactory()
-    invitation.subject.connect(BreakFactory(start_time=expiry))
-
-    assert invitation.is_expired == expected
 
 
 @patch("kaffepause.breaks.models.BreakInvitation.is_expired", new_callable=PropertyMock)

@@ -1,11 +1,7 @@
 from datetime import datetime
 from typing import Callable, List
 
-from neomodel import db
-
-from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.breaks.models import Break, BreakInvitation
-from kaffepause.relationships.enums import UserRelationship
 from kaffepause.users.models import User
 
 

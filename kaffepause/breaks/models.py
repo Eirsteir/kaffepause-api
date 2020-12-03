@@ -33,16 +33,13 @@ class Break(StructuredNode):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.clean_fields()
         self.clean()
-
-    def clean_fields(self):
-        if not self.start_time:
-            self.start_time = fifteen_minutes_from_now()
 
     def clean(self):
         if timezone.now() >= self.start_time:
             raise InvalidBreakStartTime
+        elif self.is_expired:
+            raise InvalidBreakStartTime(_("Break must start in minimum 5 minutes"))
 
     @property
     def is_expired(self):
