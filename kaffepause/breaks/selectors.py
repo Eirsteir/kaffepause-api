@@ -15,30 +15,47 @@ from kaffepause.users.models import User
 
 def get_break_invitations_awaiting_reply(actor: User) -> List[BreakInvitation]:
     """Returns all non-expired break invitations awaiting reply."""
+    query = (
+        _get_unanswered_invitations_query()
+        + f"""
+    AND break_.start_time > {_get_cypher_minutes_ago(5)}
+    """
+    )
+    unanswered_invitations = _run_break_invitation_query(query, actor)
+    return unanswered_invitations
+
+
+def get_expired_break_invitations(actor: User) -> List[BreakInvitation]:
+    query = (
+        _get_unanswered_invitations_query()
+        + f"""
+    AND break_.start_time < {_get_cypher_minutes_ago(5)}
+    """
+    )
+    unanswered_invitations = _run_break_invitation_query(query, actor)
+    return unanswered_invitations
+
+
+def _get_unanswered_invitations_query() -> str:
     query = f"""
     MATCH (invitation:BreakInvitation)-[:{BreakRelationship.TO}]->(user:User {{uid: {{user_uid}}}})
     MATCH (invitation)-[:{BreakRelationship.REGARDING}]->(break_:Break)
     WHERE NOT (user)-[:{BreakRelationship.ACCEPTED} | :{BreakRelationship.DECLINED}]->(invitation)
-    AND break_.start_time > datetime().epochSeconds - (60*5) // 5 minutes ago
-    RETURN invitation
     """
+    return query
+
+
+def _get_cypher_minutes_ago(minutes) -> str:
+    return f"datetime().epochSeconds - (60*{minutes})"
+
+
+def _run_break_invitation_query(query, actor) -> List[BreakInvitation]:
+    query += "RETURN invitation"
     params = dict(user_uid=actor.uid)
     results, meta = db.cypher_query(query, params=params)
-    unanswered_invitations = [BreakInvitation.inflate(row[0]) for row in results]
-    return unanswered_invitations
+    break_invitations = [BreakInvitation.inflate(row[0]) for row in results]
+    return break_invitations
 
 
-def get_expired_break_invitations(actor: User) -> QuerySet[BreakInvitation]:
-    raise NotImplementedError
-
-
-def get_all_break_invitations(actor: User) -> QuerySet[BreakInvitation]:
-    raise NotImplementedError
-
-
-def _get_incoming_query(user: User) -> Q:
-    raise NotImplementedError
-
-
-def get_outgoing_break_invitations(actor: User) -> QuerySet[BreakInvitation]:
-    raise NotImplementedError
+def get_break_history(actor: User) -> List[Break]:
+    return actor.breaks.all()
