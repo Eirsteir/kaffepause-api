@@ -12,6 +12,6 @@ def setup_and_teardown():
     clear_neo4j_database(db)
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def user() -> User:
     return UserFactory()

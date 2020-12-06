@@ -33,7 +33,7 @@ class Break(StructuredNode):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.clean()
+        # self.clean()  # TODO: This is called when retrieving nodes as well
 
     def clean(self):
         if timezone.now() >= self.start_time:
