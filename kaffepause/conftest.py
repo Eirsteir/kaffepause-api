@@ -89,14 +89,6 @@ def pytest_sessionstart(session):
             raise ce
 
 
-#
-# @pytest.fixture(autouse=True)
-# def setup_and_teardown():
-#     clear_neo4j_database(db)
-#     yield
-#     clear_neo4j_database(db)
-
-
 @pytest.fixture(autouse=True)
 def user() -> User:
     return UserFactory()

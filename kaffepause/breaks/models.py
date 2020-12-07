@@ -31,14 +31,16 @@ class Break(StructuredNode):
     participants = RelationshipFrom(USER, BreakRelationship.PARTICIPATED_IN)
     invitation = RelationshipFrom(BREAK_INVITATION, BreakRelationship.REGARDING)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # self.clean()  # TODO: This is called when retrieving nodes as well
+    @classmethod
+    def create(cls, *props, **kwargs):
+        cls.clean(*props, **kwargs)
+        return super().create(*props, **kwargs)
 
-    def clean(self):
-        if timezone.now() >= self.start_time:
+    def clean(self, *props, **kwargs):
+        start_time = self.get("start_time")
+        if timezone.now() >= start_time:
             raise InvalidBreakStartTime
-        elif self.is_expired:
+        elif time_from_now(minutes=5) >= start_time:
             raise InvalidBreakStartTime(_("Break must start in minimum 5 minutes"))
 
     @property
@@ -58,7 +60,7 @@ class BreakInvitation(StructuredNode):
 
     @property
     def is_expired(self):
-        return self.subject.single().is_expired
+        return self.get_subject().is_expired
 
     def get_subject(self):
         return self.subject.single()

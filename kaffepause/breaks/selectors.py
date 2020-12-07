@@ -49,7 +49,7 @@ def _get_cypher_minutes_ago(minutes) -> str:
     return f"datetime().epochSeconds - (60*{minutes})"
 
 
-def _run_break_invitation_query(query, actor) -> List[BreakInvitation]:
+def _run_break_invitation_query(query: str, actor: User) -> List[BreakInvitation]:
     query += "RETURN invitation"
     params = dict(user_uid=actor.uid)
     results, meta = db.cypher_query(query, params=params)
