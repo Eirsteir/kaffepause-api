@@ -6,7 +6,7 @@ from kaffepause.users.models import User
 
 
 def create_break_and_invitation(
-    actor: User, addressees: List[int] = None, start_time: datetime = None
+    actor: User, addressees: List[str] = None, start_time: datetime = None
 ) -> Break:
     """
     Create a break and an invitation to given addressees, optionally at the given start time.
@@ -51,7 +51,9 @@ def _create_invitation(actor: User, break_: Break, addressees: List[User]) -> No
 def accept_break_invitation(
     actor: User, invitation: BreakInvitation
 ) -> BreakInvitation:
-    __reply_to_invitation(actor, invitation, invitation.accept_on_behalf_of)
+    invitation = __reply_to_invitation(
+        actor, invitation, invitation.accept_on_behalf_of
+    )
     invitation.get_subject().participants.connect(actor)
     return invitation
 
