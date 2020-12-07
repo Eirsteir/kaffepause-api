@@ -39,8 +39,8 @@ seed:
 	docker-compose -f local.yml run --rm django python manage.py seed ${args}
 
 test:
-	docker-compose -f local.yml run --rm django pytest ${args}
+	docker-compose -f local.yml run --rm django pytest kaffepause ${args}
 
 coverage:
-	docker-compose -f local.yml run --rm django coverage run -m pytest
+	docker-compose -f local.yml run --rm django coverage run -m pytest kaffepause
 	docker-compose -f local.yml run --rm django coverage report
