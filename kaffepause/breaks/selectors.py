@@ -13,6 +13,10 @@ from kaffepause.common.typing import QuerySet
 from kaffepause.users.models import User
 
 
+def get_all_break_invitations(actor: User) -> List[BreakInvitation]:
+    return actor.break_invitations.all()
+
+
 def get_break_invitations_awaiting_reply(actor: User) -> List[BreakInvitation]:
     """Returns all non-expired break invitations awaiting reply."""
     query = (
