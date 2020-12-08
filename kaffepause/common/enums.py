@@ -25,3 +25,4 @@ class BaseStatusEnum(Enum):
 USER = "kaffepause.users.models.User"
 BREAK = "kaffepause.breaks.models.Break"
 BREAK_INVITATION = "kaffepause.breaks.models.BreakInvitation"
+STATUS_UPDATE = "kaffepause.statusupdates.models.StatusUpdate"

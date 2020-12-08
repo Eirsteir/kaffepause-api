@@ -6,18 +6,18 @@ from neomodel import (
     StringProperty,
     StructuredNode,
     UniqueIdProperty,
+    ZeroOrOne,
 )
 
 from kaffepause.breaks.enums import BreakRelationship
-from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER
+from kaffepause.common.enums import BREAK, BREAK_INVITATION, STATUS_UPDATE, USER
 from kaffepause.relationships.enums import UserRelationship
 from kaffepause.relationships.models import FriendRel, RelationshipRel
+from kaffepause.statusupdates.enums import StatusUpdateRelationship
 
 
 class User(StructuredNode):
-    uid = (
-        UniqueIdProperty()
-    )  # https://neomodel.readthedocs.io/en/latest/properties.html#independent-database-property-name
+    uid = UniqueIdProperty()
     name = StringProperty(required=True, index=True)
     username = StringProperty(unique_index=True)
 
@@ -42,6 +42,10 @@ class User(StructuredNode):
     )
     declined_break_invitations = RelationshipTo(
         BREAK_INVITATION, BreakRelationship.DECLINED
+    )
+
+    current_status = RelationshipTo(
+        STATUS_UPDATE, StatusUpdateRelationship.CURRENT, cardinality=ZeroOrOne
     )
 
     @classmethod
