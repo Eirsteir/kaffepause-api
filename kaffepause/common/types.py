@@ -3,7 +3,7 @@ from graphene import relay
 from graphene_django.utils import camelize
 
 
-class CountingNodeConnection(relay.Connection):
+class CountableConnection(relay.Connection):
     """Connection to include a node and edges count."""
 
     class Meta:

@@ -1,14 +1,14 @@
 import graphene
 from graphene import relay
 
-from kaffepause.common.types import CountingNodeConnection
-from kaffepause.users.types import UserNode
+from kaffepause.common.types import CountableConnection
+from kaffepause.users.types import UserConnection, UserNode
 
 
 class BreakInvitationNode(graphene.ObjectType):
     class Meta:
         interfaces = (relay.Node,)
-        name = "Break Invitation"
+        name = "BreakInvitation"
 
     uid = graphene.String()
     created = graphene.DateTime()
@@ -24,10 +24,10 @@ class BreakNode(graphene.ObjectType):
 
     uid = graphene.String()
     start_time = graphene.DateTime()
-    participants = relay.ConnectionField(UserNode)
+    participants = relay.ConnectionField(UserConnection)
     invitation = graphene.Field(BreakInvitationNode)
 
 
-class BreakInvitationConnection(CountingNodeConnection):
+class BreakInvitationConnection(CountableConnection):
     class Meta:
         node = BreakInvitationNode

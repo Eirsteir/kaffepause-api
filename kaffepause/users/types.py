@@ -1,13 +1,14 @@
 import graphene
 from graphene import relay
 
-from kaffepause.common.types import CountingNodeConnection
+from kaffepause.common.types import CountableConnection
 from kaffepause.relationships.selectors import (
     get_friends,
     get_friends_count,
     get_friendship_status,
     get_social_context_between,
 )
+from kaffepause.statusupdates.types import StatusUpdateNode
 from kaffepause.users.selectors import get_user_from_account
 
 
@@ -22,7 +23,7 @@ class UserNode(graphene.ObjectType):
     friends_count = graphene.Int()
     friends = relay.ConnectionField(lambda: UserConnection)
     social_context = graphene.String()
-
+    current_status = graphene.Field(StatusUpdateNode)
     friendship_status = graphene.String()
 
     def resolve_friendship_status(parent, info):
@@ -50,7 +51,10 @@ class UserNode(graphene.ObjectType):
         current_user = get_user_from_account(current_user_account)
         return get_social_context_between(actor=current_user, other=parent)
 
+    def resolve_current_status(parent, info):
+        return parent.current_status.single()
 
-class UserConnection(CountingNodeConnection):
+
+class UserConnection(CountableConnection):
     class Meta:
         node = UserNode

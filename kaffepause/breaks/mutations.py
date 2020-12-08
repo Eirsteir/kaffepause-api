@@ -12,7 +12,7 @@ from kaffepause.common.bases import Mutation, NeomodelGraphQLMixin
 
 class InitiateBreak(NeomodelGraphQLMixin, Mutation):
     class Arguments:
-        addressees = graphene.List(graphene.String(), required=False)
+        addressees = graphene.List(graphene.String, required=False)
         start_time = graphene.DateTime(required=False)
 
     break_ = graphene.Field(BreakNode)
