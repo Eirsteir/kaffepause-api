@@ -14,7 +14,7 @@ class StatusUpdateType(Enum):
 
     @classmethod
     def choices(cls):
-        return ({tag.name, tag.value} for tag in cls)
+        return {field: member.value for field, member in cls.__members__.items()}
 
 
 class StatusUpdateRelationship(NeomodelRelationshipEnum):
