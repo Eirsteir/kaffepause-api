@@ -8,3 +8,4 @@ class StatusUpdateNode(graphene.ObjectType):
         name = "StatusUpdate"
 
     type = graphene.String()
+    created = graphene.DateTime()

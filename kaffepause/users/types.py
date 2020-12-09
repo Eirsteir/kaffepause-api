@@ -9,6 +9,7 @@ from kaffepause.relationships.selectors import (
     get_social_context_between,
 )
 from kaffepause.statusupdates.types import StatusUpdateNode
+from kaffepause.users.models import User
 from kaffepause.users.selectors import get_user_from_account
 
 
@@ -52,6 +53,8 @@ class UserNode(graphene.ObjectType):
         return get_social_context_between(actor=current_user, other=parent)
 
     def resolve_current_status(parent, info):
+        # TODO: only for followers
+
         return parent.current_status.single()
 
 
