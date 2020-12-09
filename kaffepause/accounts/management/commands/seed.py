@@ -100,8 +100,8 @@ class Command(BaseCommand):
         Populate actual database with random breaks and invitations
         """
         query = """
-        FOREACH (r IN range({{range_min}},{{range_max}}) |
-        CREATE (b:Break {{start_time: datetime().epochSeconds + (1000*60*r)}})
+        FOREACH (r IN range({range_min},{range_max}) |
+        CREATE (b:Break {start_time: datetime().epochSeconds + (1000*60*r)})
         CREATE (i:BreakInvitation)
         CREATE (i)-[:REGARDING]->(b));
         """
