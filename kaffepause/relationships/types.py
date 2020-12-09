@@ -8,6 +8,3 @@ class FriendshipNode(graphene.ObjectType):
         name = "friendship"
 
     since = graphene.DateTime()
-
-    def resolve_since(self, info):
-        return self.since

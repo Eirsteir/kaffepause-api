@@ -9,7 +9,6 @@ from kaffepause.relationships.selectors import (
     get_social_context_between,
 )
 from kaffepause.statusupdates.types import StatusUpdateNode
-from kaffepause.users.models import User
 from kaffepause.users.selectors import get_user_from_account
 
 
@@ -31,15 +30,6 @@ class UserNode(graphene.ObjectType):
         current_user_account = info.context.user
         current_user = get_user_from_account(current_user_account)
         return get_friendship_status(actor=current_user, user=parent)
-
-    def resolve_uid(parent, info):
-        return parent.uid
-
-    def resolve_name(parent, info):
-        return parent.name
-
-    def resolve_username(parent, info):
-        return parent.username
 
     def resolve_friends_count(parent, info):
         return get_friends_count(parent)
