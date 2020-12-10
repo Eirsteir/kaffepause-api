@@ -6,5 +6,5 @@ from kaffepause.statusupdates.enums import StatusUpdateRelationship, StatusUpdat
 
 
 class StatusUpdate(TimeStampedNode):
-    type = StringProperty(required=True, choices=StatusUpdateType.choices())
+    status_type = StringProperty(required=True, choices=StatusUpdateType.choices())
     previous = RelationshipTo(STATUS_UPDATE, StatusUpdateRelationship.PREVIOUS)

@@ -36,5 +36,5 @@ class Query(UserQuery, MeQuery, graphene.ObjectType):
     pass
 
 
-class Mutation(graphene.ObjectType):
+class Mutation(ProfileMutations, graphene.ObjectType):
     pass

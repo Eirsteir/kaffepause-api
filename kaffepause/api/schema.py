@@ -4,6 +4,7 @@ from graphene_django.debug import DjangoDebug
 import kaffepause.accounts.schema
 import kaffepause.breaks.schema
 import kaffepause.relationships.schema
+import kaffepause.statusupdates.schema
 import kaffepause.users.schema
 
 
@@ -22,6 +23,7 @@ class Mutation(
     kaffepause.users.schema.Mutation,
     kaffepause.relationships.schema.Mutation,
     kaffepause.breaks.schema.Mutation,
+    kaffepause.statusupdates.schema.Mutation,
     graphene.ObjectType,
 ):
     pass
