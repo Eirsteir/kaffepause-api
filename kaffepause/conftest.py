@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 import os
-import sys
 import warnings
 
 import pytest
@@ -11,6 +10,14 @@ from neomodel import change_neo4j_password, clear_neo4j_database, config, db
 
 from kaffepause.users.models import User
 from kaffepause.users.test.factories import UserFactory
+
+
+@pytest.fixture(autouse=True)
+def setup_and_teardown():
+    """Fixture to clear database in between each test function."""
+    clear_neo4j_database(db)
+    yield
+    clear_neo4j_database(db)
 
 
 def pytest_addoption(parser):
@@ -53,9 +60,7 @@ def pytest_sessionstart(session):
                 "or set the --resetdb parameter when calling pytest\n\n\tpytest --resetdb."
             )
         else:
-            clear_neo4j_database(
-                db
-            )  # Wait for v4, clear_constraints=True, clear_indexes=True)
+            clear_neo4j_database(db, clear_constraints=True, clear_indexes=True)
     except (CypherError, ClientError) as ce:
         # Handle instance without password being changed
         if (

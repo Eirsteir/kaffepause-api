@@ -44,15 +44,14 @@ neo4j_ready() {
 python << END
 import sys
 
-import neobolt
+import neo4j
 
 from neomodel import db, config
 
 
 try:
-   print("${NEO4J_BOLT_URL}")
    db.set_connection("${NEO4J_BOLT_URL}")
-except neobolt.exceptions.ServiceUnavailable:
+except neo4j.exceptions.ServiceUnavailable:
     sys.exit(-1)
 sys.exit(0)
 

@@ -42,9 +42,9 @@ def get_expired_break_invitations(actor: User) -> List[BreakInvitation]:
 
 def _get_unanswered_invitations_query() -> str:
     query = f"""
-    MATCH (invitation:BreakInvitation)-[:{BreakRelationship.TO}]->(user:User {{uid: {{user_uid}}}})
+    MATCH (invitation:BreakInvitation)-[:{BreakRelationship.TO}]->(user:User {{uid: $user_uid}})
     MATCH (invitation)-[:{BreakRelationship.REGARDING}]->(break_:Break)
-    WHERE NOT (user)-[:{BreakRelationship.ACCEPTED} | :{BreakRelationship.DECLINED}]->(invitation)
+    WHERE NOT (user)-[:{BreakRelationship.ACCEPTED} | {BreakRelationship.DECLINED}]->(invitation)
     """
     return query
 

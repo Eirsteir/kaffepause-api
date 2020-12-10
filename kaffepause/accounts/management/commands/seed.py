@@ -127,3 +127,11 @@ class Command(BaseCommand):
         """
 
         return db.cypher_query(query)
+
+
+# UNWIND range(1,100) as id
+# CREATE (p:Person {id:id, name: "Name " + id, age: id % 3}) WITH collect(p) as people
+# UNWIND people as p1
+# UNWIND range(1,10) as friend
+# WITH p1, people[(p1.id + friend) % size(people)] as p2
+# CREATE (p1)-[:KNOWS {years: abs(p2.id - p1.id)}]->(p2)

@@ -18,9 +18,9 @@ django-cors-headers==3.5.0 # https://github.com/adamchainz/django-cors-headers
 
 # Neomodel
 # ------------------------------------------------------------------------------
-# Upgrade when added support for neo4j 4: https://github.com/neo4j-contrib/django-neomodel/pull/39
-neomodel==3.3.2  # https://neomodel.readthedocs.io/en/latest/
-django-neomodel==0.0.4
+neomodel==4.0.1  # https://neomodel.readthedocs.io/en/latest/
+# Django-neomodel
+git+https://github.com/neo4j-contrib/django-neomodel.git@master#egg=django-neomodel
 
 # GraphQL
 # ------------------------------------------------------------------------------
