@@ -8,7 +8,7 @@ from kaffepause.statusupdates.types import StatusUpdateNode
 
 class UpdateStatus(NeomodelGraphQLMixin, Mutation):
     class Arguments:
-        status_type = graphene.Enum.from_enum(StatusUpdateType)
+        status_type = graphene.Enum.from_enum(StatusUpdateType)(required=True)
 
     current_status = graphene.Field(StatusUpdateNode)
 

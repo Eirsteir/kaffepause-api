@@ -7,7 +7,14 @@ from graphene_django.views import GraphQLView
 
 app_name = "api"
 urlpatterns = [
-    # https://docs.graphene-python.org/projects/django/en/latest/installation/#csrf-exempt
-    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=settings.DEBUG))),
     url(r"^$", RedirectView.as_view(url="/"), name="default"),
 ]
+
+# Disable CSRF protection only if we're in development mode.
+# https://docs.graphene-python.org/projects/django/en/latest/installation/#csrf-exempt
+if settings.DEBUG:
+    urlpatterns.append(
+        path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True)))
+    )
+else:
+    urlpatterns.append(path("graphql/", GraphQLView.as_view(graphiql=False)))
