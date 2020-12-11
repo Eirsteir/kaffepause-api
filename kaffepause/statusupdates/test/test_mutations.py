@@ -4,6 +4,7 @@ import pytest
 from graphene_django.utils.testing import graphql_query
 
 from kaffepause.statusupdates.enums import StatusUpdateType
+from kaffepause.statusupdates.test.graphql_requests import UPDATE_STATUS_MUTATION
 
 pytestmark = pytest.mark.django_db
 
@@ -16,21 +17,14 @@ def client_query(client):
     return func
 
 
-def test_some_query(client_query):
+def test_update_status(client_query):
+
     response = client_query(
-        """
-        mutation updateStatus($statusType: StatusUpdateType!) {
-            updateStatus(statusType: $statusType) {
-                currentStatus {
-                    verb
-                    created
-                }
-            }
-        }
-        """,
+        UPDATE_STATUS_MUTATION,
         op_name="updateStatus",
         variables={"statusType": StatusUpdateType.FOCUSMODE.name},
     )
-    content = json.loads(response.content)
-    print(content)
+    content = response.json()
+    print(response.__dict__)
+    pytest.fail()
     assert "errors" not in content
