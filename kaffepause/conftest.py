@@ -117,6 +117,11 @@ def token(account):
     return f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
 
 
+@pytest.fixture(autouse=True)
+def auth_headers(token):
+    return {jwt_settings.JWT_AUTH_HEADER_NAME: token}
+
+
 @pytest.fixture
 def client_query(client):
     def func(*args, **kwargs):

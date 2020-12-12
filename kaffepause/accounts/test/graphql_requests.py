@@ -25,3 +25,15 @@ DELETE_ACCOUNT_MUTATION = """
         }
     }
 """
+
+MY_ACCOUNT_QUERY = """
+    query myAccount {
+      myAccount {
+        uuid
+        email
+        secondaryEmail
+        verified
+        archived
+      }
+    }
+"""

@@ -1,14 +1,29 @@
-from django.contrib.auth import get_user_model
-from graphql_auth.schema import UserNode
-from graphql_auth.settings import graphql_auth_settings
-
-from kaffepause.common.bases import UUIDNode
+import graphene
 
 
-class AccountType(UserNode):
+class AccountNode(graphene.ObjectType):
     class Meta:
-        model = get_user_model()
-        filter_fields = graphql_auth_settings.USER_NODE_FILTER_FIELDS
-        exclude = graphql_auth_settings.USER_NODE_EXCLUDE_FIELDS
-        interfaces = (UUIDNode,)
-        name = "account"
+        interfaces = (graphene.relay.Node,)
+        name = "Account"
+
+    uuid = graphene.UUID()
+    email = graphene.String()
+    archived = graphene.Boolean()
+    verified = graphene.Boolean()
+    secondary_email = graphene.String()
+
+    def resolve_uuid(parent, info):
+        return parent.id
+
+    def resolve_archived(parent, info):
+        return parent.status.archived
+
+    def resolve_verified(parent, info):
+        return parent.status.verified
+
+    def resolve_secondary_email(parent, info):
+        return parent.status.secondary_email
+
+    @classmethod
+    def get_queryset(cls, queryset, info):
+        return queryset.select_related("status")

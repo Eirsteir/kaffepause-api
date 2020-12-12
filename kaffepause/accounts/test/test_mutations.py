@@ -2,7 +2,6 @@ from unittest.mock import patch
 from uuid import UUID
 
 import pytest
-from graphql_jwt.settings import jwt_settings
 from neomodel import NeomodelException
 
 from kaffepause.accounts.models import Account
@@ -64,7 +63,9 @@ def test_register_creates_account_and_user_when_graphql_auth_fails(client_query)
     assert not User.nodes.get_or_none(name=expected_name)
 
 
-def test_delete_account_deletes_account_and_user(client_query, account, user, token):
+def test_delete_account_deletes_account_and_user(
+    client_query, auth_headers, account, user, token
+):
     """Should delete both the account and the user."""
     password = "not_a_secret"
     account.set_password(password)
@@ -75,14 +76,14 @@ def test_delete_account_deletes_account_and_user(client_query, account, user, to
         DELETE_ACCOUNT_MUTATION,
         op_name="deleteAccount",
         variables=variables,
-        headers={jwt_settings.JWT_AUTH_HEADER_NAME: token},
+        headers=auth_headers,
     )
 
     assert not Account.objects.filter(id=account.id).exists()
     assert not User.nodes.get_or_none(uid=user.uid)
 
 
-def test_delete_account(snapshot, client_query, account, user, token):
+def test_delete_account(snapshot, client_query, auth_headers, account):
     password = "not_a_secret"
     account.set_password(password)
     account.save()
@@ -92,7 +93,7 @@ def test_delete_account(snapshot, client_query, account, user, token):
         DELETE_ACCOUNT_MUTATION,
         op_name="deleteAccount",
         variables=variables,
-        headers={jwt_settings.JWT_AUTH_HEADER_NAME: token},
+        headers=auth_headers,
     )
     content = response.json()
 

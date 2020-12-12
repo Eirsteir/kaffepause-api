@@ -1,10 +1,10 @@
 import graphene
 from django.contrib.auth import get_user_model
-from graphene import relay
 from graphql_auth import mutations as auth_mutations
+from graphql_jwt.decorators import login_required
 
 from kaffepause.accounts import mutations
-from kaffepause.accounts.types import AccountType
+from kaffepause.accounts.types import AccountNode
 
 Account = get_user_model()
 
@@ -37,13 +37,11 @@ class AuthMutation(graphene.ObjectType):
 
 class AccountQuery(graphene.ObjectType):
 
-    account = relay.Node.Field(AccountType)
+    my_account = graphene.Field(AccountNode)
 
-    def resolve_account(root, info):
-        user_account = info.context.user
-        if user_account.is_authenticated:
-            return user_account
-        return None
+    @login_required
+    def resolve_my_account(root, info):
+        return info.context.user
 
 
 class Query(AccountQuery, graphene.ObjectType):
