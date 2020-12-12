@@ -8,6 +8,8 @@ from neo4j.exceptions import ClientError as CypherError
 from neobolt.exceptions import ClientError
 from neomodel import change_neo4j_password, clear_neo4j_database, config, db
 
+from kaffepause.accounts.models import Account
+from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.users.models import User
 from kaffepause.users.test.factories import UserFactory
 
@@ -95,5 +97,10 @@ def pytest_sessionstart(session):
 
 
 @pytest.fixture(autouse=True)
-def user() -> User:
-    return UserFactory()
+def account() -> Account:
+    return AccountFactory()
+
+
+@pytest.fixture(autouse=True)
+def user(account) -> User:
+    return UserFactory(uid=account.id)

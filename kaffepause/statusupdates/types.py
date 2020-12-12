@@ -14,7 +14,8 @@ class StatusUpdateNode(graphene.ObjectType):
     created = graphene.DateTime()
 
     def resolve_status_type(parent, info):
-        return StatusUpdateType(parent.status_type).name
+        print(parent.status_type)
+        return StatusUpdateType[parent.status_type].name
 
     def resolve_verb(parent, info):
-        return StatusUpdateType(parent.status_type).value
+        return StatusUpdateType[parent.status_type].value

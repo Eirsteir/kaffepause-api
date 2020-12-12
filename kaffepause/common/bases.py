@@ -30,6 +30,12 @@ class Output:
     errors = graphene.Field(OutputErrorType)
 
 
+class MutationMixin:
+    @classmethod
+    def mutate(cls, root, info, **input):
+        return cls.resolve_mutation(root, info, **input)
+
+
 class VerificationRequiredMixin:
     """
     All mutations which requires user to be verified should extend this class.
