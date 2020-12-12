@@ -4,6 +4,9 @@ import os
 import warnings
 
 import pytest
+from graphene_django.utils.testing import graphql_query
+from graphql_jwt.settings import jwt_settings
+from graphql_jwt.shortcuts import get_token
 from neo4j.exceptions import ClientError as CypherError
 from neobolt.exceptions import ClientError
 from neomodel import change_neo4j_password, clear_neo4j_database, config, db
@@ -104,3 +107,16 @@ def account() -> Account:
 @pytest.fixture(autouse=True)
 def user(account) -> User:
     return UserFactory(uid=account.id)
+
+
+@pytest.fixture
+def token(account):
+    return f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
+
+
+@pytest.fixture
+def client_query(client):
+    def func(*args, **kwargs):
+        return graphql_query(*args, **kwargs, client=client)
+
+    return func

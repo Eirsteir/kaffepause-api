@@ -1,25 +1,10 @@
 import pytest
-from graphene_django.utils.testing import graphql_query
 from graphql_jwt.settings import jwt_settings
-from graphql_jwt.shortcuts import get_token
 
 from kaffepause.statusupdates.enums import StatusUpdateType
 from kaffepause.statusupdates.test.graphql_requests import UPDATE_STATUS_MUTATION
 
 pytestmark = pytest.mark.django_db
-
-
-@pytest.fixture
-def token(account):
-    return f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
-
-
-@pytest.fixture
-def client_query(client):
-    def func(*args, **kwargs):
-        return graphql_query(*args, **kwargs, client=client)
-
-    return func
 
 
 def test_update_status_updates_users_current_status(client_query, token, user):
@@ -45,10 +30,12 @@ def test_update_status_returns_current_status(client_query, token, user):
         headers={jwt_settings.JWT_AUTH_HEADER_NAME: token},
     )
     content = response.json()
-    actual_current_status = content.get("data").get("updateStatus").get("currentStatus")
+    data = content.get("data").get("updateStatus")
+    actual_current_status = data.get("currentStatus")
 
     assert actual_current_status.get("statusType") == expected_status_type.name
     assert actual_current_status.get("verb") == expected_status_type.value
+    assert data.get("success")
 
 
 def test_update_status_unauthenticated(snapshot, client_query):

@@ -8,6 +8,7 @@ UPDATE_STATUS_MUTATION = """
                 verb
                 created
             }
+            success
         }
     }
 """
