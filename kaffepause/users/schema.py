@@ -3,6 +3,7 @@ from graphene import relay
 
 from kaffepause.users import mutations
 from kaffepause.users.models import User
+from kaffepause.users.mutations import UpdateProfile
 from kaffepause.users.types import UserConnection, UserNode
 
 
@@ -28,13 +29,13 @@ class MeQuery(graphene.ObjectType):
         return None
 
 
-class ProfileMutations(graphene.ObjectType):
-    update_account = mutations.UpdateProfile.Field()
+class ProfileMutation(graphene.ObjectType):
+    update_profile = UpdateProfile.Field()
 
 
 class Query(UserQuery, MeQuery, graphene.ObjectType):
     pass
 
 
-class Mutation(ProfileMutations, graphene.ObjectType):
+class Mutation(ProfileMutation, graphene.ObjectType):
     pass
