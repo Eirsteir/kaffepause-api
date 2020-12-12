@@ -1,3 +1,5 @@
+import logging
+
 import graphene
 from django.contrib.auth import get_user_model
 from graphql_auth import mutations
@@ -5,6 +7,8 @@ from neomodel import NeomodelException
 
 from kaffepause.common.constants import Messages
 from kaffepause.users.models import User
+
+logger = logging.getLogger(__name__)
 
 Account = get_user_model()
 
@@ -18,19 +22,22 @@ class Register(mutations.Register):
     @classmethod
     def mutate(cls, root, info, name, **input):
         registration = cls.resolve_mutation(root, info, **input)
-        # TODO: put in service
         if registration.success:
             email = input.get(Account.EMAIL_FIELD, False)
             account = Account.objects.get(email=email)
-            user = User(uid=account.id, **account)
             try:
-                user.save()
-            except NeomodelException:
-                account.delete()
+                User(uid=account.id, name=name).save()
+            except NeomodelException as e:
+                logger.error(
+                    f"Failed to create user node, deleting account (id:{account.id})",
+                    exc_info=e,
+                )
+                account.delete()  # TODO: research best practice here
                 return cls(success=False, errors=Messages.ACCOUNT_CREATION_FAILED)
 
-            user.name = name
-            user.save()
+            logger.debug(
+                f"Successfully created new user node and account (id/uid:{account.id})"
+            )
 
         return registration
 
