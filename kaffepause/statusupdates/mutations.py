@@ -17,7 +17,6 @@ class UpdateStatus(NeomodelGraphQLMixin, Output, graphene.Mutation):
     @login_required
     def mutate(cls, root, info, status_type):
         current_user = cls.get_current_user(info)
-        print(status_type.upper())
         status_type = StatusUpdateType[status_type.upper()]
         current_status = update_status(actor=current_user, status_type=status_type)
         return cls(success=True, current_status=current_status)

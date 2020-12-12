@@ -18,21 +18,39 @@ def token(account):
 
 
 @pytest.fixture
-def client_query(client, account):
+def client_query(client):
     def func(*args, **kwargs):
         return graphql_query(*args, **kwargs, client=client)
 
     return func
 
 
-def test_update_status(client_query, token):
+def test_update_status_updates_users_current_status(client_query, token, user):
+    """Should update the users current status to one of the given status type."""
+    expected_status_type = StatusUpdateType.FOCUSMODE.name
 
+    client_query(
+        UPDATE_STATUS_MUTATION,
+        op_name="updateStatus",
+        variables={"statusType": expected_status_type},
+        headers={jwt_settings.JWT_AUTH_HEADER_NAME: token},
+    )
+
+    assert user.current_status.single().status_type == expected_status_type
+
+
+def test_update_status_returns_current_status(client_query, token, user):
+    """Should return the newly updated status."""
+    expected_status_type = StatusUpdateType.FOCUSMODE.name
     response = client_query(
         UPDATE_STATUS_MUTATION,
         op_name="updateStatus",
-        variables={"statusType": StatusUpdateType.FOCUSMODE.name},
+        variables={"statusType": expected_status_type},
         headers={jwt_settings.JWT_AUTH_HEADER_NAME: token},
     )
     content = response.json()
-
-    assert "errors" not in content
+    print(content)
+    assert (
+        content.get("data").get("updateStatus").get("currentStatus").get("statusType")
+        == expected_status_type
+    )
