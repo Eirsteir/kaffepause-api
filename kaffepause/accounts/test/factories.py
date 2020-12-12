@@ -1,7 +1,7 @@
 from typing import Any, Sequence
 
 from django.contrib.auth import get_user_model
-from factory import Faker, SubFactory, post_generation
+from factory import Faker, RelatedFactory, SubFactory, post_generation
 from factory.django import DjangoModelFactory
 from graphql_auth.models import UserStatus
 
@@ -42,4 +42,4 @@ class UserStatusFactory(DjangoModelFactory):
         django_get_or_create = ("user",)
 
     verified = True
-    user = SubFactory(AccountFactory)
+    user = SubFactory(AccountFactory, status=None)

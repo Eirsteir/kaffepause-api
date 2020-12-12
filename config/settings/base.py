@@ -280,6 +280,7 @@ GRAPHQL_JWT = {
     ],
 }
 GRAPHQL_AUTH = {
+    "ALLOW_DELETE_ACCOUNT": True,
     # Disable some of graphql-auth's required fields
     "LOGIN_ALLOWED_FIELDS": ["email"],
     "REGISTER_MUTATION_FIELDS": ["email"],

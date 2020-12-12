@@ -39,7 +39,7 @@ class AccountQuery(graphene.ObjectType):
 
     account = relay.Node.Field(AccountType)
 
-    def resolve_account(self, info):
+    def resolve_account(root, info):
         user_account = info.context.user
         if user_account.is_authenticated:
             return user_account

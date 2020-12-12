@@ -14,16 +14,19 @@ Account = get_user_model()
 
 
 class Register(mutations.Register):
-    """Consistently create an account and a related user node. Update the new user with given name."""
+    """
+    Register a user with an account and a related user node.
+    The given name is set on the created user node.
+    """
 
     class Arguments:
         name = graphene.String(required=True)
 
     @classmethod
     def mutate(cls, root, info, name, **input):
-        registration = cls.resolve_mutation(root, info, **input)
+        registration = super().resolve_mutation(root, info, **input)
         if registration.success:
-            email = input.get(Account.EMAIL_FIELD, False)
+            email = input.get(Account.EMAIL_FIELD)
             account = Account.objects.get(email=email)
             try:
                 User(uid=account.id, name=name).save()
@@ -36,24 +39,22 @@ class Register(mutations.Register):
                 return cls(success=False, errors=Messages.ACCOUNT_CREATION_FAILED)
 
             logger.debug(
-                f"Successfully created new user node and account (id/uid:{account.id})"
+                f"Successfully created new account and user node (id/uid:{account.id})"
             )
 
         return registration
 
 
 class DeleteAccount(mutations.DeleteAccount):
-    """Consistently delete an account and the related user node."""
+    """Permanently delete an account and the related user node."""
 
     @classmethod
-    def mutatate(cls, root, info, **input):
-        deletion = cls.resolve_mutation(root, info, **input)
+    def mutate(cls, root, info, **input):
+        account_id = info.context.user.id
+        deletion = super().resolve_mutation(root, info, **input)
+
         if deletion.success:
-            account = info.context.user
-            try:
-                user = User.nodes.get(uid=account.id)
-            except User.DoesNotExist:
-                return deletion
-            user.delete()
+            User.nodes.get(uid=account_id).delete()
+            logger.debug(f"Successfully deleted account and user (id/uid:{account_id}")
 
         return deletion

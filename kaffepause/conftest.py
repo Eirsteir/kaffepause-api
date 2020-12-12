@@ -101,7 +101,10 @@ def pytest_sessionstart(session):
 
 @pytest.fixture(autouse=True)
 def account() -> Account:
-    return AccountFactory()
+    account = AccountFactory()
+    account.status.verified = True
+    account.status.save()
+    return account
 
 
 @pytest.fixture(autouse=True)
@@ -109,7 +112,7 @@ def user(account) -> User:
     return UserFactory(uid=account.id)
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def token(account):
     return f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
 

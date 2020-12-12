@@ -16,3 +16,12 @@ REGISTER_MUTATION = """
         }
     }
 """
+
+DELETE_ACCOUNT_MUTATION = """
+    mutation deleteAccount($password: String!) {
+        deleteAccount(password: $password) {
+            success
+            errors
+        }
+    }
+"""

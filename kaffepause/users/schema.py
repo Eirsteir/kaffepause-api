@@ -21,7 +21,7 @@ class UserQuery(graphene.ObjectType):
 class MeQuery(graphene.ObjectType):
     me = graphene.Field(UserNode)
 
-    def resolve_me(self, info):
+    def resolve_me(root, info):
         user = info.context.user
         if user.is_authenticated:
             return User.nodes.get(uid=user.id)
