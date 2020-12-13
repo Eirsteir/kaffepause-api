@@ -1,7 +1,6 @@
 import graphene
 from graphene import relay
 
-from kaffepause.users import mutations
 from kaffepause.users.models import User
 from kaffepause.users.mutations import UpdateProfile
 from kaffepause.users.types import UserConnection, UserNode

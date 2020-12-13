@@ -6,6 +6,7 @@ from factory.base import FactoryMetaClass
 from graphene import relay
 from graphql_auth.decorators import verification_required
 
+from kaffepause.common.decorators import login_required
 from kaffepause.common.types import OutputErrorType
 
 
@@ -36,27 +37,23 @@ class MutationMixin:
         return cls.resolve_mutation(root, info, **input)
 
 
-class VerificationRequiredMixin:
+class LoginRequiredMixin(MutationMixin):
     """
     All mutations which requires user to be verified should extend this class.
     """
 
     @classmethod
-    @verification_required
+    @login_required
     def mutate(cls, root, info, **input):
         return cls.resolve_mutation(root, info, **input)
 
 
-class Mutation(VerificationRequiredMixin, Output, graphene.Mutation):
-    pass
-
-
 class NeomodelGraphQLMixin:
     @classmethod
-    def get_current_user(cls, info):
+    def get_current_user(cls):
         from kaffepause.users.models import User
 
-        current_user_account = info.context.user
+        current_user_account = cls._user
         current_user = User.nodes.get(uid=current_user_account.id)
         return current_user
 

@@ -1,6 +1,6 @@
 import graphene
 
-from kaffepause.common.bases import Mutation, NeomodelGraphQLMixin
+from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
 from kaffepause.relationships.exceptions import RelationshipAlreadyExists
 from kaffepause.relationships.services import (
     accept_friend_request,
@@ -12,7 +12,9 @@ from kaffepause.users.models import User
 from kaffepause.users.types import UserNode
 
 
-class SendFriendRequest(NeomodelGraphQLMixin, Mutation):
+class SendFriendRequest(
+    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+):
     class Arguments:
         to_friend = graphene.String(required=True)
 
@@ -20,7 +22,7 @@ class SendFriendRequest(NeomodelGraphQLMixin, Mutation):
 
     @classmethod
     def resolve_mutation(cls, root, info, to_friend):
-        current_user = cls.get_current_user(info)
+        current_user = cls.get_current_user()
         to_friend = User.nodes.get(uid=to_friend)
         try:
             send_friend_request(actor=current_user, to_user=to_friend)
@@ -30,7 +32,9 @@ class SendFriendRequest(NeomodelGraphQLMixin, Mutation):
         return cls(success=True, sent_friend_requestee=to_friend)
 
 
-class CancelFriendRequest(NeomodelGraphQLMixin, Mutation):
+class CancelFriendRequest(
+    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+):
     class Arguments:
         to_friend = graphene.String(required=True)
 
@@ -38,14 +42,14 @@ class CancelFriendRequest(NeomodelGraphQLMixin, Mutation):
 
     @classmethod
     def resolve_mutation(cls, root, info, to_friend):
-        current_user = cls.get_current_user(info)
+        current_user = cls.get_current_user()
         to_friend = User.nodes.get(uid=to_friend)
         cancel_friend_request(actor=current_user, to_user=to_friend)
 
         return cls(success=True, cancelled_friend_requestee=to_friend)
 
 
-class UnfriendUser(NeomodelGraphQLMixin, Mutation):
+class UnfriendUser(LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation):
     class Arguments:
         friend = graphene.String(required=True)
 
@@ -53,14 +57,16 @@ class UnfriendUser(NeomodelGraphQLMixin, Mutation):
 
     @classmethod
     def resolve_mutation(cls, root, info, friend):
-        current_user = cls.get_current_user(info)
+        current_user = cls.get_current_user()
         friend = User.nodes.get(uid=friend)
         unfriend_user(actor=current_user, friend=friend)
 
         return cls(success=True, unfriended_person=friend)
 
 
-class AcceptFriendRequest(NeomodelGraphQLMixin, Mutation):
+class AcceptFriendRequest(
+    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+):
     class Arguments:
         requester = graphene.String(required=True)
 
@@ -68,7 +74,7 @@ class AcceptFriendRequest(NeomodelGraphQLMixin, Mutation):
 
     @classmethod
     def resolve_mutation(cls, root, info, requester):
-        current_user = cls.get_current_user(info)
+        current_user = cls.get_current_user()
         requester = User.nodes.get(uid=requester)
         accept_friend_request(actor=current_user, requester=requester)
 
