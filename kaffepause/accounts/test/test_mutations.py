@@ -13,6 +13,15 @@ from kaffepause.users.models import User
 
 pytestmark = pytest.mark.django_db
 
+PASSWORD = "not_a_secret"
+
+
+@pytest.fixture
+def account(account):
+    account.set_password(PASSWORD)
+    account.save()
+    return account
+
 
 def get_registration_data():
     expected_email = "test@test.com"
@@ -20,8 +29,8 @@ def get_registration_data():
     variables = {
         "name": expected_name,
         "email": expected_email,
-        "password1": "not_a_secret",
-        "password2": "not_a_secret",
+        "password1": PASSWORD,
+        "password2": PASSWORD,
     }
     return expected_email, expected_name, variables
 
@@ -67,11 +76,7 @@ def test_delete_account_deletes_account_and_user(
     client_query, auth_headers, account, user, token
 ):
     """Should delete both the account and the user."""
-    password = "not_a_secret"
-    account.set_password(password)
-    account.save()
-
-    variables = {"password": password}
+    variables = {"password": PASSWORD}
     client_query(
         DELETE_ACCOUNT_MUTATION,
         op_name="deleteAccount",
@@ -84,16 +89,24 @@ def test_delete_account_deletes_account_and_user(
 
 
 def test_delete_account(snapshot, client_query, auth_headers, account):
-    password = "not_a_secret"
-    account.set_password(password)
-    account.save()
-
-    variables = {"password": password}
+    variables = {"password": PASSWORD}
     response = client_query(
         DELETE_ACCOUNT_MUTATION,
         op_name="deleteAccount",
         variables=variables,
         headers=auth_headers,
+    )
+    content = response.json()
+
+    snapshot.assert_match(content)
+
+
+def test_delete_account_unauthenticated(snapshot, client_query, account):
+    variables = {"password": PASSWORD}
+    response = client_query(
+        DELETE_ACCOUNT_MUTATION,
+        op_name="deleteAccount",
+        variables=variables,
     )
     content = response.json()
 
