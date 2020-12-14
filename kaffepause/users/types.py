@@ -17,7 +17,7 @@ class UserNode(graphene.ObjectType):
         interfaces = (relay.Node,)
         name = "User"
 
-    uuid = graphene.UUID()
+    uuid = graphene.String()
     name = graphene.String()
     username = graphene.String()
     friends_count = graphene.Int()

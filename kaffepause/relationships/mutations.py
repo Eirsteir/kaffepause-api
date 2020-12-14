@@ -24,10 +24,7 @@ class SendFriendRequest(
     def resolve_mutation(cls, root, info, to_friend):
         current_user = cls.get_current_user()
         to_friend = User.nodes.get(uid=to_friend)
-        try:
-            send_friend_request(actor=current_user, to_user=to_friend)
-        except RelationshipAlreadyExists as e:
-            return cls(errors=e.default_message)
+        send_friend_request(actor=current_user, to_user=to_friend)
 
         return cls(success=True, sent_friend_requestee=to_friend)
 
