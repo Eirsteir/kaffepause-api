@@ -11,3 +11,15 @@ SEND_FRIEND_REQUEST_MUTATION = """
         }
     }
 """
+
+CANCEL_FRIEND_REQUEST_MUTATION = """
+    mutation cancelFriendRequest($toFriend: String!) {
+        cancelFriendRequest(toFriend: $toFriend) {
+            cancelledFriendRequestee {
+                uuid
+            }
+            success
+            errors
+        }
+    }
+"""

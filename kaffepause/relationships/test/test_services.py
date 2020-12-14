@@ -3,6 +3,7 @@ from neomodel import clear_neo4j_database, db
 
 from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
+    CannotCancelFriendRequest,
     CannotRejectFriendRequest,
     RelationshipAlreadyExists,
 )
@@ -16,8 +17,6 @@ from kaffepause.relationships.services import (
 from kaffepause.users.test.factories import UserFactory
 
 pytestmark = pytest.mark.django_db
-
-# https://github.com/hspandher/django-test-addons#testing-neo4j-graph-database
 
 
 @pytest.fixture
@@ -72,6 +71,24 @@ def test_cancel_friend_request_when_no_request_exists(actor, addressee):
 
     assert not addressee.incoming_friend_requests.get_or_none(uid=actor.uid)
     assert not actor.outgoing_friend_requests.get_or_none(uid=addressee.uid)
+
+
+def test_cancel_friend_request_when_users_are_already_friends_raises_exception(
+    actor, addressee
+):
+    """Should raise an exception if the user attempts to cancel a friend request when the users are already friends."""
+    actor.add_friend(addressee)
+    with pytest.raises(CannotCancelFriendRequest):
+        cancel_friend_request(actor, addressee)
+
+
+def test_cancel_friend_request_when_actor_is_addressee_raises_exception(
+    actor, addressee
+):
+    """Should raise an exception if the user attempts to cancel a friend request to itself."""
+
+    with pytest.raises(CannotCancelFriendRequest):
+        cancel_friend_request(actor, actor)
 
 
 def test_accept_friend_request(actor, requester):

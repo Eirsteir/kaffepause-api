@@ -11,5 +11,9 @@ class CannotAcceptFriendRequest(DefaultError):
     default_message = _("Cannot accept this friend request")
 
 
+class CannotCancelFriendRequest(DefaultError):
+    default_message = _("Cannot cancel this friend request")
+
+
 class CannotRejectFriendRequest(DefaultError):
     default_message = _("Cannot reject this friend request")
