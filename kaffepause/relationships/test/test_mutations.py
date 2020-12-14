@@ -1,6 +1,11 @@
 import pytest
+from graphql_jwt.settings import jwt_settings
+from graphql_jwt.shortcuts import get_token
 
+from kaffepause.accounts.models import Account
+from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.relationships.test.graphql_requests import (
+    ACCEPT_FRIEND_REQUEST_MUTATION,
     CANCEL_FRIEND_REQUEST_MUTATION,
     SEND_FRIEND_REQUEST_MUTATION,
 )
@@ -13,6 +18,13 @@ pytestmark = pytest.mark.django_db
 def requested_friend(user):
     friend = UserFactory()
     user.send_friend_request(friend)
+    return friend
+
+
+@pytest.fixture
+def requesting_friend(user):
+    friend = UserFactory()
+    friend.send_friend_request(user)
     return friend
 
 
@@ -122,10 +134,11 @@ def test_cancel_friend_request_when_can_cancel_request_cancels_request(
 
 
 def test_cancel_friend_request_when_can_cancel_request_returns_the_user(
-    client_query, auth_headers
+    client_query, auth_headers, requested_friend
 ):
     """Should return the recipient of the request."""
-    friend, variables = get_request_data()
+    variables = {"toFriend": requested_friend.uid}
+
     response = client_query(
         CANCEL_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
     )
@@ -133,7 +146,7 @@ def test_cancel_friend_request_when_can_cancel_request_returns_the_user(
     content = response.json()
     data = content.get("data").get("cancelFriendRequest")
 
-    assert data.get("cancelledFriendRequestee").get("uuid") == friend.uid
+    assert data.get("cancelledFriendRequestee").get("uuid") == requested_friend.uid
     assert data.get("success")
     assert not data.get("errors")
 
@@ -168,10 +181,91 @@ def test_cancel_friend_requests_when_addressee_attempts_to_cancel(
     snapshot.assert_match(content)
 
 
-def test_cancel_friend_requests_when_unauthenticated_fails(snapshot, client_query):
+def test_cancel_friend_requests_when_unauthenticated_fails(
+    snapshot, client_query, requested_friend
+):
     """A user should not be able to cancel a friend request when unauthenticated."""
-    friend, variables = get_request_data()
+    variables = {"toFriend": requested_friend.uid}
     response = client_query(CANCEL_FRIEND_REQUEST_MUTATION, variables=variables)
+    content = response.json()
+
+    snapshot.assert_match(content)
+
+
+def test_accept_friend_request_when_can_accept_request_accepts_request(
+    client_query, auth_headers, requesting_friend, user
+):
+    """Should accept the friend request from the user when it has been sent to the user."""
+
+    variables = {"requester": requesting_friend.uid}
+    client_query(
+        ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+    )
+
+    assert user.friends.is_connected(requesting_friend)
+    assert requesting_friend.friends.is_connected(user)
+
+
+def test_accept_friend_request_when_can_accept_request_returns_the_user(
+    client_query, auth_headers, requesting_friend
+):
+    """Should return the recipient of the request when successful."""
+    variables = {"requester": requesting_friend.uid}
+    response = client_query(
+        ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+    )
+
+    content = response.json()
+    data = content.get("data").get("acceptFriendRequest")
+
+    assert data.get("friend").get("uuid") == requesting_friend.uid
+    assert data.get("success")
+    assert not data.get("errors")
+
+
+def test_accept_friend_requests_when_already_friends_does_nothing(
+    snapshot, client_query, auth_headers, requesting_friend, user
+):
+    """Should return the friend when the users are already friends."""
+    user.add_friend(requesting_friend)
+    variables = {"requester": requesting_friend.uid}
+
+    response = client_query(
+        ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+    )
+    content = response.json()
+    data = content.get("data").get("acceptFriendRequest")
+
+    assert data.get("friend").get("uuid") == requesting_friend.uid
+    assert data.get("success")
+    assert not data.get("errors")
+
+
+def test_accept_friend_requests_when_addressee_attempts_to_accept(
+    snapshot, client_query, requesting_friend, user
+):
+    """Should do nothing when the addressee attempts to accept on behalf of the user."""
+    variables = {"requester": requesting_friend.uid}
+    account = AccountFactory(id=requesting_friend.uid)
+    print(requesting_friend.uid)
+    print(account.id)
+    token = f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
+    auth_headers = {jwt_settings.JWT_AUTH_HEADER_NAME: token}
+
+    response = client_query(
+        ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+    )
+    content = response.json()
+
+    snapshot.assert_match(content)
+
+
+def test_accept_friend_requests_when_unauthenticated_fails(
+    snapshot, client_query, requesting_friend
+):
+    """A user should not be able to accept a friend request when unauthenticated."""
+    variables = {"requester": requesting_friend.uid}
+    response = client_query(ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables)
     content = response.json()
 
     snapshot.assert_match(content)

@@ -23,3 +23,15 @@ CANCEL_FRIEND_REQUEST_MUTATION = """
         }
     }
 """
+
+ACCEPT_FRIEND_REQUEST_MUTATION = """
+    mutation acceptFriendRequest($requester: String!) {
+        acceptFriendRequest(requester: $requester) {
+            friend {
+                uuid
+            }
+            success
+            errors
+        }
+    }
+"""

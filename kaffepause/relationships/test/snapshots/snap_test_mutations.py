@@ -6,6 +6,28 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
+snapshots["test_accept_friend_requests_when_addressee_attempts_to_accept 1"] = {
+    "data": {"acceptFriendRequest": None},
+    "errors": [
+        {
+            "locations": [{"column": 9, "line": 3}],
+            "message": "(UserDoesNotExist(...), \"{'uid': UUID('45bb58bb-a20a-448d-bb6b-796546890cce')}\")",
+            "path": ["acceptFriendRequest"],
+        }
+    ],
+}
+
+snapshots["test_accept_friend_requests_when_unauthenticated_fails 1"] = {
+    "data": {"acceptFriendRequest": None},
+    "errors": [
+        {
+            "locations": [{"column": 9, "line": 3}],
+            "message": "You do not have permission to perform this action",
+            "path": ["acceptFriendRequest"],
+        }
+    ],
+}
+
 snapshots["test_cancel_friend_requests_when_addressee_attempts_to_cancel 1"] = {
     "data": {"cancelFriendRequest": None},
     "errors": [

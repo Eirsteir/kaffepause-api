@@ -1,10 +1,13 @@
 from enum import Enum
+from uuid import UUID
 
 import factory
 import graphene
+from django.contrib.auth.models import AnonymousUser
 from factory.base import FactoryMetaClass
 from graphene import relay
 from graphql_auth.decorators import verification_required
+from graphql_jwt.exceptions import PermissionDenied
 
 from kaffepause.common.decorators import login_required
 from kaffepause.common.types import OutputErrorType
@@ -54,6 +57,10 @@ class NeomodelGraphQLMixin:
         from kaffepause.users.models import User
 
         current_user_account = cls._user
+
+        if not current_user_account:
+            raise PermissionDenied  # TODO: Improperly configured?
+
         current_user = User.nodes.get(uid=current_user_account.id)
         return current_user
 
