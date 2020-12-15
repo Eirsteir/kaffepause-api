@@ -17,8 +17,8 @@ def get_all_break_invitations(actor: User) -> List[BreakInvitation]:
     return actor.break_invitations.all()
 
 
-def get_break_invitations_awaiting_reply(actor: User) -> List[BreakInvitation]:
-    """Returns all non-expired break invitations awaiting reply."""
+def get_pending_break_invitations(actor: User) -> List[BreakInvitation]:
+    """Returns all non-expired unanswered break invitations."""
     query = (
         _get_unanswered_invitations_query()
         + f"""

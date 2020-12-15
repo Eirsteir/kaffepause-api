@@ -112,6 +112,13 @@ def user(account) -> User:
     return UserFactory(uid=account.id)
 
 
+@pytest.fixture
+def friend(user) -> User:
+    friend = UserFactory()
+    user.add_friend(friend)
+    return friend
+
+
 @pytest.fixture(autouse=True)
 def token(account):
     return f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"

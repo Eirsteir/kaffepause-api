@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import pytest
 import pytz
 
-from kaffepause.breaks.selectors import get_break_invitations_awaiting_reply
+from kaffepause.breaks.selectors import get_pending_break_invitations
 from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory
 
 pytestmark = pytest.mark.django_db
@@ -33,7 +33,7 @@ def test_get_break_invitations_awaiting_reply_returns_unanswered_invitations(use
     declined_break_invitation.addressees.connect(user)
     declined_break_invitation.declinees.connect(user)
 
-    actual_break_invitations = get_break_invitations_awaiting_reply(actor=user)
+    actual_break_invitations = get_pending_break_invitations(actor=user)
 
     assert unanswered_break_invitation in actual_break_invitations
     assert expired_break_invitation not in actual_break_invitations
@@ -61,7 +61,7 @@ def test_get_break_invitations_awaiting_reply_returns_unanswered_invitations_exp
     expired_break_invitation.subject.connect(expired_break)
     expired_break_invitation.addressees.connect(user)
 
-    actual_break_invitations = get_break_invitations_awaiting_reply(actor=user)
+    actual_break_invitations = get_pending_break_invitations(actor=user)
 
     assert non_expired_break_invitation in actual_break_invitations
     assert expired_break_invitation not in actual_break_invitations

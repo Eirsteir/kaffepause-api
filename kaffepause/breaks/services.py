@@ -11,7 +11,7 @@ def create_break_and_invitation(
     """
     Create a break and an invitation to given addressees, optionally at the given start time.
     If addressees are specified, only send the invitation to the ones who are following the users.
-    If not, send to all followers
+    If not, send to all followers.
     """
     if addressees:
         addressees = actor.followed_by.filter(uid__in=addressees)
