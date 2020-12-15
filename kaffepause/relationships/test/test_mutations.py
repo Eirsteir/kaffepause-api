@@ -50,7 +50,10 @@ def test_send_friend_request_when_can_send_request_sends_request(
     friend, variables = get_request_data()
 
     client_query(
-        SEND_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        SEND_FRIEND_REQUEST_MUTATION,
+        op_name="sendFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
 
     assert user.outgoing_friend_requests.is_connected(friend)
@@ -63,7 +66,10 @@ def test_send_friend_request_when_can_send_request_returns_the_user(
     """Should return the recipient of the request."""
     friend, variables = get_request_data()
     response = client_query(
-        SEND_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        SEND_FRIEND_REQUEST_MUTATION,
+        op_name="sendFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
 
     content = response.json()
@@ -82,7 +88,10 @@ def test_send_friend_request_when_already_friends_does_not_send_request(
     user.friends.connect(friend)
 
     response = client_query(
-        SEND_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        SEND_FRIEND_REQUEST_MUTATION,
+        op_name="sendFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
     content = response.json()
 
@@ -97,7 +106,10 @@ def test_send_friend_request_when_an_outgoing_request_is_already_sent(
     user.outgoing_friend_requests.connect(friend)
 
     response = client_query(
-        SEND_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        SEND_FRIEND_REQUEST_MUTATION,
+        op_name="sendFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
     content = response.json()
 
@@ -112,7 +124,10 @@ def test_send_friend_request_when_an_incoming_request_is_already_sent(
     user.incoming_friend_requests.connect(friend)
 
     response = client_query(
-        SEND_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        SEND_FRIEND_REQUEST_MUTATION,
+        op_name="sendFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
     content = response.json()
 
@@ -122,7 +137,9 @@ def test_send_friend_request_when_an_incoming_request_is_already_sent(
 def test_send_friend_request_when_unauthenticated_fails(snapshot, client_query):
     """A user should not be able to send a friend request when unauthenticated."""
     friend, variables = get_request_data()
-    response = client_query(SEND_FRIEND_REQUEST_MUTATION, variables=variables)
+    response = client_query(
+        SEND_FRIEND_REQUEST_MUTATION, op_name="sendFriendRequest", variables=variables
+    )
     content = response.json()
 
     snapshot.assert_match(content)
@@ -135,7 +152,10 @@ def test_cancel_friend_request_when_can_cancel_request_cancels_request(
 
     variables = {"toFriend": requested_friend.uid}
     client_query(
-        CANCEL_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        CANCEL_FRIEND_REQUEST_MUTATION,
+        op_name="cancelFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
 
     assert not user.outgoing_friend_requests.is_connected(requested_friend)
@@ -149,7 +169,10 @@ def test_cancel_friend_request_when_can_cancel_request_returns_the_user(
     variables = {"toFriend": requested_friend.uid}
 
     response = client_query(
-        CANCEL_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        CANCEL_FRIEND_REQUEST_MUTATION,
+        op_name="cancelFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
 
     content = response.json()
@@ -168,7 +191,10 @@ def test_cancel_friend_requests_when_already_friends_does_nothing(
     variables = {"toFriend": requested_friend.uid}
 
     response = client_query(
-        CANCEL_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        CANCEL_FRIEND_REQUEST_MUTATION,
+        op_name="cancelFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
     content = response.json()
 
@@ -183,7 +209,10 @@ def test_cancel_friend_requests_when_addressee_attempts_to_cancel(
     variables = {"toFriend": str(user.uid)}
 
     response = client_query(
-        CANCEL_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        CANCEL_FRIEND_REQUEST_MUTATION,
+        op_name="cancelFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
     content = response.json()
 
@@ -195,7 +224,11 @@ def test_cancel_friend_requests_when_unauthenticated_fails(
 ):
     """A user should not be able to cancel a friend request when unauthenticated."""
     variables = {"toFriend": requested_friend.uid}
-    response = client_query(CANCEL_FRIEND_REQUEST_MUTATION, variables=variables)
+    response = client_query(
+        CANCEL_FRIEND_REQUEST_MUTATION,
+        op_name="cancelFriendRequest",
+        variables=variables,
+    )
     content = response.json()
 
     snapshot.assert_match(content)
@@ -207,7 +240,10 @@ def test_accept_friend_request_when_can_accept_request_accepts_request(
     """Should accept the friend request from the user when it has been sent to the user."""
     variables = {"requester": requesting_friend.uid}
     client_query(
-        ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        ACCEPT_FRIEND_REQUEST_MUTATION,
+        op_name="acceptFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
 
     assert user.friends.is_connected(requesting_friend)
@@ -222,7 +258,10 @@ def test_accept_friend_request_when_can_accept_request_returns_the_user(
     """Should return the recipient of the request when successful."""
     variables = {"requester": requesting_friend.uid}
     response = client_query(
-        ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        ACCEPT_FRIEND_REQUEST_MUTATION,
+        op_name="acceptFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
 
     content = response.json()
@@ -241,7 +280,10 @@ def test_accept_friend_requests_when_already_friends_does_nothing(
     variables = {"requester": requesting_friend.uid}
 
     response = client_query(
-        ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        ACCEPT_FRIEND_REQUEST_MUTATION,
+        op_name="acceptFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
     content = response.json()
     data = content.get("data").get("acceptFriendRequest")
@@ -261,7 +303,10 @@ def test_accept_friend_requests_when_addressee_attempts_to_accept(
     auth_headers = {jwt_settings.JWT_AUTH_HEADER_NAME: token}
 
     response = client_query(
-        ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
+        ACCEPT_FRIEND_REQUEST_MUTATION,
+        op_name="acceptFriendRequest",
+        variables=variables,
+        headers=auth_headers,
     )
     content = response.json()
 
@@ -273,7 +318,11 @@ def test_accept_friend_requests_when_unauthenticated_fails(
 ):
     """A user should not be able to accept a friend request when unauthenticated."""
     variables = {"requester": requesting_friend.uid}
-    response = client_query(ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables)
+    response = client_query(
+        ACCEPT_FRIEND_REQUEST_MUTATION,
+        op_name="acceptFriendRequest",
+        variables=variables,
+    )
     content = response.json()
 
     snapshot.assert_match(content)
@@ -284,7 +333,12 @@ def test_unfriend_user_when_friends_unfriends_user(
 ):
     """Should remove the users as friends and unfollow each other."""
     variables = {"friend": friend.uid}
-    client_query(UNFRIEND_USER_MUTATION, variables=variables, headers=auth_headers)
+    client_query(
+        UNFRIEND_USER_MUTATION,
+        op_name="unfriendUser",
+        variables=variables,
+        headers=auth_headers,
+    )
 
     assert not user.friends.is_connected(friend)
     assert not user.following.is_connected(friend)
@@ -297,7 +351,10 @@ def test_unfriend_user_when_friends_returns_unfriended_user(
     """Should return the user who was unfriended."""
     variables = {"friend": friend.uid}
     response = client_query(
-        UNFRIEND_USER_MUTATION, variables=variables, headers=auth_headers
+        UNFRIEND_USER_MUTATION,
+        op_name="unfriendUser",
+        variables=variables,
+        headers=auth_headers,
     )
     content = response.json()
     print(content)
@@ -315,7 +372,10 @@ def test_unfriend_user_when_not_friends_returns_error(
     non_friend = UserFactory()
     variables = {"friend": non_friend.uid}
     response = client_query(
-        UNFRIEND_USER_MUTATION, variables=variables, headers=auth_headers
+        UNFRIEND_USER_MUTATION,
+        op_name="unfriendUser",
+        variables=variables,
+        headers=auth_headers,
     )
     content = response.json()
 
@@ -328,7 +388,10 @@ def test_unfriend_user_when_user_attempts_to_unfriend_itself(
     """Should return an error if the user attempts to unfriend itself."""
     variables = {"friend": str(user.uid)}
     response = client_query(
-        UNFRIEND_USER_MUTATION, variables=variables, headers=auth_headers
+        UNFRIEND_USER_MUTATION,
+        op_name="unfriendUser",
+        variables=variables,
+        headers=auth_headers,
     )
     content = response.json()
 
@@ -338,7 +401,9 @@ def test_unfriend_user_when_user_attempts_to_unfriend_itself(
 def test_unfriend_user_when_unauthenticated(snapshot, client_query, friend):
     """Should not be able to unfriend another user when unauthenticated."""
     variables = {"friend": friend.uid}
-    response = client_query(UNFRIEND_USER_MUTATION, variables=variables)
+    response = client_query(
+        UNFRIEND_USER_MUTATION, op_name="unfriendUser", variables=variables
+    )
     content = response.json()
 
     snapshot.assert_match(content)
