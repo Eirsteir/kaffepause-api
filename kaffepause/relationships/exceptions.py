@@ -17,3 +17,7 @@ class CannotCancelFriendRequest(DefaultError):
 
 class CannotRejectFriendRequest(DefaultError):
     default_message = _("Cannot reject this friend request")
+
+
+class CannotUnfriendUser(DefaultError):
+    default_message = _("Cannot unfriend this user")

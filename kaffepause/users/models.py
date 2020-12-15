@@ -76,3 +76,7 @@ class User(StructuredNode):
         self.following.disconnect(friend)
         friend.following.disconnect(self)
         return self.friends.disconnect(friend)
+
+    def can_unfriend_user(self, friend):
+        """A user can unfriend another if they are friends. Cannot unfriend itself."""
+        return self.friends.is_connected(friend) and not self == friend

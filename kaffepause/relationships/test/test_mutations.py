@@ -8,6 +8,7 @@ from kaffepause.relationships.test.graphql_requests import (
     ACCEPT_FRIEND_REQUEST_MUTATION,
     CANCEL_FRIEND_REQUEST_MUTATION,
     SEND_FRIEND_REQUEST_MUTATION,
+    UNFRIEND_USER_MUTATION,
 )
 from kaffepause.users.test.factories import UserFactory
 
@@ -23,8 +24,16 @@ def requested_friend(user):
 
 @pytest.fixture
 def requesting_friend(user):
-    friend = UserFactory()
+    account = AccountFactory()
+    friend = UserFactory(uid=str(account.id))
     friend.send_friend_request(user)
+    return friend
+
+
+@pytest.fixture
+def friend(user):
+    friend = UserFactory()
+    user.add_friend(friend)
     return friend
 
 
@@ -203,7 +212,9 @@ def test_accept_friend_request_when_can_accept_request_accepts_request(
     )
 
     assert user.friends.is_connected(requesting_friend)
+    assert user.following.is_connected(requesting_friend)
     assert requesting_friend.friends.is_connected(user)
+    assert requesting_friend.following.is_connected(user)
 
 
 def test_accept_friend_request_when_can_accept_request_returns_the_user(
@@ -246,9 +257,7 @@ def test_accept_friend_requests_when_addressee_attempts_to_accept(
 ):
     """Should do nothing when the addressee attempts to accept on behalf of the user."""
     variables = {"requester": requesting_friend.uid}
-    account = AccountFactory(id=requesting_friend.uid)
-    print(requesting_friend.uid)
-    print(account.id)
+    account = Account.objects.get(id=requesting_friend.uid)
     token = f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
     auth_headers = {jwt_settings.JWT_AUTH_HEADER_NAME: token}
 
@@ -266,6 +275,71 @@ def test_accept_friend_requests_when_unauthenticated_fails(
     """A user should not be able to accept a friend request when unauthenticated."""
     variables = {"requester": requesting_friend.uid}
     response = client_query(ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables)
+    content = response.json()
+
+    snapshot.assert_match(content)
+
+
+def test_unfriend_user_when_friends_unfriends_user(
+    client_query, user, friend, auth_headers
+):
+    """Should remove the users as friends and unfollow each other."""
+    variables = {"friend": friend.uid}
+    client_query(UNFRIEND_USER_MUTATION, variables=variables, headers=auth_headers)
+
+    assert not user.friends.is_connected(friend)
+    assert not user.following.is_connected(friend)
+    assert not user.followed_by.is_connected(friend)
+
+
+def test_unfriend_user_when_friends_returns_unfriended_user(
+    client_query, user, friend, auth_headers
+):
+    """Should return the user who was unfriended."""
+    variables = {"friend": friend.uid}
+    response = client_query(
+        UNFRIEND_USER_MUTATION, variables=variables, headers=auth_headers
+    )
+    content = response.json()
+    print(content)
+    data = content.get("data").get("unfriendUser")
+
+    assert data.get("unfriendedPerson").get("uuid") == friend.uid
+    assert data.get("success")
+    assert not data.get("errors")
+
+
+def test_unfriend_user_when_not_friends_returns_error(
+    snapshot, client_query, user, auth_headers
+):
+    """Should return an error if the users are not friends."""
+    non_friend = UserFactory()
+    variables = {"friend": non_friend.uid}
+    response = client_query(
+        UNFRIEND_USER_MUTATION, variables=variables, headers=auth_headers
+    )
+    content = response.json()
+
+    snapshot.assert_match(content)
+
+
+def test_unfriend_user_when_user_attempts_to_unfriend_itself(
+    snapshot, client_query, user, auth_headers
+):
+    """Should return an error if the user attempts to unfriend itself."""
+    variables = {"friend": str(user.uid)}
+    response = client_query(
+        UNFRIEND_USER_MUTATION, variables=variables, headers=auth_headers
+    )
+    content = response.json()
+
+    snapshot.assert_match(content)
+
+
+def test_unfriend_user_when_unauthenticated(snapshot, client_query, friend):
+    """Should not be able to unfriend another user when unauthenticated."""
+    variables = {"friend": friend.uid}
+    response = client_query(UNFRIEND_USER_MUTATION, variables=variables)
     content = response.json()
 
     snapshot.assert_match(content)

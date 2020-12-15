@@ -11,7 +11,7 @@ snapshots["test_accept_friend_requests_when_addressee_attempts_to_accept 1"] = {
     "errors": [
         {
             "locations": [{"column": 9, "line": 3}],
-            "message": "(UserDoesNotExist(...), \"{'uid': UUID('45bb58bb-a20a-448d-bb6b-796546890cce')}\")",
+            "message": "Cannot accept this friend request",
             "path": ["acceptFriendRequest"],
         }
     ],
@@ -101,6 +101,39 @@ snapshots["test_send_friend_request_when_unauthenticated_fails 1"] = {
             "locations": [{"column": 9, "line": 3}],
             "message": "You do not have permission to perform this action",
             "path": ["sendFriendRequest"],
+        }
+    ],
+}
+
+snapshots["test_unfriend_user_when_not_friends_returns_error 1"] = {
+    "data": {"unfriendUser": None},
+    "errors": [
+        {
+            "locations": [{"column": 9, "line": 3}],
+            "message": "Cannot unfriend this user",
+            "path": ["unfriendUser"],
+        }
+    ],
+}
+
+snapshots["test_unfriend_user_when_unauthenticated 1"] = {
+    "data": {"unfriendUser": None},
+    "errors": [
+        {
+            "locations": [{"column": 9, "line": 3}],
+            "message": "You do not have permission to perform this action",
+            "path": ["unfriendUser"],
+        }
+    ],
+}
+
+snapshots["test_unfriend_user_when_user_attempts_to_unfriend_itself 1"] = {
+    "data": {"unfriendUser": None},
+    "errors": [
+        {
+            "locations": [{"column": 9, "line": 3}],
+            "message": "Cannot unfriend this user",
+            "path": ["unfriendUser"],
         }
     ],
 }

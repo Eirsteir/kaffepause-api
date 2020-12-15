@@ -4,6 +4,7 @@ from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
     CannotCancelFriendRequest,
     CannotRejectFriendRequest,
+    CannotUnfriendUser,
     RelationshipAlreadyExists,
 )
 from kaffepause.relationships.models import FriendRel
@@ -59,4 +60,7 @@ def can_reply_to_friend_request(actor, requester):
 
 
 def unfriend_user(actor: User, friend: User):
-    return actor.remove_friend(friend)
+    if actor.can_unfriend_user(friend):
+        return actor.remove_friend(friend)
+
+    raise CannotUnfriendUser

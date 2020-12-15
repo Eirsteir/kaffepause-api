@@ -35,3 +35,15 @@ ACCEPT_FRIEND_REQUEST_MUTATION = """
         }
     }
 """
+
+UNFRIEND_USER_MUTATION = """
+    mutation unfriendUser($friend: String!) {
+        unfriendUser(friend: $friend) {
+            unfriendedPerson {
+                uuid
+            }
+            success
+            errors
+        }
+    }
+"""
