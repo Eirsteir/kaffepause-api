@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 
 import pytest
 import pytz
-from django.utils import timezone
 
 from kaffepause.breaks.selectors import get_break_invitations_awaiting_reply
 from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory

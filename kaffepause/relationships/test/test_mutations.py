@@ -205,7 +205,6 @@ def test_accept_friend_request_when_can_accept_request_accepts_request(
     client_query, auth_headers, requesting_friend, user
 ):
     """Should accept the friend request from the user when it has been sent to the user."""
-
     variables = {"requester": requesting_friend.uid}
     client_query(
         ACCEPT_FRIEND_REQUEST_MUTATION, variables=variables, headers=auth_headers
