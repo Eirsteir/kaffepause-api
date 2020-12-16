@@ -34,7 +34,7 @@ class Command(BaseCommand):
         for uuid in UUIDS:
             account = AccountFactory(id=uuid)
             UserStatusFactory(user=account)
-            UserFactory(uid=uuid)
+            UserFactory(uuid=uuid)
 
         for _ in range(options["accounts"]):
             account = AccountFactory()

@@ -30,7 +30,7 @@ class UpdateProfile(
         try:
             user = update_profile(user=user, **kwargs)
         except UsernameAlreadyInUse as e:
-            logger.info(f"Failed to update user (uid:{user.uid})", exc_info=e)
+            logger.info(f"Failed to update user (uuid:{user.uuid})", exc_info=e)
             return cls(success=False, errors=Messages.USERNAME_IN_USE)
-        logger.debug(f"Successfully updated user (uid:{user.uid})")
+        logger.debug(f"Successfully updated user (uuid:{user.uuid})")
         return cls(success=True, user=user)

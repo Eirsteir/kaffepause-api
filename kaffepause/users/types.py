@@ -27,7 +27,7 @@ class UserNode(graphene.ObjectType):
     friendship_status = graphene.String()
 
     def resolve_uuid(parent, info):
-        return parent.uid
+        return parent.uuid
 
     def resolve_friendship_status(parent, info):
         current_user_account = info.context.user

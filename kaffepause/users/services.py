@@ -13,10 +13,12 @@ def update_profile(user: User, name: str, username: str) -> User:
     Does not update if the username is already in use
     by another user.
     """
-    logger.debug(f"Updating user (uid: {user.uid}")
+    logger.debug(f"Updating user (uuid: {user.uuid}")
 
     user_with_username_exists = (
-        User.nodes.filter(username__iexact=username).exclude(uid=user.uid).get_or_none()
+        User.nodes.filter(username__iexact=username)
+        .exclude(uuid=user.uuid)
+        .get_or_none()
     )
 
     if user_with_username_exists:

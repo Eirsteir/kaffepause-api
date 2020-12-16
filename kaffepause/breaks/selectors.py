@@ -42,7 +42,7 @@ def get_expired_break_invitations(actor: User) -> List[BreakInvitation]:
 
 def _get_unanswered_invitations_query() -> str:
     query = f"""
-    MATCH (invitation:BreakInvitation)-[:{BreakRelationship.TO}]->(user:User {{uid: $user_uid}})
+    MATCH (invitation:BreakInvitation)-[:{BreakRelationship.TO}]->(user:User {{uuid: $user_uuid}})
     MATCH (invitation)-[:{BreakRelationship.REGARDING}]->(break_:Break)
     WHERE NOT (user)-[:{BreakRelationship.ACCEPTED} | {BreakRelationship.DECLINED}]->(invitation)
     """
@@ -55,7 +55,7 @@ def _get_cypher_minutes_ago(minutes) -> str:
 
 def _run_break_invitation_query(query: str, actor: User) -> List[BreakInvitation]:
     query += "RETURN invitation"
-    params = dict(user_uid=str(actor.uid))
+    params = dict(user_uuid=str(actor.uuid))
     results, meta = db.cypher_query(query, params=params)
     break_invitations = [BreakInvitation.inflate(row[0]) for row in results]
     return break_invitations

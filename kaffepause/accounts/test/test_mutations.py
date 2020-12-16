@@ -42,9 +42,9 @@ def test_register_creates_account_and_user_successfully_creates_both(client_quer
     client_query(REGISTER_MUTATION, op_name="register", variables=variables)
 
     actual_account = Account.objects.get(email=expected_email)
-    actual_user = User.nodes.get(uid=actual_account.id)
+    actual_user = User.nodes.get(uuid=actual_account.id)
 
-    assert actual_account.id == UUID(actual_user.uid)
+    assert actual_account.id == UUID(actual_user.uuid)
     assert actual_user.name == expected_name
     assert actual_account.email == expected_email
 
@@ -85,7 +85,7 @@ def test_delete_account_deletes_account_and_user(
     )
 
     assert not Account.objects.filter(id=account.id).exists()
-    assert not User.nodes.get_or_none(uid=user.uid)
+    assert not User.nodes.get_or_none(uuid=user.uuid)
 
 
 def test_delete_account(snapshot, client_query, auth_headers, account):

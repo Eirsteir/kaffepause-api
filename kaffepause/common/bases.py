@@ -61,7 +61,7 @@ class NeomodelGraphQLMixin:
         if not current_user_account:
             raise PermissionDenied  # TODO: Improperly configured?
 
-        current_user = User.nodes.get(uid=current_user_account.id)
+        current_user = User.nodes.get(uuid=current_user_account.id)
         return current_user
 
 

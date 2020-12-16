@@ -42,7 +42,7 @@ class BreakInvitationAction(
     @classmethod
     def resolve_mutation(cls, root, info, invitation):  # TODO: Handle errors
         current_user = cls.get_current_user()
-        invitation = BreakInvitation.nodes.get(uid=invitation)
+        invitation = BreakInvitation.nodes.get(uuid=invitation)
         invitation = cls._invitation_action(actor=current_user, invitation=invitation)
         return cls(break_=invitation.get_subject(), invitation=invitation, success=True)
 

@@ -29,7 +29,7 @@ class Register(mutations.Register):
             email = input.get(Account.EMAIL_FIELD)
             account = Account.objects.get(email=email)
             try:
-                User(uid=account.id, name=name).save()
+                User(uuid=account.id, name=name).save()
             except NeomodelException as e:
                 logger.error(
                     f"Failed to create user node, deleting account (id:{account.id})",
@@ -39,7 +39,7 @@ class Register(mutations.Register):
                 return cls(success=False, errors=Messages.ACCOUNT_CREATION_FAILED)
 
             logger.debug(
-                f"Successfully created new account and user node (id/uid:{account.id})"
+                f"Successfully created new account and user node (id/uuid:{account.id})"
             )
 
         return registration
@@ -54,7 +54,7 @@ class DeleteAccount(mutations.DeleteAccount):
         deletion = super().resolve_mutation(root, info, **input)
 
         if deletion.success:
-            User.nodes.get(uid=account_id).delete()
-            logger.debug(f"Successfully deleted account and user (id/uid:{account_id}")
+            User.nodes.get(uuid=account_id).delete()
+            logger.debug(f"Successfully deleted account and user (id/uuid:{account_id}")
 
         return deletion

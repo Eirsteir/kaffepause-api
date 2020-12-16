@@ -109,7 +109,7 @@ def account() -> Account:
 
 @pytest.fixture(autouse=True)
 def user(account) -> User:
-    return UserFactory(uid=account.id)
+    return UserFactory(uuid=account.id)
 
 
 @pytest.fixture

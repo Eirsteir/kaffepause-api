@@ -24,7 +24,7 @@ class Query(graphene.ObjectType):
     outgoing_friend_requests = relay.ConnectionField(UserConnection)
 
     def resolve_all_relationships(root, info, user):
-        user = User.nodes.get(uid=user)
+        user = User.nodes.get(uuid=user)
         return get_friends(user)
 
     def resolve_friending_possibilities(root, info):

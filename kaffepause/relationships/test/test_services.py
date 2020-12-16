@@ -61,16 +61,16 @@ def test_cancel_friend_request(actor, addressee):
 
     cancel_friend_request(actor, addressee)
 
-    assert not addressee.incoming_friend_requests.get_or_none(uid=actor.uid)
-    assert not actor.outgoing_friend_requests.get_or_none(uid=addressee.uid)
+    assert not addressee.incoming_friend_requests.get_or_none(uuid=actor.uuid)
+    assert not actor.outgoing_friend_requests.get_or_none(uuid=addressee.uuid)
 
 
 def test_cancel_friend_request_when_no_request_exists(actor, addressee):
     """Should delete a 'REQUESTED_FRIEND' relationship between the users if no such request exists."""
     cancel_friend_request(actor, addressee)
 
-    assert not addressee.incoming_friend_requests.get_or_none(uid=actor.uid)
-    assert not actor.outgoing_friend_requests.get_or_none(uid=addressee.uid)
+    assert not addressee.incoming_friend_requests.get_or_none(uuid=actor.uuid)
+    assert not actor.outgoing_friend_requests.get_or_none(uuid=addressee.uuid)
 
 
 def test_cancel_friend_request_when_users_are_already_friends_raises_exception(
@@ -100,9 +100,9 @@ def test_accept_friend_request(actor, requester):
 
     accept_friend_request(actor, requester)
 
-    assert actor.friends.get_or_none(uid=requester.uid)
-    assert not actor.incoming_friend_requests.get_or_none(uid=requester.uid)
-    assert not requester.outgoing_friend_requests.get_or_none(uid=actor.uid)
+    assert actor.friends.get_or_none(uuid=requester.uuid)
+    assert not actor.incoming_friend_requests.get_or_none(uuid=requester.uuid)
+    assert not requester.outgoing_friend_requests.get_or_none(uuid=actor.uuid)
 
 
 def test_accept_friend_request_makes_users_follow_each_other(actor, requester):
@@ -113,11 +113,11 @@ def test_accept_friend_request_makes_users_follow_each_other(actor, requester):
 
     accept_friend_request(actor, requester)
 
-    assert actor.following.get_or_none(uid=requester.uid)
-    assert requester.following.get_or_none(uid=actor.uid)
+    assert actor.following.get_or_none(uuid=requester.uuid)
+    assert requester.following.get_or_none(uuid=actor.uuid)
 
-    assert actor.followed_by.get_or_none(uid=requester.uid)
-    assert requester.followed_by.get_or_none(uid=actor.uid)
+    assert actor.followed_by.get_or_none(uuid=requester.uuid)
+    assert requester.followed_by.get_or_none(uuid=actor.uuid)
 
 
 def test_only_addressee_can_accept_friend_request(actor, requester):
@@ -141,9 +141,9 @@ def test_accept_friend_request_when_already_friends(actor, requester):
 
     accept_friend_request(actor, requester)
 
-    assert actor.friends.get_or_none(uid=requester.uid)
-    assert not actor.incoming_friend_requests.get_or_none(uid=requester.uid)
-    assert not requester.outgoing_friend_requests.get_or_none(uid=actor.uid)
+    assert actor.friends.get_or_none(uuid=requester.uuid)
+    assert not actor.incoming_friend_requests.get_or_none(uuid=requester.uuid)
+    assert not requester.outgoing_friend_requests.get_or_none(uuid=actor.uuid)
 
 
 def test_reject_friend_request(actor, requester):
@@ -155,9 +155,9 @@ def test_reject_friend_request(actor, requester):
 
     reject_friend_request(actor, requester)
 
-    assert not actor.friends.get_or_none(uid=requester.uid)
-    assert not actor.incoming_friend_requests.get_or_none(uid=requester.uid)
-    assert not requester.outgoing_friend_requests.get_or_none(uid=actor.uid)
+    assert not actor.friends.get_or_none(uuid=requester.uuid)
+    assert not actor.incoming_friend_requests.get_or_none(uuid=requester.uuid)
+    assert not requester.outgoing_friend_requests.get_or_none(uuid=actor.uuid)
 
 
 def test_only_addressee_can_reject_friend_request(actor, requester):
@@ -180,9 +180,9 @@ def test_reject_friend_request_when_already_friends(actor, requester):
     actor.friends.connect(requester)
     accept_friend_request(actor, requester)
 
-    assert actor.friends.get_or_none(uid=requester.uid)
-    assert not actor.incoming_friend_requests.get_or_none(uid=requester.uid)
-    assert not requester.outgoing_friend_requests.get_or_none(uid=actor.uid)
+    assert actor.friends.get_or_none(uuid=requester.uuid)
+    assert not actor.incoming_friend_requests.get_or_none(uuid=requester.uuid)
+    assert not requester.outgoing_friend_requests.get_or_none(uuid=actor.uuid)
 
 
 def test_remove_friend(actor, addressee):

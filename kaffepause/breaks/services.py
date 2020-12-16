@@ -14,7 +14,7 @@ def create_break_and_invitation(
     If not, send to all followers.
     """
     if addressees:
-        addressees = actor.followed_by.filter(uid__in=addressees)
+        addressees = actor.followed_by.filter(uuid__in=addressees)
     else:
         addressees = actor.followed_by.all()
 

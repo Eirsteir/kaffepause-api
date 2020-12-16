@@ -12,7 +12,7 @@ class UserQuery(graphene.ObjectType):
     users = relay.ConnectionField(UserConnection)
 
     def resolve_user(root, info, id):
-        return User.nodes.get(uid=id)
+        return User.nodes.get(uuid=id)
 
     def resolve_users(root, info, **kwargs):
         return User.nodes.all()
@@ -24,7 +24,7 @@ class MeQuery(graphene.ObjectType):
     def resolve_me(root, info):
         user = info.context.user
         if user.is_authenticated:
-            return User.nodes.get(uid=user.id)
+            return User.nodes.get(uuid=user.id)
         return None
 
 

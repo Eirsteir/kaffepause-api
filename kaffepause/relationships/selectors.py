@@ -32,10 +32,10 @@ def relationship_exists(user, other):
     """Returns boolean whether or not a relationship of any kind exists between the given users."""
     query = f"""
     MATCH (user:User)-[:{UserRelationship.ARE_FRIENDS}| {UserRelationship.REQUESTING_FRIENDSHIP}]-(other:User)
-    WHERE user.uid = $user_uid AND other.uid = $other_uid
+    WHERE user.uuid = $user_uuid AND other.uuid = $other_uuid
     RETURN other
     """
-    params = dict(user_uid=user.uid, other_uid=other.uid)
+    params = dict(user_uuid=user.uuid, other_uuid=other.uuid)
     results, meta = db.cypher_query(query, params)
     people = [User.inflate(row[0]) for row in results]
     return people
@@ -51,13 +51,13 @@ def get_friendship_status(actor: User, user: User) -> object:
         return
 
     query = f"""
-    MATCH (subject:User {{uid: $subject_uid}})
+    MATCH (subject:User {{uuid: $subject_uuid}})
     -[r:{UserRelationship.ARE_FRIENDS} | {UserRelationship.REQUESTING_FRIENDSHIP}]
-    -(person:User {{uid: $person_uid}})
+    -(person:User {{uuid: $person_uuid}})
     return TYPE(r)
     """
 
-    params = dict(subject_uid=actor.uid, person_uid=user.uid)
+    params = dict(subject_uuid=actor.uuid, person_uuid=user.uuid)
     results, meta = db.cypher_query(query, params)
     status = results[0][0] if results else str(NonRelatedRelationship.CAN_REQUEST)
 
@@ -76,11 +76,11 @@ def get_social_context_between(actor: User, other: User) -> str:
 def get_mutual_friends_count(actor: User, user: User) -> int:
     """Returns the mutual friends for the given users."""
     query = f"""
-    MATCH (subject:User {{uid: $subject_uid}})-[:{UserRelationship.ARE_FRIENDS}]-(n)-[:{UserRelationship.ARE_FRIENDS}]-(person:User {{uid: $person_uid}})
+    MATCH (subject:User {{uuid: $subject_uuid}})-[:{UserRelationship.ARE_FRIENDS}]-(n)-[:{UserRelationship.ARE_FRIENDS}]-(person:User {{uuid: $person_uuid}})
     WHERE subject <> n
     RETURN count(n)
     """
-    params = dict(subject_uid=actor.uid, person_uid=user.uid)
+    params = dict(subject_uuid=actor.uuid, person_uuid=user.uuid)
     results, meta = db.cypher_query(query, params)
     mutual_friends_count = results[0][0]
 

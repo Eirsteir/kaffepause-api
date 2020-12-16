@@ -25,7 +25,7 @@ def requested_friend(user):
 @pytest.fixture
 def requesting_friend(user):
     account = AccountFactory()
-    friend = UserFactory(uid=str(account.id))
+    friend = UserFactory(uuid=str(account.id))
     friend.send_friend_request(user)
     return friend
 
@@ -39,7 +39,7 @@ def friend(user):
 
 def get_request_data():
     friend = UserFactory()
-    variables = {"toFriend": friend.uid}
+    variables = {"toFriend": friend.uuid}
     return friend, variables
 
 
@@ -75,7 +75,7 @@ def test_send_friend_request_when_can_send_request_returns_the_user(
     content = response.json()
     data = content.get("data").get("sendFriendRequest")
 
-    assert data.get("sentFriendRequestee").get("uuid") == friend.uid
+    assert data.get("sentFriendRequestee").get("uuid") == friend.uuid
     assert data.get("success")
     assert not data.get("errors")
 
@@ -150,7 +150,7 @@ def test_cancel_friend_request_when_can_cancel_request_cancels_request(
 ):
     """Should cancel a friend request to the user when a request has been sent by the user."""
 
-    variables = {"toFriend": requested_friend.uid}
+    variables = {"toFriend": requested_friend.uuid}
     client_query(
         CANCEL_FRIEND_REQUEST_MUTATION,
         op_name="cancelFriendRequest",
@@ -166,7 +166,7 @@ def test_cancel_friend_request_when_can_cancel_request_returns_the_user(
     client_query, auth_headers, requested_friend
 ):
     """Should return the recipient of the request."""
-    variables = {"toFriend": requested_friend.uid}
+    variables = {"toFriend": requested_friend.uuid}
 
     response = client_query(
         CANCEL_FRIEND_REQUEST_MUTATION,
@@ -178,7 +178,7 @@ def test_cancel_friend_request_when_can_cancel_request_returns_the_user(
     content = response.json()
     data = content.get("data").get("cancelFriendRequest")
 
-    assert data.get("cancelledFriendRequestee").get("uuid") == requested_friend.uid
+    assert data.get("cancelledFriendRequestee").get("uuid") == requested_friend.uuid
     assert data.get("success")
     assert not data.get("errors")
 
@@ -188,7 +188,7 @@ def test_cancel_friend_requests_when_already_friends_does_nothing(
 ):
     """Should do nothing when the users are already friends."""
     user.add_friend(requested_friend)
-    variables = {"toFriend": requested_friend.uid}
+    variables = {"toFriend": requested_friend.uuid}
 
     response = client_query(
         CANCEL_FRIEND_REQUEST_MUTATION,
@@ -206,7 +206,7 @@ def test_cancel_friend_requests_when_addressee_attempts_to_cancel(
 ):
     """Should do nothing when the users are already friends."""
     user.add_friend(requested_friend)
-    variables = {"toFriend": str(user.uid)}
+    variables = {"toFriend": str(user.uuid)}
 
     response = client_query(
         CANCEL_FRIEND_REQUEST_MUTATION,
@@ -223,7 +223,7 @@ def test_cancel_friend_requests_when_unauthenticated_fails(
     snapshot, client_query, requested_friend
 ):
     """A user should not be able to cancel a friend request when unauthenticated."""
-    variables = {"toFriend": requested_friend.uid}
+    variables = {"toFriend": requested_friend.uuid}
     response = client_query(
         CANCEL_FRIEND_REQUEST_MUTATION,
         op_name="cancelFriendRequest",
@@ -238,7 +238,7 @@ def test_accept_friend_request_when_can_accept_request_accepts_request(
     client_query, auth_headers, requesting_friend, user
 ):
     """Should accept the friend request from the user when it has been sent to the user."""
-    variables = {"requester": requesting_friend.uid}
+    variables = {"requester": requesting_friend.uuid}
     client_query(
         ACCEPT_FRIEND_REQUEST_MUTATION,
         op_name="acceptFriendRequest",
@@ -256,7 +256,7 @@ def test_accept_friend_request_when_can_accept_request_returns_the_user(
     client_query, auth_headers, requesting_friend
 ):
     """Should return the recipient of the request when successful."""
-    variables = {"requester": requesting_friend.uid}
+    variables = {"requester": requesting_friend.uuid}
     response = client_query(
         ACCEPT_FRIEND_REQUEST_MUTATION,
         op_name="acceptFriendRequest",
@@ -267,7 +267,7 @@ def test_accept_friend_request_when_can_accept_request_returns_the_user(
     content = response.json()
     data = content.get("data").get("acceptFriendRequest")
 
-    assert data.get("friend").get("uuid") == requesting_friend.uid
+    assert data.get("friend").get("uuid") == requesting_friend.uuid
     assert data.get("success")
     assert not data.get("errors")
 
@@ -277,7 +277,7 @@ def test_accept_friend_requests_when_already_friends_does_nothing(
 ):
     """Should return the friend when the users are already friends."""
     user.add_friend(requesting_friend)
-    variables = {"requester": requesting_friend.uid}
+    variables = {"requester": requesting_friend.uuid}
 
     response = client_query(
         ACCEPT_FRIEND_REQUEST_MUTATION,
@@ -288,7 +288,7 @@ def test_accept_friend_requests_when_already_friends_does_nothing(
     content = response.json()
     data = content.get("data").get("acceptFriendRequest")
 
-    assert data.get("friend").get("uuid") == requesting_friend.uid
+    assert data.get("friend").get("uuid") == requesting_friend.uuid
     assert data.get("success")
     assert not data.get("errors")
 
@@ -297,8 +297,8 @@ def test_accept_friend_requests_when_addressee_attempts_to_accept(
     snapshot, client_query, requesting_friend, user
 ):
     """Should do nothing when the addressee attempts to accept on behalf of the user."""
-    variables = {"requester": requesting_friend.uid}
-    account = Account.objects.get(id=requesting_friend.uid)
+    variables = {"requester": requesting_friend.uuid}
+    account = Account.objects.get(id=requesting_friend.uuid)
     token = f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
     auth_headers = {jwt_settings.JWT_AUTH_HEADER_NAME: token}
 
@@ -317,7 +317,7 @@ def test_accept_friend_requests_when_unauthenticated_fails(
     snapshot, client_query, requesting_friend
 ):
     """A user should not be able to accept a friend request when unauthenticated."""
-    variables = {"requester": requesting_friend.uid}
+    variables = {"requester": requesting_friend.uuid}
     response = client_query(
         ACCEPT_FRIEND_REQUEST_MUTATION,
         op_name="acceptFriendRequest",
@@ -332,7 +332,7 @@ def test_unfriend_user_when_friends_unfriends_user(
     client_query, user, friend, auth_headers
 ):
     """Should remove the users as friends and unfollow each other."""
-    variables = {"friend": friend.uid}
+    variables = {"friend": friend.uuid}
     client_query(
         UNFRIEND_USER_MUTATION,
         op_name="unfriendUser",
@@ -349,7 +349,7 @@ def test_unfriend_user_when_friends_returns_unfriended_user(
     client_query, user, friend, auth_headers
 ):
     """Should return the user who was unfriended."""
-    variables = {"friend": friend.uid}
+    variables = {"friend": friend.uuid}
     response = client_query(
         UNFRIEND_USER_MUTATION,
         op_name="unfriendUser",
@@ -360,7 +360,7 @@ def test_unfriend_user_when_friends_returns_unfriended_user(
     print(content)
     data = content.get("data").get("unfriendUser")
 
-    assert data.get("unfriendedPerson").get("uuid") == friend.uid
+    assert data.get("unfriendedPerson").get("uuid") == friend.uuid
     assert data.get("success")
     assert not data.get("errors")
 
@@ -370,7 +370,7 @@ def test_unfriend_user_when_not_friends_returns_error(
 ):
     """Should return an error if the users are not friends."""
     non_friend = UserFactory()
-    variables = {"friend": non_friend.uid}
+    variables = {"friend": non_friend.uuid}
     response = client_query(
         UNFRIEND_USER_MUTATION,
         op_name="unfriendUser",
@@ -386,7 +386,7 @@ def test_unfriend_user_when_user_attempts_to_unfriend_itself(
     snapshot, client_query, user, auth_headers
 ):
     """Should return an error if the user attempts to unfriend itself."""
-    variables = {"friend": str(user.uid)}
+    variables = {"friend": str(user.uuid)}
     response = client_query(
         UNFRIEND_USER_MUTATION,
         op_name="unfriendUser",
@@ -400,7 +400,7 @@ def test_unfriend_user_when_user_attempts_to_unfriend_itself(
 
 def test_unfriend_user_when_unauthenticated(snapshot, client_query, friend):
     """Should not be able to unfriend another user when unauthenticated."""
-    variables = {"friend": friend.uid}
+    variables = {"friend": friend.uuid}
     response = client_query(
         UNFRIEND_USER_MUTATION, op_name="unfriendUser", variables=variables
     )
