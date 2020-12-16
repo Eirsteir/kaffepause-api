@@ -47,6 +47,12 @@ class Break(StructuredNode):
     def is_expired(self):
         return time_from_now(minutes=5) >= self.starting_at
 
+    def get_invitation(self):
+        return self.invitation.single()
+
+    def get_participants(self):
+        return self.participants.all()
+
 
 class BreakInvitation(StructuredNode):
     uuid = UniqueIdProperty()

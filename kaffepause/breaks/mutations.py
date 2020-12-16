@@ -14,7 +14,7 @@ class InitiateBreak(
     LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
 ):
     class Arguments:
-        addressees = graphene.List(graphene.String, required=False)
+        addressees = graphene.List(graphene.UUID, required=False)
         start_time = graphene.DateTime(required=False)
 
     break_ = graphene.Field(BreakNode)

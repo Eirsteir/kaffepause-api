@@ -43,6 +43,6 @@ class Query(NeomodelGraphQLMixin, graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
 
-    invite_friends_to_a_break = InitiateBreak.Field()
+    initiate_break = InitiateBreak.Field()
     accept_break_invitation = AcceptBreakInvitation.Field()
     decline_break_invitation = DeclineBreakInvitation.Field()

@@ -62,3 +62,35 @@ EXPIRED_BREAK_INVITATIONS_QUERY = """
       }
     }
 """
+
+INITIATE_BREAK_MUTATION = """
+    mutation initiateBreak($addressees: [UUID], $startTime: DateTime) {
+        initiateBreak(addressees: $addressees, startTime: $startTime) {
+            break_ {
+                uuid
+                startingAt
+                invitation {
+                    uuid
+                    created
+                    sender {
+                        uuid
+                    }
+                    addresseeCount
+                    subject {
+                        uuid
+                    }
+                }
+                participants {
+                    count
+                    edges {
+                        node {
+                            uuid
+                        }
+                    }
+                }
+            }
+            success
+            errors
+        }
+    }
+"""
