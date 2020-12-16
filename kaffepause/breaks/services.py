@@ -6,7 +6,7 @@ from kaffepause.users.models import User
 
 
 def create_break_and_invitation(
-    actor: User, addressees: List[str] = None, start_time: datetime = None
+    actor: User, addressees: List[str] = None, starting_at: datetime = None
 ) -> Break:
     """
     Create a break and an invitation to given addressees, optionally at the given start time.
@@ -18,20 +18,20 @@ def create_break_and_invitation(
     else:
         addressees = actor.followed_by.all()
 
-    return _create_break_and_invitation(actor, addressees, start_time)
+    return _create_break_and_invitation(actor, addressees, starting_at)
 
 
 def _create_break_and_invitation(
-    actor: User, followers: List[User], start_time: datetime = None
+    actor: User, followers: List[User], starting_at: datetime = None
 ) -> Break:
-    break_ = _create_break(actor, start_time)
+    break_ = _create_break(actor, starting_at)
     _create_invitation(actor, break_, followers)
     return break_
 
 
-def _create_break(actor: User, start_time: datetime) -> Break:
+def _create_break(actor: User, starting_at: datetime) -> Break:
     """Create break with given start time and connect actor to its participants."""
-    break_ = Break(start_time=start_time).save()
+    break_ = Break(starting_at=starting_at).save()
     break_.participants.connect(actor)
     return break_
 

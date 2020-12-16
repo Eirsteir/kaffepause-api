@@ -23,7 +23,7 @@ class InitiateBreak(
     def resolve_mutation(cls, root, info, addressees=None, start_time=None):
         current_user = cls.get_current_user()
         break_ = create_break_and_invitation(
-            actor=current_user, addressees=addressees, start_time=start_time
+            actor=current_user, addressees=addressees, starting_at=start_time
         )
         return cls(break_=break_, success=True)
 

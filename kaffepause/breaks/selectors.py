@@ -22,7 +22,7 @@ def get_pending_break_invitations(actor: User) -> List[BreakInvitation]:
     query = (
         _get_unanswered_invitations_query()
         + f"""
-    AND break_.start_time > {_get_cypher_minutes_ago(5)}
+    AND break_.starting_at > {_get_cypher_minutes_ago(5)}
     """
     )
     unanswered_invitations = _run_break_invitation_query(query, actor)
@@ -33,7 +33,7 @@ def get_expired_break_invitations(actor: User) -> List[BreakInvitation]:
     query = (
         _get_unanswered_invitations_query()
         + f"""
-    AND break_.start_time < {_get_cypher_minutes_ago(5)}
+    AND break_.starting_at < {_get_cypher_minutes_ago(5)}
     """
     )
     unanswered_invitations = _run_break_invitation_query(query, actor)

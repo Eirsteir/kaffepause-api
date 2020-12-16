@@ -27,7 +27,7 @@ from kaffepause.common.utils import fifteen_minutes_from_now, time_from_now
 
 class Break(StructuredNode):
     uuid = UniqueIdProperty()
-    start_time = DateTimeProperty(default=lambda: fifteen_minutes_from_now())
+    starting_at = DateTimeProperty(default=lambda: fifteen_minutes_from_now())
     participants = RelationshipFrom(USER, BreakRelationship.PARTICIPATED_IN)
     invitation = RelationshipFrom(BREAK_INVITATION, BreakRelationship.REGARDING)
 
@@ -37,7 +37,7 @@ class Break(StructuredNode):
         return super().create(*props, **kwargs)
 
     def clean(self, *props, **kwargs):
-        start_time = self.get("start_time")
+        start_time = self.get("starting_at")
         if timezone.now() >= start_time:
             raise InvalidBreakStartTime
         elif time_from_now(minutes=5) >= start_time:
@@ -45,7 +45,7 @@ class Break(StructuredNode):
 
     @property
     def is_expired(self):
-        return time_from_now(minutes=5) >= self.start_time
+        return time_from_now(minutes=5) >= self.starting_at
 
 
 class BreakInvitation(StructuredNode):

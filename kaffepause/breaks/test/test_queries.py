@@ -88,7 +88,7 @@ def test_expired_break_invitations_returns_all_expired_break_invitations(
     """Should return all break invitations."""
 
     start_time = timezone.now() + timedelta(hours=-1)
-    expired_break = create_break_and_invitation(actor=friend, start_time=start_time)
+    expired_break = create_break_and_invitation(actor=friend, starting_at=start_time)
     create_break_and_invitation(actor=friend)
 
     response = client_query(

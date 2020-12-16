@@ -17,7 +17,7 @@ def test_get_break_invitations_awaiting_reply_returns_unanswered_invitations(use
 
     an_hour_ago = datetime.now(pytz.utc) - timedelta(hours=10)
     expired_break = BreakFactory()
-    expired_break.start_time = an_hour_ago
+    expired_break.starting_at = an_hour_ago
     expired_break.save()
     expired_break_invitation = BreakInvitationFactory()
     expired_break_invitation.subject.connect(expired_break)
@@ -47,7 +47,7 @@ def test_get_break_invitations_awaiting_reply_returns_unanswered_invitations_exp
     """Should return unanswered invitations who's break has started within 5 minutes ago."""
     two_minutes_ago = datetime.now(pytz.utc) - timedelta(minutes=2)
     non_expired_break = BreakFactory()
-    non_expired_break.start_time = two_minutes_ago
+    non_expired_break.starting_at = two_minutes_ago
     non_expired_break.save()
     non_expired_break_invitation = BreakInvitationFactory()
     non_expired_break_invitation.subject.connect(non_expired_break)
@@ -55,7 +55,7 @@ def test_get_break_invitations_awaiting_reply_returns_unanswered_invitations_exp
 
     ten_minutes_ago = datetime.now(pytz.utc) - timedelta(minutes=10)
     expired_break = BreakFactory()
-    expired_break.start_time = ten_minutes_ago
+    expired_break.starting_at = ten_minutes_ago
     expired_break.save()
     expired_break_invitation = BreakInvitationFactory()
     expired_break_invitation.subject.connect(expired_break)
