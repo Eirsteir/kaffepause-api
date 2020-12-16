@@ -26,7 +26,7 @@ from kaffepause.common.utils import fifteen_minutes_from_now, time_from_now
 
 
 class Break(StructuredNode):
-    uid = UniqueIdProperty()
+    uuid = UniqueIdProperty()
     start_time = DateTimeProperty(default=lambda: fifteen_minutes_from_now())
     participants = RelationshipFrom(USER, BreakRelationship.PARTICIPATED_IN)
     invitation = RelationshipFrom(BREAK_INVITATION, BreakRelationship.REGARDING)
@@ -49,7 +49,7 @@ class Break(StructuredNode):
 
 
 class BreakInvitation(StructuredNode):
-    uid = UniqueIdProperty()
+    uuid = UniqueIdProperty()
     created = DateTimeProperty(default=lambda: datetime.now(pytz.utc))
     sender = RelationshipFrom(USER, BreakRelationship.SENT, cardinality=One)
     addressees = RelationshipTo(USER, BreakRelationship.TO, cardinality=OneOrMore)
@@ -62,8 +62,14 @@ class BreakInvitation(StructuredNode):
     def is_expired(self):
         return self.get_subject().is_expired
 
+    def get_sender(self):
+        return self.sender.single()
+
     def get_subject(self):
         return self.subject.single()
+
+    def get_addressee_count(self):
+        return len(self.addressees.all())
 
     def accept_on_behalf_of(self, user):
         self.acceptees.connect(user)

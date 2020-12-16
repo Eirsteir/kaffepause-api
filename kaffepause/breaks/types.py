@@ -16,6 +16,15 @@ class BreakInvitationNode(graphene.ObjectType):
     addressee_count = graphene.Int()
     subject = graphene.Field(lambda: BreakNode)
 
+    def resolve_sender(parent, info):
+        return parent.get_sender()
+
+    def resolve_addressee_count(parent, info):
+        return parent.get_addressee_count()
+
+    def resolve_subject(parent, info):
+        return parent.get_subject()
+
 
 class BreakNode(graphene.ObjectType):
     class Meta:

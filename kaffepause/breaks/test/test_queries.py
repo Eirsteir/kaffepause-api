@@ -7,11 +7,12 @@ from kaffepause.users.models import User
 pytestmark = pytest.mark.django_db
 
 
-def test_get_break_invitations_awaiting_reply_returns_invitations(
+def test_pending_break_invitations_returns_unanswered_non_expired_invitations(
     client_query, friend, user, auth_headers
 ):
-    """Should return the break invitations awaiting reply."""
-    break_ = create_break_and_invitation(actor=user)
+    """Should return the pending break invitations."""
+    # TODO: timezones, the invitation is expired
+    break_ = create_break_and_invitation(actor=friend)
     response = client_query(
         PENDING_BREAK_INVITATIONS_QUERY,
         op_name="pendingBreakInvitations",

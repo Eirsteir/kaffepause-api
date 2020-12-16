@@ -45,8 +45,8 @@ def test_create_break_and_invitations_creates_break_and_invites_addressees_which
     actor, actor_friends, non_following_user
 ):
     """When a break is created, only the friends following the actor should be invited."""
-    addressee_ids = list(map(lambda user: user.uid, actor_friends))
-    addressee_ids.append(non_following_user.uid)
+    addressee_ids = list(map(lambda user: user.uuid, actor_friends))
+    addressee_ids.append(non_following_user.uuid)
 
     break_ = create_break_and_invitation(actor, addressee_ids)
     break_invitation = break_.invitation.single()
@@ -79,7 +79,7 @@ def test_create_break_and_invitation_creates_break_and_invitation(
 ):
     """Should create a break and corresponding invitation."""
     break_ = create_break_and_invitation(
-        actor_with_single_follower, addressees=[follower.uid]
+        actor_with_single_follower, addressees=[follower.uuid]
     )
 
     assert break_
@@ -91,7 +91,7 @@ def test_create_break_creates_break_with_correct_connections(
 ):
     """Creating a break should connect the actor to its participants."""
     break_ = create_break_and_invitation(
-        actor_with_single_follower, addressees=[follower.uid]
+        actor_with_single_follower, addressees=[follower.uuid]
     )
 
     assert break_
@@ -103,7 +103,7 @@ def test_create_invitation_creates_invitation_with_correct_connections(
 ):
     """Creating an invitation should connect the actor as sender, the break as subject and addressees as such."""
     break_ = create_break_and_invitation(
-        actor_with_single_follower, addressees=[follower.uid]
+        actor_with_single_follower, addressees=[follower.uuid]
     )
     break_invitation = break_.invitation.single()
 
