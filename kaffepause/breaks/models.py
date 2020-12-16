@@ -50,7 +50,7 @@ class Break(StructuredNode):
 
 class BreakInvitation(StructuredNode):
     uuid = UniqueIdProperty()
-    created = DateTimeProperty(default=lambda: datetime.now(pytz.utc))
+    created = DateTimeProperty(default=lambda: timezone.now())
     sender = RelationshipFrom(USER, BreakRelationship.SENT, cardinality=One)
     addressees = RelationshipTo(USER, BreakRelationship.TO, cardinality=OneOrMore)
     subject = RelationshipTo(BREAK, BreakRelationship.REGARDING, cardinality=One)
