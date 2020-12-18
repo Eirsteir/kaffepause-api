@@ -34,8 +34,7 @@ class BreakInvitationAction(
     LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
 ):
     class Arguments:
-        # TODO: does invitation need an id?
-        invitation = graphene.UUID()
+        invitation = graphene.String()
 
     _invitation_action = None
 
@@ -44,9 +43,6 @@ class BreakInvitationAction(
 
     @classmethod
     def resolve_mutation(cls, root, info, invitation):
-        if isinstance(invitation, UUID):
-            invitation = invitation.hex
-
         invitation = BreakInvitation.nodes.get(uuid=invitation)
         current_user = cls.get_current_user()
         invitation = cls._invitation_action(actor=current_user, invitation=invitation)

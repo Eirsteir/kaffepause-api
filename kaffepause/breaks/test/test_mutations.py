@@ -1,5 +1,4 @@
 from datetime import timedelta
-from uuid import UUID
 
 import pytest
 from django.utils import timezone
@@ -22,8 +21,8 @@ def invitation(friend):
 
 def expected_initiate_break_response(break_, initiator):
     invitation = break_.get_invitation()
-    break_uuid = str(UUID(break_.uuid))
-    invitation_uuid = str(UUID(invitation.uuid))
+    break_uuid = str(break_.uuid)
+    invitation_uuid = str(invitation.uuid)
     initiator_uuid = str(initiator.uuid)
     return {
         "data": {
@@ -60,8 +59,8 @@ def invitation_action_response(invitation):
 
 
 def __invitation_action_response(action, invitation):
-    invitation_uuid = str(UUID(invitation.uuid))
-    break_uuid = str(UUID(invitation.get_subject().uuid))
+    invitation_uuid = str(invitation.uuid)
+    break_uuid = str(invitation.get_subject().uuid)
     sender_uuid = str(invitation.get_sender().uuid)
     return {
         "data": {
