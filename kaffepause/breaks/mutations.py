@@ -1,3 +1,5 @@
+from uuid import UUID
+
 import graphene
 
 from kaffepause.breaks.models import BreakInvitation
@@ -32,19 +34,23 @@ class BreakInvitationAction(
     LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
 ):
     class Arguments:
-        invitation = graphene.String()
+        # TODO: does invitation need an id?
+        invitation = graphene.UUID()
 
     _invitation_action = None
 
-    break_ = graphene.Field(BreakNode)
+    # TODO: Return invitation or break?
     invitation = graphene.Field(BreakInvitationNode)
 
     @classmethod
-    def resolve_mutation(cls, root, info, invitation):  # TODO: Handle errors
-        current_user = cls.get_current_user()
+    def resolve_mutation(cls, root, info, invitation):
+        if isinstance(invitation, UUID):
+            invitation = invitation.hex
+
         invitation = BreakInvitation.nodes.get(uuid=invitation)
+        current_user = cls.get_current_user()
         invitation = cls._invitation_action(actor=current_user, invitation=invitation)
-        return cls(break_=invitation.get_subject(), invitation=invitation, success=True)
+        return cls(invitation=invitation, success=True)
 
 
 class AcceptBreakInvitation(BreakInvitationAction):

@@ -94,3 +94,43 @@ INITIATE_BREAK_MUTATION = """
         }
     }
 """
+
+ACCEPT_BREAK_INVITATION_MUTATION = """
+    mutation acceptBreakInvitation($invitation: UUID) {
+        acceptBreakInvitation(invitation: $invitation) {
+            invitation {
+                uuid
+                created
+                sender {
+                    uuid
+                }
+                addresseeCount
+                subject {
+                    uuid
+                }
+            }
+            success
+            errors
+        }
+    }
+"""
+
+DECLINE_BREAK_INVITATION_MUTATION = """
+    mutation declineBreakInvitation($invitation: UUID) {
+        declineBreakInvitation(invitation: $invitation) {
+            invitation {
+                uuid
+                created
+                sender {
+                    uuid
+                }
+                addresseeCount
+                subject {
+                    uuid
+                }
+            }
+            success
+            errors
+        }
+    }
+"""
