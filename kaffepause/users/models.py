@@ -5,19 +5,19 @@ from neomodel import (
     RelationshipTo,
     StringProperty,
     StructuredNode,
-    UniqueIdProperty,
     ZeroOrOne,
 )
 
 from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.common.enums import BREAK, BREAK_INVITATION, STATUS_UPDATE, USER
+from kaffepause.common.properties import UUIDProperty
 from kaffepause.relationships.enums import UserRelationship
 from kaffepause.relationships.models import FriendRel, RelationshipRel
 from kaffepause.statusupdates.enums import StatusUpdateRelationship
 
 
 class User(StructuredNode):
-    uuid = UniqueIdProperty()
+    uuid = UUIDProperty()
     name = StringProperty(required=True, index=True)
     username = StringProperty(unique_index=True)
 

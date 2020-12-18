@@ -10,7 +10,7 @@ class BreakInvitationNode(graphene.ObjectType):
         interfaces = (relay.Node,)
         name = "BreakInvitation"
 
-    uuid = graphene.String()
+    uuid = graphene.UUID()
     created = graphene.DateTime()
     sender = graphene.Field(UserNode)
     addressee_count = graphene.Int()
@@ -31,7 +31,7 @@ class BreakNode(graphene.ObjectType):
         interfaces = (relay.Node,)
         name = "Break"
 
-    uuid = graphene.String()
+    uuid = graphene.UUID()
     starting_at = graphene.DateTime()
     participants = relay.ConnectionField(UserConnection)
     invitation = graphene.Field(BreakInvitationNode)

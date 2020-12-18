@@ -1,6 +1,3 @@
-from datetime import datetime
-
-import pytz
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from neomodel import (
@@ -10,7 +7,6 @@ from neomodel import (
     RelationshipFrom,
     RelationshipTo,
     StructuredNode,
-    UniqueIdProperty,
 )
 
 from kaffepause.breaks.enums import BreakRelationship
@@ -22,11 +18,12 @@ from kaffepause.breaks.exceptions import (
 )
 from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER
 from kaffepause.common.models import TimeStampedRel
+from kaffepause.common.properties import UUIDProperty
 from kaffepause.common.utils import fifteen_minutes_from_now, time_from_now
 
 
 class Break(StructuredNode):
-    uuid = UniqueIdProperty()
+    uuid = UUIDProperty()
     starting_at = DateTimeProperty(default=lambda: fifteen_minutes_from_now())
     participants = RelationshipFrom(USER, BreakRelationship.PARTICIPATED_IN)
     invitation = RelationshipFrom(BREAK_INVITATION, BreakRelationship.REGARDING)
@@ -55,7 +52,7 @@ class Break(StructuredNode):
 
 
 class BreakInvitation(StructuredNode):
-    uuid = UniqueIdProperty()
+    uuid = UUIDProperty()
     created = DateTimeProperty(default=lambda: timezone.now())
     sender = RelationshipFrom(USER, BreakRelationship.SENT, cardinality=One)
     addressees = RelationshipTo(USER, BreakRelationship.TO, cardinality=OneOrMore)

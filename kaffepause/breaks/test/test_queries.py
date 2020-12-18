@@ -10,7 +10,6 @@ from kaffepause.breaks.test.graphql_requests import (
     EXPIRED_BREAK_INVITATIONS_QUERY,
     PENDING_BREAK_INVITATIONS_QUERY,
 )
-from kaffepause.common.utils import time_from_now
 
 pytestmark = pytest.mark.django_db
 
@@ -33,7 +32,7 @@ def test_pending_break_invitations_returns_unanswered_non_expired_invitations(
     assert data.get("count") == 1
     assert actual_invitations.get("sender").get("uuid") == friend.uuid
     assert actual_invitations.get("addresseeCount") == 1
-    assert actual_invitations.get("subject").get("uuid") == break_.uuid
+    assert actual_invitations.get("subject").get("uuid") == str(break_.uuid)
 
 
 def test_pending_break_invitations_unauthenticated_returns_error(
@@ -67,7 +66,7 @@ def test_all_break_invitations_returns_all_break_invitations(
     assert data.get("count") == 1
     assert actual_invitations.get("sender").get("uuid") == friend.uuid
     assert actual_invitations.get("addresseeCount") == 1
-    assert actual_invitations.get("subject").get("uuid") == break_.uuid
+    assert actual_invitations.get("subject").get("uuid") == str(break_.uuid)
 
 
 def test_all_break_invitations_unauthenticated(snapshot, client_query):
@@ -103,7 +102,7 @@ def test_expired_break_invitations_returns_all_expired_break_invitations(
     assert data.get("count") == 1
     assert actual_invitations.get("sender").get("uuid") == friend.uuid
     assert actual_invitations.get("addresseeCount") == 1
-    assert actual_invitations.get("subject").get("uuid") == expired_break.uuid
+    assert actual_invitations.get("subject").get("uuid") == str(expired_break.uuid)
 
 
 def test_expired_break_invitations_unauthenticated(snapshot, client_query):

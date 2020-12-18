@@ -34,7 +34,7 @@ class BreakInvitationAction(
     LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
 ):
     class Arguments:
-        invitation = graphene.String()
+        invitation = graphene.UUID()
 
     _invitation_action = None
 

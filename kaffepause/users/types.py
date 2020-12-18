@@ -17,7 +17,7 @@ class UserNode(graphene.ObjectType):
         interfaces = (relay.Node,)
         name = "User"
 
-    uuid = graphene.String()
+    uuid = graphene.UUID()
     name = graphene.String()
     username = graphene.String()
     friends_count = graphene.Int()
@@ -25,9 +25,6 @@ class UserNode(graphene.ObjectType):
     social_context = graphene.String()
     current_status = graphene.Field(StatusUpdateNode)
     friendship_status = graphene.String()
-
-    def resolve_uuid(parent, info):
-        return parent.uuid
 
     def resolve_friendship_status(parent, info):
         current_user_account = info.context.user

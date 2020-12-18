@@ -96,7 +96,7 @@ INITIATE_BREAK_MUTATION = """
 """
 
 ACCEPT_BREAK_INVITATION_MUTATION = """
-    mutation acceptBreakInvitation($invitation: String!) {
+    mutation acceptBreakInvitation($invitation: UUID) {
         acceptBreakInvitation(invitation: $invitation) {
             invitation {
                 uuid
@@ -116,7 +116,7 @@ ACCEPT_BREAK_INVITATION_MUTATION = """
 """
 
 DECLINE_BREAK_INVITATION_MUTATION = """
-    mutation declineBreakInvitation($invitation: String!) {
+    mutation declineBreakInvitation($invitation: UUID) {
         declineBreakInvitation(invitation: $invitation) {
             invitation {
                 uuid
