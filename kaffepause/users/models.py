@@ -18,6 +18,7 @@ from kaffepause.statusupdates.enums import StatusUpdateRelationship
 
 class User(StructuredNode):
     uuid = UUIDProperty()
+    # TODO: validation - blank, numbers etc
     name = StringProperty(required=True, index=True)
     username = StringProperty(unique_index=True)
 

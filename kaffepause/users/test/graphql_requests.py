@@ -13,3 +13,18 @@ UPDATE_PROFILE_MUTATION = """
       }
     }
 """
+
+SEARCH_QUERY = """
+    query searchUsers($query: String!) {
+      searchUsers(query: $query) {
+        count
+        edges {
+            node {
+                uuid
+                username
+                name
+            }
+        }
+      }
+    }
+"""

@@ -82,7 +82,7 @@ def __invitation_action_response(action, invitation):
 def test_initiate_break_returns_created_break(client_query, friend, user, auth_headers):
     """Should return the created break."""
     response = client_query(INITIATE_BREAK_MUTATION, headers=auth_headers)
-    content = response.json()  # object_hook=lambda d: SimpleNamespace(**d)
+    content = response.json()
 
     actual_break = user.breaks.single()
     expected = expected_initiate_break_response(actual_break, user)

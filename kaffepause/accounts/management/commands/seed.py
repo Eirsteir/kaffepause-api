@@ -33,8 +33,7 @@ class Command(BaseCommand):
             UserStatusFactory(user=account)
             UserFactory(uuid=account.id)
 
-        clear_neo4j_database(db)  # TODO: sketchy - remove in prod
-        Command.populate_with_random_data()
+        # Command.populate_with_random_data()
         Command.create_random_friendships()
         Command.create_random_friend_requests()
         Command.create_random_break_and_invites()
