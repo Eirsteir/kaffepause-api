@@ -10,9 +10,13 @@ class CountableConnection(relay.Connection):
         abstract = True
 
     count = graphene.Int()
+    total_count = graphene.Int()
 
     def resolve_count(root, info, **kwargs):
         return len(root.edges)
+
+    def resolve_total_count(root, info, **kwargs):
+        return len(root.iterable)
 
 
 class OutputErrorType(graphene.Scalar):

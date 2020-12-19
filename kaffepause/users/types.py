@@ -20,7 +20,6 @@ class UserNode(graphene.ObjectType):
     uuid = graphene.UUID()
     name = graphene.String()
     username = graphene.String()
-    friends_count = graphene.Int()
     friends = relay.ConnectionField(lambda: UserConnection)
     social_context = graphene.String()
     current_status = graphene.Field(StatusUpdateNode)
@@ -31,10 +30,7 @@ class UserNode(graphene.ObjectType):
         current_user = get_user_from_account(current_user_account)
         return get_friendship_status(actor=current_user, user=parent)
 
-    def resolve_friends_count(parent, info):
-        return get_friends_count(parent)
-
-    def resolve_friends(parent, info):
+    def resolve_friends(parent, info, **kwargs):
         return get_friends(parent)
 
     def resolve_social_context(parent, info):

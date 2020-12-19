@@ -7,10 +7,6 @@ from kaffepause.relationships.enums import NonRelatedRelationship, UserRelations
 from kaffepause.users.models import User
 
 
-def get_friends_count(user: User) -> int:
-    return len(get_friends(user))
-
-
 def get_friends(user: User) -> List[User]:
     # TODO: exclude current user
     return user.friends.all()
