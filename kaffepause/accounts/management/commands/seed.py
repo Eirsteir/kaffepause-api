@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from neomodel import clear_neo4j_database, db
@@ -10,7 +8,6 @@ from kaffepause.relationships.enums import UserRelationship
 from kaffepause.users.test.factories import UserFactory
 
 NAMES = ["anna", "andrew", "tom", "leroy", "stenli", "jeff", "jack", "karol"]
-UUIDS = [str(uuid4()) for _ in range(8)]
 
 
 class Command(BaseCommand):
@@ -31,14 +28,10 @@ class Command(BaseCommand):
         if not settings.DEBUG:
             raise Exception("Can only seed database in development")
 
-        for uuid in UUIDS:
-            account = AccountFactory(id=uuid)
-            UserStatusFactory(user=account)
-            UserFactory(uuid=uuid)
-
         for _ in range(options["accounts"]):
             account = AccountFactory()
             UserStatusFactory(user=account)
+            UserFactory(uuid=account.id)
 
         clear_neo4j_database(db)  # TODO: sketchy - remove in prod
         Command.populate_with_random_data()
@@ -51,15 +44,14 @@ class Command(BaseCommand):
     def populate_with_random_data(range_min=1, range_max=200):
         """ Populate database with a defined number of random users """
         query = """
-        WITH {names} AS names_list
-        FOREACH (r IN range({range_min},{range_max}) |
+        WITH $names AS names_list
+        FOREACH (r IN range($range_min, $range_max) |
             CREATE (:User {id:r,
-                    username:names_list[toInt(size(names_list)*rand())] + r
+                    uuid: apoc.create.uuid(),
+                    username:names_list[toInteger(size(names_list)*rand())] + r
                     }));
         """
-        params = dict(
-            names=NAMES, uuids=UUIDS, range_min=range_min, range_max=range_max
-        )
+        params = dict(names=NAMES, range_min=range_min, range_max=range_max)
         return db.cypher_query(query, params)
 
     @staticmethod
@@ -100,9 +92,11 @@ class Command(BaseCommand):
         Populate actual database with random breaks and invitations
         """
         query = """
-        FOREACH (r IN range({range_min},{range_max}) |
-        CREATE (b:Break {start_time: datetime().epochSeconds + (1000*60*r)})
-        CREATE (i:BreakInvitation)
+        FOREACH (r IN range($range_min, $range_max) |
+        CREATE (b:Break {uuid: apoc.create.uuid(),
+            starting_at: datetime().epochSeconds + (1000*60*r)
+        })
+        CREATE (i:BreakInvitation {uuid: apoc.create.uuid()})
         CREATE (i)-[:REGARDING]->(b));
         """
 
