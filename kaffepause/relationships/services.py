@@ -27,7 +27,7 @@ def send_friend_request(actor: User, to_user: User) -> FriendRel:
 def cancel_friend_request(actor: User, to_user: User):
     if actor is to_user:
         raise CannotCancelFriendRequest
-    if actor.friends.is_connected(to_user):
+    if actor.is_friends_with(to_user):
         raise CannotCancelFriendRequest(
             _("Cannot cancel this friend request. Users are already friends")
         )
