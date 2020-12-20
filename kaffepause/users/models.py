@@ -90,3 +90,6 @@ class User(StructuredNode):
 
     def unfollow_user(self, user):
         return self.following.disconnect(user)
+
+    def get_current_status(self):
+        return self.current_status.single()
