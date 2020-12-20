@@ -68,6 +68,9 @@ class User(StructuredNode):
     def is_friends_with(self, user):
         return self.friends.is_connected(user)
 
+    def has_send_friend_request_to(self, user):
+        return self.outgoing_friend_requests.is_connected(user)
+
     def add_friend(self, other):
         """Disconnect requesting relationships and connect the users as friends."""
         self.outgoing_friend_requests.disconnect(other)

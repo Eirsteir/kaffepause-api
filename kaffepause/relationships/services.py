@@ -1,14 +1,12 @@
-from typing import Callable, Iterable, List
-
-from django.utils.translation import gettext_lazy as _
+from typing import Callable, Iterable
 
 from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
-    CannotCancelFriendRequest,
     CannotFollowUser,
     CannotRejectFriendRequest,
     CannotUnfollowUser,
     CannotUnfriendUser,
+    FriendRequestDoesNotExist,
     RelationshipAlreadyExists,
 )
 from kaffepause.relationships.models import FriendRel
@@ -25,13 +23,10 @@ def send_friend_request(actor: User, to_user: User) -> FriendRel:
 
 
 def cancel_friend_request(actor: User, to_user: User):
-    if actor is to_user:
-        raise CannotCancelFriendRequest
-    if actor.is_friends_with(to_user):
-        raise CannotCancelFriendRequest(
-            _("Cannot cancel this friend request. Users are already friends")
-        )
-    return actor.cancel_friend_request(to_user)
+    if actor.has_send_friend_request_to(to_user):
+        return actor.cancel_friend_request(to_user)
+
+    raise FriendRequestDoesNotExist
 
 
 def accept_friend_request(actor: User, requester: User) -> FriendRel:

@@ -12,6 +12,7 @@ from kaffepause.users.selectors import get_user_from_account
 
 
 # TODO: Lot of repeated logic and fetching in the resolvers - dataLoader?
+# https://docs.graphene-python.org/en/latest/execution/dataloader/#dataloader
 class UserNode(graphene.ObjectType):
     class Meta:
         interfaces = (relay.Node,)

@@ -11,7 +11,7 @@ snapshots["test_accept_friend_requests_when_addressee_attempts_to_accept 1"] = {
     "errors": [
         {
             "locations": [{"column": 9, "line": 3}],
-            "message": "Cannot accept this friend request",
+            "message": "None",
             "path": ["acceptFriendRequest"],
         }
     ],
@@ -33,7 +33,7 @@ snapshots["test_cancel_friend_requests_when_addressee_attempts_to_cancel 1"] = {
     "errors": [
         {
             "locations": [{"column": 9, "line": 3}],
-            "message": "Cannot cancel this friend request",
+            "message": "None",
             "path": ["cancelFriendRequest"],
         }
     ],
@@ -44,7 +44,7 @@ snapshots["test_cancel_friend_requests_when_already_friends_does_nothing 1"] = {
     "errors": [
         {
             "locations": [{"column": 9, "line": 3}],
-            "message": "Cannot cancel this friend request. Users are already friends",
+            "message": "None",
             "path": ["cancelFriendRequest"],
         }
     ],
@@ -66,7 +66,7 @@ snapshots["test_send_friend_request_when_already_friends_does_not_send_request 1
     "errors": [
         {
             "locations": [{"column": 9, "line": 3}],
-            "message": "Relationship already exists",
+            "message": "None",
             "path": ["sendFriendRequest"],
         }
     ],
@@ -77,7 +77,7 @@ snapshots["test_send_friend_request_when_an_incoming_request_is_already_sent 1"]
     "errors": [
         {
             "locations": [{"column": 9, "line": 3}],
-            "message": "Relationship already exists",
+            "message": "None",
             "path": ["sendFriendRequest"],
         }
     ],
@@ -88,7 +88,7 @@ snapshots["test_send_friend_request_when_an_outgoing_request_is_already_sent 1"]
     "errors": [
         {
             "locations": [{"column": 9, "line": 3}],
-            "message": "Relationship already exists",
+            "message": "None",
             "path": ["sendFriendRequest"],
         }
     ],
@@ -110,7 +110,7 @@ snapshots["test_unfriend_user_when_not_friends_returns_error 1"] = {
     "errors": [
         {
             "locations": [{"column": 9, "line": 3}],
-            "message": "Cannot unfriend this user",
+            "message": "None",
             "path": ["unfriendUser"],
         }
     ],
@@ -132,7 +132,7 @@ snapshots["test_unfriend_user_when_user_attempts_to_unfriend_itself 1"] = {
     "errors": [
         {
             "locations": [{"column": 9, "line": 3}],
-            "message": "Cannot unfriend this user",
+            "message": "None",
             "path": ["unfriendUser"],
         }
     ],

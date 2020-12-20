@@ -11,8 +11,8 @@ class CannotAcceptFriendRequest(DefaultError):
     default_message = _("Cannot accept this friend request")
 
 
-class CannotCancelFriendRequest(DefaultError):
-    default_message = _("Cannot cancel this friend request")
+class FriendRequestDoesNotExist(DefaultError):
+    default_message = _("The requested friend request does not exist")
 
 
 class CannotRejectFriendRequest(DefaultError):
@@ -20,12 +20,12 @@ class CannotRejectFriendRequest(DefaultError):
 
 
 class CannotUnfriendUser(DefaultError):
-    default_message = _("Cannot unfriend this user. The users have to be friends")
+    default_message = _("Cannot unfriend this user. The users are not friends")
 
 
 class CannotFollowUser(DefaultError):
-    default_message = _("Cannot follow this user. The users have to be friends")
+    default_message = _("Cannot follow this user. The users are not friends")
 
 
 class CannotUnfollowUser(DefaultError):
-    default_message = _("Cannot unfollow this user. The users have to be friends")
+    default_message = _("Cannot unfollow this user. The users are not friends")

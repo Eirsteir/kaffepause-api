@@ -204,8 +204,8 @@ def test_cancel_friend_requests_when_already_friends_does_nothing(
 def test_cancel_friend_requests_when_addressee_attempts_to_cancel(
     snapshot, client_query, auth_headers, requested_friend, user
 ):
-    """Should do nothing when the users are already friends."""
-    user.add_friend(requested_friend)
+    """Should do nothing when the addressee attempts to cancel the request."""
+    requested_friend.send_friend_request(user)
     variables = {"toFriend": str(user.uuid)}
 
     response = client_query(

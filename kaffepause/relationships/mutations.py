@@ -1,7 +1,6 @@
 import graphene
 
 from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
-from kaffepause.relationships.exceptions import RelationshipAlreadyExists
 from kaffepause.relationships.services import (
     accept_friend_request,
     cancel_friend_request,

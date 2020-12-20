@@ -2,10 +2,10 @@ import pytest
 
 from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
-    CannotCancelFriendRequest,
     CannotFollowUser,
     CannotRejectFriendRequest,
     CannotUnfollowUser,
+    FriendRequestDoesNotExist,
     RelationshipAlreadyExists,
 )
 from kaffepause.relationships.services import (
@@ -64,11 +64,9 @@ def test_cancel_friend_request(actor, addressee):
 
 
 def test_cancel_friend_request_when_no_request_exists(actor, addressee):
-    """Should delete a 'REQUESTED_FRIEND' relationship between the users if no such request exists."""
-    cancel_friend_request(actor, addressee)
-
-    assert not addressee.incoming_friend_requests.is_connected(actor)
-    assert not actor.outgoing_friend_requests.is_connected(addressee)
+    """Should raise an exception if the user attempts to accept a friend request which does not exist.."""
+    with pytest.raises(FriendRequestDoesNotExist):
+        cancel_friend_request(actor, addressee)
 
 
 def test_cancel_friend_request_when_users_are_already_friends_raises_exception(
@@ -76,7 +74,7 @@ def test_cancel_friend_request_when_users_are_already_friends_raises_exception(
 ):
     """Should raise an exception if the user attempts to cancel a friend request when the users are already friends."""
     actor.add_friend(addressee)
-    with pytest.raises(CannotCancelFriendRequest):
+    with pytest.raises(FriendRequestDoesNotExist):
         cancel_friend_request(actor, addressee)
 
 
@@ -85,7 +83,7 @@ def test_cancel_friend_request_when_actor_is_addressee_raises_exception(
 ):
     """Should raise an exception if the user attempts to cancel a friend request to itself."""
 
-    with pytest.raises(CannotCancelFriendRequest):
+    with pytest.raises(FriendRequestDoesNotExist):
         cancel_friend_request(actor, actor)
 
 
