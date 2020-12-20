@@ -1,9 +1,13 @@
+from typing import Callable, Iterable, List
+
 from django.utils.translation import gettext_lazy as _
 
 from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
     CannotCancelFriendRequest,
+    CannotFollowUser,
     CannotRejectFriendRequest,
+    CannotUnfollowUser,
     CannotUnfriendUser,
     RelationshipAlreadyExists,
 )
@@ -21,7 +25,7 @@ def send_friend_request(actor: User, to_user: User) -> FriendRel:
 
 
 def cancel_friend_request(actor: User, to_user: User):
-    if actor == to_user:
+    if actor is to_user:
         raise CannotCancelFriendRequest
     if actor.friends.is_connected(to_user):
         raise CannotCancelFriendRequest(
@@ -56,11 +60,30 @@ def reject_friend_request(actor: User, requester: User) -> User:
 
 def can_reply_to_friend_request(actor, requester):
     """The actor can only reply to a friend request if the requester has sent one."""
-    return actor.incoming_friend_requests.relationship(requester)
+    return actor.incoming_friend_requests.is_connected(requester)
 
 
 def unfriend_user(actor: User, friend: User):
-    if actor.can_unfriend_user(friend):
-        return actor.remove_friend(friend)
+    return _perform_friend_action(
+        action=actor.remove_friend, exc=CannotUnfriendUser(), users=(actor, friend)
+    )
 
-    raise CannotUnfriendUser
+
+def follow_friend(actor: User, friend: User):
+    return _perform_friend_action(
+        action=actor.follow_user, exc=CannotFollowUser(), users=(actor, friend)
+    )
+
+
+def unfollow_friend(actor: User, friend: User):
+    return _perform_friend_action(
+        action=actor.unfollow_user, exc=CannotUnfollowUser(), users=(actor, friend)
+    )
+
+
+def _perform_friend_action(*, action: Callable, exc: Exception, users: Iterable[User]):
+    actor, friend = users
+    if actor.can_perform_action_on_friend(friend):
+        return action(friend)
+
+    raise exc

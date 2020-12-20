@@ -20,4 +20,12 @@ class CannotRejectFriendRequest(DefaultError):
 
 
 class CannotUnfriendUser(DefaultError):
-    default_message = _("Cannot unfriend this user")
+    default_message = _("Cannot unfriend this user. The users have to be friends")
+
+
+class CannotFollowUser(DefaultError):
+    default_message = _("Cannot follow this user. The users have to be friends")
+
+
+class CannotUnfollowUser(DefaultError):
+    default_message = _("Cannot unfollow this user. The users have to be friends")

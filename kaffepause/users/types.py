@@ -4,7 +4,6 @@ from graphene import relay
 from kaffepause.common.types import CountableConnection
 from kaffepause.relationships.selectors import (
     get_friends,
-    get_friends_count,
     get_friendship_status,
     get_social_context_between,
 )
