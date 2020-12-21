@@ -53,7 +53,7 @@ def reject_friend_request(actor: User, requester: User) -> User:
     raise CannotRejectFriendRequest
 
 
-def can_reply_to_friend_request(actor, requester):
+def can_reply_to_friend_request(actor, requester) -> bool:
     """The actor can only reply to a friend request if the requester has sent one."""
     return actor.incoming_friend_requests.is_connected(requester)
 

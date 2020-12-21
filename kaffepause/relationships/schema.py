@@ -4,7 +4,9 @@ from graphene import relay
 from kaffepause.relationships.mutations import (
     AcceptFriendRequest,
     CancelFriendRequest,
+    FollowFriend,
     SendFriendRequest,
+    UnfollowFriend,
     UnfriendUser,
 )
 from kaffepause.relationships.selectors import (
@@ -47,3 +49,5 @@ class Mutation(graphene.ObjectType):
     cancel_friend_request = CancelFriendRequest.Field()
     accept_friend_request = AcceptFriendRequest.Field()
     unfriend_user = UnfriendUser.Field()
+    unfollow_friend = UnfollowFriend.Field()
+    follow_friend = FollowFriend.Field()

@@ -47,3 +47,27 @@ UNFRIEND_USER_MUTATION = """
         }
     }
 """
+
+UNFOLLOW_FRIEND_MUTATION = """
+    mutation unfollowFriend($friendId: UUID!) {
+        unfollowFriend(friendId: $friendId) {
+            unfollowedFriend {
+                uuid
+            }
+            success
+            errors
+        }
+    }
+"""
+
+FOLLOW_FRIEND_MUTATION = """
+    mutation followFriend($friendId: UUID!) {
+        followFriend(friendId: $friendId) {
+            followedFriend {
+                uuid
+            }
+            success
+            errors
+        }
+    }
+"""

@@ -4,10 +4,13 @@ from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Ou
 from kaffepause.relationships.services import (
     accept_friend_request,
     cancel_friend_request,
+    follow_friend,
     send_friend_request,
+    unfollow_friend,
     unfriend_user,
 )
 from kaffepause.users.models import User
+from kaffepause.users.selectors import get_user
 from kaffepause.users.types import UserNode
 
 
@@ -75,3 +78,33 @@ class AcceptFriendRequest(
         accept_friend_request(actor=current_user, requester=requester)
 
         return cls(success=True, friend=requester)
+
+
+class UnfollowFriend(
+    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+):
+    class Arguments:
+        friend_id = graphene.UUID(required=True)
+
+    unfollowed_friend = graphene.Field(UserNode)
+
+    @classmethod
+    def resolve_mutation(cls, root, info, friend_id):
+        current_user = cls.get_current_user()
+        friend = get_user(user_uuid=friend_id)
+        unfollow_friend(actor=current_user, friend=friend)
+        return cls(success=True, unfollowed_friend=friend)
+
+
+class FollowFriend(LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation):
+    class Arguments:
+        friend_id = graphene.UUID(required=True)
+
+    followed_friend = graphene.Field(UserNode)
+
+    @classmethod
+    def resolve_mutation(cls, root, info, friend_id):
+        current_user = cls.get_current_user()
+        friend = get_user(user_uuid=friend_id)
+        follow_friend(actor=current_user, friend=friend)
+        return cls(success=True, followed_friend=friend)

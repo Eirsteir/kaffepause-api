@@ -52,16 +52,19 @@ class LoginRequiredMixin(MutationMixin):
 
 
 class NeomodelGraphQLMixin:
+    # https://github.com/flavors/django-graphql-jwt/blob/master/graphql_jwt/middleware.py
+
     @classmethod
     def get_current_user(cls):
-        from kaffepause.users.models import User
+        from kaffepause.users.selectors import get_user_from_account
 
         current_user_account = cls._user
 
         if not current_user_account:
-            raise PermissionDenied  # TODO: Improperly configured?
+            raise PermissionDenied
 
-        current_user = User.nodes.get(uuid=current_user_account.id)
+        current_user = get_user_from_account(account=current_user_account)
+
         return current_user
 
 
