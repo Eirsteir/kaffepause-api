@@ -6,6 +6,7 @@ from kaffepause.common.bases import NeomodelGraphQLMixin
 from kaffepause.common.decorators import login_required
 from kaffepause.users.models import User
 from kaffepause.users.mutations import UpdateProfile
+from kaffepause.users.selectors import get_users, search_users
 from kaffepause.users.types import UserConnection, UserNode
 
 
@@ -19,12 +20,11 @@ class UserQuery(NeomodelGraphQLMixin, graphene.ObjectType):
 
     @classmethod
     @login_required
-    def resolve_search_users(cls, root, info, query, **kwargs):
-        search_query = Q(name__icontains=query) | Q(username__icontains=query)
-        current_user_uuid = cls.get_current_user().uuid
-
-        users = User.nodes.filter(search_query).exclude(uuid=current_user_uuid)
-        return users
+    def resolve_search_users(cls, root, info, query=None, **kwargs):
+        current_user = cls.get_current_user()
+        if query:
+            return search_users(query=query, searched_by=current_user)
+        return get_users(fetched_by=current_user)
 
 
 class MeQuery(graphene.ObjectType):
