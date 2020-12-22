@@ -57,10 +57,8 @@ INSTALLED_APPS += ["django_extensions"]  # noqa F405
 
 # Graphene
 # ------------------------------------------------------------------------------
-
+GRAPHENE["MIDDLEWARE"] += ["graphene_django.debug.DjangoDebugMiddleware"]  # noqa F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-GRAPHENE["MIDDLEWARE"] += [  # noqa F405
-    "graphene_django.debug.DjangoDebugMiddleware"
-]
+LOGGING["root"]["level"] = "DEBUG"  # noqa F405

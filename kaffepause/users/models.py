@@ -21,6 +21,8 @@ class User(StructuredNode):
     # TODO: validation - blank, numbers etc
     name = StringProperty(required=True, index=True)
     username = StringProperty(unique_index=True)
+    locale = StringProperty(default="en")
+    profile_pic = StringProperty()
 
     friends = Relationship(USER, UserRelationship.ARE_FRIENDS, model=FriendRel)
     following = RelationshipTo(USER, UserRelationship.FOLLOWING, model=RelationshipRel)

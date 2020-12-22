@@ -11,7 +11,7 @@ from kaffepause.users.models import User
 logger = logging.getLogger(__name__)
 
 
-def get_user_from_account(account: Account) -> User:
+def get_user_from_account(*, account: Account) -> User:
     return get_user(user_uuid=account.id)
 
 
