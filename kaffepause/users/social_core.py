@@ -11,6 +11,8 @@ logger = logging.getLogger(__name__)
 class SocialProvider(ABC):
     @abstractmethod
     def do_create_user(self, account, response):
+        """The account can be assumed to be verified when it comes from a social authentication provider."""
+        account.verify()
         try:
             return get_user_from_account(account=account)
         except UserDoesNotExist:
@@ -58,6 +60,7 @@ class SocialAuthProviderFactory:
 
 
 def create_user(backend, user, response, *args, **kwargs):
+    """Only create a new User if the Account is new."""
     if kwargs.get("is_new"):
         __create_new_user(backend, response, user)
 
@@ -70,3 +73,4 @@ def __create_new_user(backend, response, user):
         return
 
     provider.do_create_user(account=user, response=response)
+    logger.debug(f"Successfully created new account and user node (id/uuid:{user.id})")

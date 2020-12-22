@@ -53,3 +53,9 @@ class Account(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    def verify(self):
+        user_status = self.status
+        if not user_status.verified:
+            user_status.verified = True
+            user_status.save(update_fields=["verified"])
