@@ -27,3 +27,4 @@ git+https://github.com/neo4j-contrib/django-neomodel.git@master#egg=django-neomo
 graphene>=2.0  # https://graphene-python.org/
 django-graphql-auth==0.3.14
 django-graphql-jwt==0.3.0
+django-graphql-social-auth[jwt]==0.1.4  # https://github.com/flavors/django-graphql-social-auth

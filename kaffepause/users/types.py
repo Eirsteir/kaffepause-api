@@ -20,6 +20,7 @@ class UserNode(graphene.ObjectType):
 
     uuid = graphene.UUID()
     name = graphene.String()
+    # Short name
     username = graphene.String()
     is_viewer_friend = graphene.Boolean()
     friends = relay.ConnectionField(lambda: UserConnection)

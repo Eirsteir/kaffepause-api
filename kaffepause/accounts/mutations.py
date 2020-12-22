@@ -17,6 +17,7 @@ class Register(mutations.Register):
     """
     Register a user with an account and a related user node.
     The given name is set on the created user node.
+    If the user creation fails, the account is deleted.
     """
 
     class Arguments:
@@ -24,6 +25,7 @@ class Register(mutations.Register):
 
     @classmethod
     def mutate(cls, root, info, name, **input):
+        # TODO: This will still send an email even if the creation fails - how about doing it the other way? or sending email manually
         registration = super().resolve_mutation(root, info, **input)
         if registration.success:
             email = input.get(Account.EMAIL_FIELD)

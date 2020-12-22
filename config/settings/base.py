@@ -47,7 +47,7 @@ DATABASES["default"]["ATOMIC_REQUESTS"] = True
 NEOMODEL_NEO4J_BOLT_URL = env("NEO4J_BOLT_URL", default="bolt://neo4j:debug@neo4j:7687")
 NEOMODEL_SIGNALS = env.bool("NEOMODEL_SIGNALS")
 NEOMODEL_FORCE_TIMEZONE = env("NEOMODEL_FORCE_TIMEZONE")
-# TODO: Enabling this makes django unable to connect to neo4j
+# TODO: This was removed in v4
 # NEOMODEL_ENCRYPTED_CONNECTION = env("NEOMODEL_ENCRYPTED_CONNECTION")
 NEOMODEL_MAX_POOL_SIZE = env.int("NEOMODEL_MAX_POOL_SIZE")
 
@@ -79,6 +79,7 @@ THIRD_PARTY_APPS = [
     "graphene_django",
     "graphql_auth",
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
+    "social_django",
 ]
 LOCAL_APPS = [
     "kaffepause.accounts",
@@ -97,8 +98,10 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
+    "social_core.backends.google.GoogleOAuth2",
+    "social_core.backends.facebook.FacebookOAuth2",
     "graphql_auth.backends.GraphQLAuthBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "accounts.Account"
@@ -304,3 +307,32 @@ SITE = {
 }
 
 API_VERSION = "v1"
+
+
+# Social Auth
+# ------------------------------------------------------------------------------
+#  https://python-social-auth.readthedocs.io/en/latest/configuration/django.html
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", default="")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", default="")
+SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
+]
+
+SOCIAL_AUTH_FACEBOOK_KEY = env("SOCIAL_AUTH_FACEBOOK_KEY", default="")
+SOCIAL_AUTH_FACEBOOK_SECRET = env("SOCIAL_AUTH_FACEBOOK_SECRET", default="")
+SOCIAL_AUTH_FACEBOOK_API_VERSION = env(
+    "SOCIAL_AUTH_FACEBOOK_API_VERSION", default="9.0"
+)
+SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    "fields": "id, name, email, picture.type(large)"
+}
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [
+    ("name", "name"),
+    ("email", "email"),
+    ("picture", "picture"),
+]

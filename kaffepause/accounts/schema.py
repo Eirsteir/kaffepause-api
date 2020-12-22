@@ -1,4 +1,5 @@
 import graphene
+import graphql_social_auth
 from django.contrib.auth import get_user_model
 from graphql_auth import mutations as auth_mutations
 from graphql_jwt.decorators import login_required
@@ -12,6 +13,8 @@ Account = get_user_model()
 class AuthMutation(graphene.ObjectType):
     register = mutations.Register.Field()
     delete_account = mutations.DeleteAccount.Field()
+
+    social_auth = graphql_social_auth.SocialAuthJWT.Field()
 
     # graphql-auth inheritances
     verify_account = auth_mutations.VerifyAccount.Field()
