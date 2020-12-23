@@ -72,6 +72,17 @@ def test_register_creates_account_and_user_when_graphql_auth_fails(client_query)
     assert not User.nodes.get_or_none(name=expected_name)
 
 
+def test_register_with_invalid_input_does_not_create_user_or_account(client_query):
+    """An input validation failure should not create the user nor the account."""
+    expected_email, expected_name, variables = get_registration_data()
+    variables.__setitem__("name", "")
+
+    client_query(REGISTER_MUTATION, op_name="register", variables=variables)
+
+    assert not Account.objects.filter(email=expected_email).exists()
+    assert not User.nodes.get_or_none(name=expected_name)
+
+
 def test_delete_account_deletes_account_and_user(
     client_query, auth_headers, account, user, token
 ):

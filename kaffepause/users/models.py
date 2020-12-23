@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django_neomodel import DjangoNode
 from neomodel import (
     Relationship,
     RelationshipFrom,
@@ -16,7 +17,7 @@ from kaffepause.relationships.models import FriendRel, RelationshipRel
 from kaffepause.statusupdates.enums import StatusUpdateRelationship
 
 
-class User(StructuredNode):
+class User(DjangoNode):
     uuid = UUIDProperty()
     # TODO: validation - blank, numbers etc
     name = StringProperty(required=True, index=True)
@@ -50,6 +51,9 @@ class User(StructuredNode):
     current_status = RelationshipTo(
         STATUS_UPDATE, StatusUpdateRelationship.CURRENT, cardinality=ZeroOrOne
     )
+
+    class Meta:
+        app_label = "users"
 
     @classmethod
     def get_or_create(cls, object_, *props, **kwargs):
