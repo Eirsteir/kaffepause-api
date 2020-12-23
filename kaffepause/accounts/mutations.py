@@ -7,7 +7,6 @@ from graphql_auth import mutations
 from neomodel import NeomodelException
 
 from kaffepause.accounts.exceptions import AccountCreationFailed
-from kaffepause.common.constants import Messages
 from kaffepause.users.forms import UserCreationForm
 from kaffepause.users.models import User
 
@@ -34,15 +33,11 @@ class Register(mutations.Register):
         and eventually creating the user if that was successful.
         """
         user = cls.__validate_user_or_raise(name=name)
-
-        # TODO: This will still send an email even if the creation fails - how about doing it the other way? or
-        #  sending email manually
         registration = super().resolve_mutation(root, info, **input)
 
         if registration.success:
             cls.__perform_connected_user_creation(user, **input)
 
-        print(user)
         return registration
 
     @classmethod
@@ -50,7 +45,7 @@ class Register(mutations.Register):
         form = cls.node_form(kwargs)
         if form.is_valid():
             return form.save(commit=False)
-        print("HERE")
+
         raise GraphQLError(form.errors.get_json_data())
 
     @classmethod

@@ -89,6 +89,7 @@ LOCAL_APPS = [
     "kaffepause.statusupdates",
     "kaffepause.api",
     "kaffepause.common",
+    "kaffepause.utils",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
