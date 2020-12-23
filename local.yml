@@ -17,7 +17,6 @@ services:
     volumes:
       - .:/app:z
     env_file:
-      - .env
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
       - ./.envs/.local/.neo4j
