@@ -9,5 +9,7 @@ class UserFactory(NeomodelFactory):
         model = User
 
     uuid = factory.Faker("uuid4")
-    username = factory.Faker("user_name")
     name = factory.Faker("name")
+    username = factory.Faker("user_name")
+    locale = factory.Faker("locale")
+    profile_pic = factory.Faker("url")

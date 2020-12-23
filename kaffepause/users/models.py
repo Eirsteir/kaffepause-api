@@ -19,10 +19,9 @@ from kaffepause.statusupdates.enums import StatusUpdateRelationship
 
 class User(DjangoNode):
     uuid = UUIDProperty()
-    # TODO: validation - blank, numbers etc
-    name = StringProperty(required=True, index=True)
-    username = StringProperty(unique_index=True)
-    locale = StringProperty(default="en")
+    name = StringProperty(required=True, index=True, max_length=100)
+    username = StringProperty(unique_index=True, max_length=100)
+    locale = StringProperty(default="en_US", max_length=10)
     profile_pic = StringProperty()
 
     friends = Relationship(USER, UserRelationship.ARE_FRIENDS, model=FriendRel)
