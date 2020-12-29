@@ -65,7 +65,7 @@ def pytest_sessionstart(session):
                 "or set the --resetdb parameter when calling pytest\n\n\tpytest --resetdb."
             )
         else:
-            clear_neo4j_database(db, clear_constraints=True, clear_indexes=True)
+            clear_neo4j_database(db)
     except (CypherError, ClientError) as ce:
         # Handle instance without password being changed
         if (

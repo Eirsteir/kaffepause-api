@@ -23,8 +23,8 @@ def test_search_by_name(
     client_query, auth_headers, names, search_term, expected_matches
 ):
     """Should return the users who's name matches the search query term."""
-    for name in names:
-        UserFactory(name=name, username="")
+    for idx, name in enumerate(names):
+        UserFactory(name=name, username=str(idx))
 
     variables = {"query": search_term}
     response = client_query(SEARCH_QUERY, variables=variables, headers=auth_headers)
