@@ -1,78 +1,71 @@
+from types import SimpleNamespace
+
 import pytest
 
-from kaffepause.users.models import User
+from kaffepause.users.test.factories import UserFactory
 from kaffepause.users.test.graphql_requests import UPDATE_PROFILE_MUTATION
 
 pytestmark = pytest.mark.django_db
 
 
-def test_update_profile_updates_profile(client_query, auth_headers, user):
-    """Should update the given fields on the user."""
-    expected_name = "New name"
-    expected_username = "New username"
-
-    variables = {"name": expected_name, "username": expected_username}
-
-    client_query(
-        UPDATE_PROFILE_MUTATION,
-        op_name="updateProfile",
-        variables=variables,
-        headers=auth_headers,
-    )
-    user.refresh()
-
-    assert user.name == expected_name
-    assert user.username == expected_username
+@pytest.fixture
+def proto_user():
+    return UserFactory.build()
 
 
-def test_update_profile_when_username_already_in_use(client_query, auth_headers, user):
-    """Should not update the user when the username is in use."""
-    expected_name = "New name"
-    expected_username = user.username
-    User(name="test", username=expected_username).save()
+def get_update_data_for(user):
+    return {
+        "name": user.name,
+        "username": user.username,
+        "locale": user.locale,
+        "profilePic": user.profile_pic,
+    }
 
-    variables = {"name": expected_name, "username": expected_username}
+
+def test_update_profile_updates_user(client_query, auth_headers, user, proto_user):
+    """Should return the updated user."""
 
     response = client_query(
         UPDATE_PROFILE_MUTATION,
         op_name="updateProfile",
-        variables=variables,
+        variables=get_update_data_for(proto_user),
+        headers=auth_headers,
+    )
+    content = response.json(object_hook=lambda d: SimpleNamespace(**d))
+    print(response.json())
+    data = content.data.updateProfile
+    actual_user = data.user
+
+    assert actual_user.uuid == str(user.uuid)
+    assert actual_user.name == proto_user.name
+    assert actual_user.username == proto_user.username
+    assert actual_user.locale == proto_user.locale
+    assert actual_user.profilePic == proto_user.profile_pic
+
+
+def test_update_profile_when_username_already_in_use(
+    snapshot, client_query, auth_headers, user
+):
+    """Should not update the user when the username is in use."""
+    taken_username = UserFactory().username
+    user.username = taken_username
+
+    response = client_query(
+        UPDATE_PROFILE_MUTATION,
+        op_name="updateProfile",
+        variables=get_update_data_for(user),
         headers=auth_headers,
     )
     content = response.json()
-    data = content.get("data").get("updateProfile")
-
-    assert "errors" in data
+    snapshot.assert_match(content)
 
 
-def test_update_profile_when_username_already_in_use_by_updater(
-    client_query, auth_headers, user
-):
-    """Should still update other fields if username is in use by the one performing the update."""
-    expected_name = "New name"
-    expected_username = user.username
-
-    variables = {"name": expected_name, "username": expected_username}
-
-    client_query(
+def test_update_profile_when_unauthenticated(snapshot, client_query, user):
+    """Should not update the user when the user is not authenticated."""
+    response = client_query(
         UPDATE_PROFILE_MUTATION,
         op_name="updateProfile",
-        variables=variables,
-        headers=auth_headers,
-    )
-    user.refresh()
-
-    assert user.name == expected_name
-    assert user.username == expected_username
-
-
-def test_update_profile_when_unauthenticated(snapshot, client_query):
-    """Should not update the user when the user is not authenticated."""
-
-    variables = {"name": "test", "username": "test"}
-
-    response = client_query(
-        UPDATE_PROFILE_MUTATION, op_name="updateProfile", variables=variables
+        variables=get_update_data_for(user),
     )
     content = response.json()
 

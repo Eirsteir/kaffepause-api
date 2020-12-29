@@ -1,25 +1,19 @@
 import logging
 
-from kaffepause.users.exceptions import UsernameAlreadyInUse
+from django.core.exceptions import ValidationError
+
+from kaffepause.users.forms import UserUpdateForm
 from kaffepause.users.models import User
 
 logger = logging.getLogger(__name__)
 
 
-# TODO: not scalable when new parameters are added
-def update_profile(user: User, name: str, username: str) -> User:
+def update_profile(*, user: User, **data) -> User:
     logger.debug(f"Updating user (uuid: {user.uuid}")
+    print(data)
+    form = UserUpdateForm(instance=user, data=data)
+    if form.is_valid():
+        return form.save()
 
-    user_with_username_exists = (
-        User.nodes.filter(username__iexact=username)
-        .exclude(uuid=user.uuid)
-        .get_or_none()
-    )
-
-    if user_with_username_exists:
-        raise UsernameAlreadyInUse
-
-    user.name = name
-    user.username = username
-    user.save()
-    return user
+    logger.info(f"Failed to update user (uuid:{user.uuid})")
+    raise ValidationError(form.errors)

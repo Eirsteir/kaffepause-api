@@ -17,20 +17,14 @@ class UpdateProfile(
     class Arguments:
         name = graphene.String(required=True)
         username = graphene.String(required=True)
+        locale = graphene.String(required=True)
+        profile_pic = graphene.String(required=True)
 
     user = graphene.Field(UserNode)
 
     @classmethod
     def resolve_mutation(cls, root, info, **kwargs):
         user = cls.get_current_user()
-        return cls.__try_to_update_profile(user, **kwargs)
-
-    @classmethod
-    def __try_to_update_profile(cls, user, **kwargs):
-        try:
-            user = update_profile(user=user, **kwargs)
-        except UsernameAlreadyInUse as e:
-            logger.info(f"Failed to update user (uuid:{user.uuid})", exc_info=e)
-            return cls(success=False, errors=Messages.USERNAME_IN_USE)
+        user = update_profile(user=user, **kwargs)
         logger.debug(f"Successfully updated user (uuid:{user.uuid})")
         return cls(success=True, user=user)

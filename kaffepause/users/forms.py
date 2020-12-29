@@ -15,9 +15,15 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserUpdateForm(forms.ModelForm):
-    name = forms.CharField(max_length=100, required=False)
-    username = forms.CharField(max_length=100, required=False)
-    # profile_pic = forms.URLField(required=False)
+    """
+    Requires all fields to be passed to prevent neomodel from
+    overwriting the missing fields with blank values.
+    """
+
+    name = forms.CharField(max_length=100, required=True)
+    username = forms.CharField(max_length=100, required=True)
+    locale = forms.CharField(max_length=10, required=True)
+    profile_pic = forms.URLField(required=True)
 
     error_message = {"duplicate_username": _("This username has already been taken.")}
 
