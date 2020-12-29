@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 def update_profile(*, user: User, **data) -> User:
     logger.debug(f"Updating user (uuid: {user.uuid}")
-    print(data)
+
     form = UserUpdateForm(instance=user, data=data)
     if form.is_valid():
         return form.save()

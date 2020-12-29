@@ -7,6 +7,7 @@ from graphql_auth import mutations
 from neomodel import NeomodelException
 
 from kaffepause.accounts.exceptions import AccountCreationFailed
+from kaffepause.accounts.services import connect_user_and_account, validate_user
 from kaffepause.users.forms import UserCreationForm
 from kaffepause.users.models import User
 
@@ -21,8 +22,6 @@ class Register(mutations.Register):
     The process is absolute, either everything is completed or nothing is.
     """
 
-    node_form = UserCreationForm
-
     class Arguments:
         name = graphene.String(required=True)
 
@@ -32,44 +31,13 @@ class Register(mutations.Register):
         Check if the user object is valid before creating the account
         and eventually creating the user if that was successful.
         """
-        user = cls.__validate_user_or_raise(name=name)
+        user = validate_user(name=name)
         registration = super().resolve_mutation(root, info, **input)
 
         if registration.success:
-            cls.__perform_connected_user_creation(user, **input)
+            connect_user_and_account(user, **input)
 
         return registration
-
-    @classmethod
-    def __validate_user_or_raise(cls, **kwargs):
-        form = cls.node_form(kwargs)
-        if form.is_valid():
-            return form.save(commit=False)
-
-        raise GraphQLError(form.errors.get_json_data())
-
-    @classmethod
-    def __perform_connected_user_creation(cls, user, **kwargs):
-        email = kwargs.get(Account.EMAIL_FIELD)
-        account = Account.objects.get(email=email)
-        user.uuid = account.id
-        cls.__try_to_save_user(account, user)
-
-    @classmethod
-    def __try_to_save_user(cls, account, user):
-        """Try to save the user and delete the account if upon failure."""
-        try:
-            user.save()
-        except NeomodelException as e:
-            logger.error(
-                f"Failed to create user node, deleting account (id:{account.id})",
-                exc_info=e,
-            )
-            account.delete()
-            raise AccountCreationFailed
-        logger.debug(
-            f"Successfully created new account and user node (id/uuid:{account.id})"
-        )
 
 
 class DeleteAccount(mutations.DeleteAccount):
