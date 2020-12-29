@@ -15,15 +15,13 @@ def test_update_profile_updates_profile(user):
         "name": proto_user.name,
         "username": proto_user.username,
         "locale": proto_user.locale,
-        "profile_pic": proto_user.profile_pic,
     }
 
-    updated_user = update_profile(user=user, data=data)
+    updated_user = update_profile(user=user, **data)
 
     assert updated_user.name == proto_user.name
     assert updated_user.username == proto_user.username
     assert updated_user.locale == proto_user.locale
-    assert updated_user.profile_pic == proto_user.profile_pic
 
 
 def test_update_profile_when_form_invalid_fails(user):
@@ -40,12 +38,10 @@ def test_update_profile_when_username_already_in_use_by_updater(user):
         "username": user.username,
         "name": proto_user.name,
         "locale": proto_user.locale,
-        "profile_pic": proto_user.profile_pic,
     }
 
-    updated_user = update_profile(user=user, data=data)
+    updated_user = update_profile(user=user, **data)
 
     assert updated_user.username == user.username
     assert updated_user.name == proto_user.name
     assert updated_user.locale == proto_user.locale
-    assert updated_user.profile_pic == proto_user.profile_pic

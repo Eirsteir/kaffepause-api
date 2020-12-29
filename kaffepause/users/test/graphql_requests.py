@@ -4,14 +4,12 @@ UPDATE_PROFILE_MUTATION = """
     mutation updateProfile(
         $name: String!,
         $username: String!,
-        $locale: String!,
-        $profilePic: String!
+        $locale: String!
     ) {
       updateProfile(
         name: $name,
         username: $username,
-        locale: $locale,
-        profilePic: $profilePic
+        locale: $locale
     ) {
         success
         errors

@@ -18,7 +18,6 @@ class UpdateProfile(
         name = graphene.String(required=True)
         username = graphene.String(required=True)
         locale = graphene.String(required=True)
-        profile_pic = graphene.String(required=True)
 
     user = graphene.Field(UserNode)
 

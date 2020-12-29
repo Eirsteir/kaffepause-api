@@ -15,15 +15,9 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserUpdateForm(forms.ModelForm):
-    """
-    Requires all fields to be passed to prevent neomodel from
-    overwriting the missing fields with blank values.
-    """
-
     name = forms.CharField(max_length=100, required=True)
     username = forms.CharField(max_length=100, required=True)
     locale = forms.CharField(max_length=10, required=True)
-    profile_pic = forms.URLField(required=True)
 
     error_message = {"duplicate_username": _("This username has already been taken.")}
 
@@ -33,11 +27,12 @@ class UserUpdateForm(forms.ModelForm):
             "name",
             "username",
             "locale",
-            "profile_pic",
         )
 
     def clean_username(self):
         username = self.cleaned_data["username"]
+        if username == self.instance.username:
+            return username
 
         try:
             User.nodes.get(username=username)

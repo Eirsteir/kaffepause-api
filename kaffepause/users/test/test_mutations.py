@@ -18,7 +18,6 @@ def get_update_data_for(user):
         "name": user.name,
         "username": user.username,
         "locale": user.locale,
-        "profilePic": user.profile_pic,
     }
 
 
@@ -32,7 +31,6 @@ def test_update_profile_updates_user(client_query, auth_headers, user, proto_use
         headers=auth_headers,
     )
     content = response.json(object_hook=lambda d: SimpleNamespace(**d))
-    print(response.json())
     data = content.data.updateProfile
     actual_user = data.user
 
@@ -40,7 +38,6 @@ def test_update_profile_updates_user(client_query, auth_headers, user, proto_use
     assert actual_user.name == proto_user.name
     assert actual_user.username == proto_user.username
     assert actual_user.locale == proto_user.locale
-    assert actual_user.profilePic == proto_user.profile_pic
 
 
 def test_update_profile_when_username_already_in_use(
