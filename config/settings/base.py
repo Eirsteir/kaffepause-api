@@ -80,6 +80,7 @@ THIRD_PARTY_APPS = [
     "graphql_auth",
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
     "social_django",
+    "cloudinary",
 ]
 LOCAL_APPS = [
     "kaffepause.accounts",
@@ -309,6 +310,7 @@ SITE = {
 
 API_VERSION = "v1"
 
+PROFILE_PIC_UPLOAD_FOLDER = env("CLOUDINARY_PROFILE_PIC_UPLOAD_FOLDER")
 
 # Social Auth
 # ------------------------------------------------------------------------------

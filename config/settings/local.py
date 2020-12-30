@@ -61,4 +61,4 @@ GRAPHENE["MIDDLEWARE"] += ["graphene_django.debug.DjangoDebugMiddleware"]  # noq
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-LOGGING["root"]["level"] = "DEBUG"  # noqa F405
+# LOGGING["root"]["level"] = "DEBUG"  # noqa F405

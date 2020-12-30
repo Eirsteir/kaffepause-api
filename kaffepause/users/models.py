@@ -5,7 +5,6 @@ from neomodel import (
     RelationshipFrom,
     RelationshipTo,
     StringProperty,
-    StructuredNode,
     ZeroOrOne,
 )
 

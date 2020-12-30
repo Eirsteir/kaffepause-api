@@ -2,3 +2,5 @@
 # ------------------------------------------------------------------------------
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
+
+CLOUDINARY_PROFILE_PIC_UPLOAD_FOLDER=profiles/

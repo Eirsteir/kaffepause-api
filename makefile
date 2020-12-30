@@ -4,6 +4,7 @@ start:
 fresh:
 	docker-compose -f local.yml down -v
 	docker-compose -f local.yml build
+	make install-labels
 	make start
 
 install:

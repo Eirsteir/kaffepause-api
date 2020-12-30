@@ -3,7 +3,7 @@ from django.conf.urls import url
 from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import RedirectView
-from graphene_django.views import GraphQLView
+from graphene_file_upload.django import FileUploadGraphQLView
 
 app_name = "api"
 urlpatterns = [
@@ -14,7 +14,7 @@ urlpatterns = [
 # https://docs.graphene-python.org/projects/django/en/latest/installation/#csrf-exempt
 if settings.DEBUG:
     urlpatterns.append(
-        path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True)))
+        path("graphql/", csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True)))
     )
 else:
-    urlpatterns.append(path("graphql/", GraphQLView.as_view(graphiql=False)))
+    urlpatterns.append(path("graphql/", FileUploadGraphQLView.as_view(graphiql=False)))

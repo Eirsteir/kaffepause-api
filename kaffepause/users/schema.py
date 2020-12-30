@@ -1,11 +1,10 @@
 import graphene
 from graphene import relay
-from neomodel import Q
 
 from kaffepause.common.bases import NeomodelGraphQLMixin
 from kaffepause.common.decorators import login_required
 from kaffepause.users.models import User
-from kaffepause.users.mutations import UpdateProfile
+from kaffepause.users.mutations import ChangeProfilePicture, UpdateProfile
 from kaffepause.users.selectors import get_users, search_users
 from kaffepause.users.types import UserConnection, UserNode
 
@@ -39,6 +38,7 @@ class MeQuery(graphene.ObjectType):
 
 class ProfileMutation(graphene.ObjectType):
     update_profile = UpdateProfile.Field()
+    change_profile_picture = ChangeProfilePicture.Field()
 
 
 class Query(UserQuery, MeQuery, graphene.ObjectType):
