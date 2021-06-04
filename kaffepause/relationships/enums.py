@@ -12,3 +12,5 @@ class UserRelationship(NeomodelRelationshipEnum):
 class NonRelatedRelationship(NeomodelRelationshipEnum):
     CAN_REQUEST = _("Can request")
     CANNOT_REQUEST = _("Cannot request")
+    OUTGOING_REQUEST = _("Outgoing request")
+    INCOMING_REQUEST = _("Incoming request")

@@ -8,7 +8,8 @@ from kaffepause.relationships.selectors import (
     get_social_context_between,
 )
 from kaffepause.statusupdates.types import StatusUpdateNode
-from kaffepause.users.selectors import get_user_from_account
+from kaffepause.users.models import User
+from kaffepause.users.selectors import get_user, get_user_from_account
 
 
 # TODO: Lot of repeated logic and fetching in the resolvers - dataLoader?
@@ -33,7 +34,8 @@ class UserNode(graphene.ObjectType):
     def resolve_is_viewer_friend(parent, info):
         current_user_account = info.context.user
         current_user = get_user_from_account(account=current_user_account)
-        return current_user.is_friends_with(parent)
+        subject = get_user(user_uuid=parent.uuid)
+        return current_user.is_friends_with(user=subject)
 
     def resolve_friendship_status(parent, info):
         current_user_account = info.context.user

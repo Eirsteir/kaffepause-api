@@ -58,7 +58,9 @@ def get_friendship_status(actor: User, user: User) -> object:
     status = results[0][0] if results else str(NonRelatedRelationship.CAN_REQUEST)
 
     if actor.outgoing_friend_requests.is_connected(user):
-        status = str(NonRelatedRelationship.CANNOT_REQUEST)
+        status = str(NonRelatedRelationship.OUTGOING_REQUEST)
+    elif actor.incoming_friend_requests.is_connected(user):
+        status = str(NonRelatedRelationship.INCOMING_REQUEST)
 
     return _(status)
 

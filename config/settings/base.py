@@ -268,6 +268,7 @@ GRAPHENE = {
     "MIDDLEWARE": ["graphql_jwt.middleware.JSONWebTokenMiddleware"],
 }
 GRAPHQL_JWT = {
+    "JWT_PAYLOAD_HANDLER": "kaffepause.common.utils.jwt_payload",
     "JWT_VERIFY_EXPIRATION": True,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
     "JWT_EXPIRATION_DELTA": timedelta(days=100),  # TODO: update in prod

@@ -30,17 +30,14 @@ class Query(graphene.ObjectType):
         return get_friends(user)
 
     def resolve_friending_possibilities(root, info):
-        account = root._get_account(info)
-        user = get_user_from_account(account)
+        account = info.context.user
+        user = get_user_from_account(account=account)
         return get_incoming_requests(user)
 
     def resolve_outgoing_friend_requests(root, info):
-        account = root._get_account(info)
-        user = get_user_from_account(account)
+        account = info.context.user
+        user = get_user_from_account(account=account)
         return get_outgoing_requests(user)
-
-    def _get_account(self, info):
-        return info.context.user
 
 
 class Mutation(graphene.ObjectType):
