@@ -5,6 +5,7 @@ from kaffepause.relationships.services import (
     accept_friend_request,
     cancel_friend_request,
     follow_friend,
+    reject_friend_request,
     send_friend_request,
     unfollow_friend,
     unfriend_user,
@@ -78,6 +79,23 @@ class AcceptFriendRequest(
         accept_friend_request(actor=current_user, requester=requester)
 
         return cls(success=True, friend=requester)
+
+
+class RejectFriendRequest(
+    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+):
+    class Arguments:
+        requester = graphene.String(required=True)
+
+    rejected_friend_requestee = graphene.Field(UserNode)
+
+    @classmethod
+    def resolve_mutation(cls, root, info, requester):
+        current_user = cls.get_current_user()
+        requester = User.nodes.get(uuid=requester)
+        reject_friend_request(actor=current_user, requester=requester)
+
+        return cls(success=True, rejected_friend_requestee=requester)
 
 
 class UnfollowFriend(

@@ -5,6 +5,7 @@ from kaffepause.relationships.mutations import (
     AcceptFriendRequest,
     CancelFriendRequest,
     FollowFriend,
+    RejectFriendRequest,
     SendFriendRequest,
     UnfollowFriend,
     UnfriendUser,
@@ -45,6 +46,7 @@ class Mutation(graphene.ObjectType):
     send_friend_request = SendFriendRequest.Field()
     cancel_friend_request = CancelFriendRequest.Field()
     accept_friend_request = AcceptFriendRequest.Field()
+    reject_friend_request = RejectFriendRequest.Field()
     unfriend_user = UnfriendUser.Field()
     unfollow_friend = UnfollowFriend.Field()
     follow_friend = FollowFriend.Field()
