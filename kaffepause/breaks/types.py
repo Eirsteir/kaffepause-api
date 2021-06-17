@@ -43,6 +43,11 @@ class BreakNode(graphene.ObjectType):
         return parent.get_participants()
 
 
+class BreakConnection(CountableConnection):
+    class Meta:
+        node = BreakNode
+
+
 class BreakInvitationConnection(CountableConnection):
     class Meta:
         node = BreakInvitationNode

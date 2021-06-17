@@ -62,4 +62,4 @@ def _run_break_invitation_query(query: str, actor: User) -> List[BreakInvitation
 
 
 def get_break_history(actor: User) -> List[Break]:
-    return actor.breaks.all()
+    return actor.breaks.filter(starting_at__lt=timezone.now())
