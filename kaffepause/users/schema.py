@@ -26,14 +26,13 @@ class UserQuery(NeomodelGraphQLMixin, graphene.ObjectType):
         return get_users(fetched_by=current_user)
 
 
-class MeQuery(graphene.ObjectType):
+class MeQuery(NeomodelGraphQLMixin, graphene.ObjectType):
     me = graphene.Field(UserNode)
 
-    def resolve_me(root, info):
-        user = info.context.user
-        if user.is_authenticated:
-            return User.nodes.get(uuid=user.id)
-        return None
+    @classmethod
+    @login_required
+    def resolve_me(cls, root, info):
+        return cls.get_current_user()
 
 
 class ProfileMutation(graphene.ObjectType):
