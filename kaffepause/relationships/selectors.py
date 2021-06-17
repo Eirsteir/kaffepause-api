@@ -8,7 +8,6 @@ from kaffepause.users.models import User
 
 
 def get_friends(user: User) -> List[User]:
-    # TODO: exclude current user
     return user.friends.all()
 
 

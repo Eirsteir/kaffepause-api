@@ -3,6 +3,7 @@ from graphene_django.debug import DjangoDebug
 
 import kaffepause.accounts.schema
 import kaffepause.breaks.schema
+import kaffepause.location.schema
 import kaffepause.relationships.schema
 import kaffepause.statusupdates.schema
 import kaffepause.users.schema
@@ -13,6 +14,7 @@ class Query(
     kaffepause.users.schema.Query,
     kaffepause.relationships.schema.Query,
     kaffepause.breaks.schema.Query,
+    kaffepause.location.schema.Query,
     graphene.ObjectType,
 ):
     debug = graphene.Field(DjangoDebug, name="__debug")
