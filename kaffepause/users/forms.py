@@ -9,10 +9,11 @@ from kaffepause.users.models import User
 
 class UserCreationForm(forms.ModelForm):
     name = models.CharField(max_length=100)
+    username = models.CharField(max_length=50)
 
     class Meta:
         model = User
-        fields = ("name",)
+        fields = ("name", "username")
 
 
 class UserUpdateForm(forms.ModelForm):

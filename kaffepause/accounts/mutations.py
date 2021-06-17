@@ -24,14 +24,15 @@ class Register(mutations.Register):
 
     class Arguments:
         name = graphene.String(required=True)
+        username = graphene.String(required=True)
 
     @classmethod
-    def mutate(cls, root, info, name, **input):
+    def mutate(cls, root, info, name, username, **input):
         """
         Check if the user object is valid before creating the account
         and eventually creating the user if that was successful.
         """
-        user = validate_user(name=name)
+        user = validate_user(name=name, username=username)
         registration = super().resolve_mutation(root, info, **input)
 
         if registration.success:
