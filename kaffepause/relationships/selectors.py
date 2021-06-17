@@ -45,22 +45,25 @@ def get_friendship_status(actor: User, user: User) -> object:
     # TODO: Differ between requested direction
     if actor == user:
         return
+    # query = f"""
+    # MATCH (subject:User {{uuid: $subject_uuid}})
+    # -[r:{UserRelationship.ARE_FRIENDS} | {UserRelationship.REQUESTING_FRIENDSHIP}]
+    # -(person:User {{uuid: $person_uuid}})
+    # return TYPE(r)
+    # """
+    #
+    # params = dict(subject_uuid=actor.uuid, person_uuid=user.uuid)
+    # results, meta = db.cypher_query(query, params)
+    # status = results[0][0] if results else str(NonRelatedRelationship.CAN_REQUEST)
 
-    query = f"""
-    MATCH (subject:User {{uuid: $subject_uuid}})
-    -[r:{UserRelationship.ARE_FRIENDS} | {UserRelationship.REQUESTING_FRIENDSHIP}]
-    -(person:User {{uuid: $person_uuid}})
-    return TYPE(r)
-    """
-
-    params = dict(subject_uuid=actor.uuid, person_uuid=user.uuid)
-    results, meta = db.cypher_query(query, params)
-    status = results[0][0] if results else str(NonRelatedRelationship.CAN_REQUEST)
-
-    if actor.outgoing_friend_requests.is_connected(user):
+    if actor.friends.is_connected(user):
+        status = str(UserRelationship.ARE_FRIENDS)
+    elif actor.outgoing_friend_requests.is_connected(user):
         status = str(NonRelatedRelationship.OUTGOING_REQUEST)
     elif actor.incoming_friend_requests.is_connected(user):
         status = str(NonRelatedRelationship.INCOMING_REQUEST)
+    else:
+        status = str(NonRelatedRelationship.CAN_REQUEST)
 
     return _(status)
 
