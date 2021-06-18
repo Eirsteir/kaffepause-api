@@ -4,14 +4,16 @@ from kaffepause.common.bases import NeomodelRelationshipEnum
 
 
 class LocationRelationship(NeomodelRelationshipEnum):
-    CHILDREN = "CHILD_OF"
+    CHILD_OF = "CHILD_OF"
+    PREFERRED_LOCATION = "PREFERRED_LOCATION"
+    CURRENT_LOCATION = "CURRENT_LOCATION"
 
 
 class LocationType(Enum):
-    UNIVERSITY = "UNIVERSITY"
-    CAMPUS = "CAMPUS"
-    HOSPITAL = "HOSPITAL"
+    UNIVERSITY = "university"
+    HOSPITAL = "hospital"
 
-    @classmethod
-    def choices(cls):
-        return {field: member.value for field, member in cls.__members__.items()}
+
+class LocationItemType(Enum):
+    CAMPUS = "campus"
+    GROUP = "group"

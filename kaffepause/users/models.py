@@ -9,8 +9,15 @@ from neomodel import (
 )
 
 from kaffepause.breaks.enums import BreakRelationship
-from kaffepause.common.enums import BREAK, BREAK_INVITATION, STATUS_UPDATE, USER
+from kaffepause.common.enums import (
+    BREAK,
+    BREAK_INVITATION,
+    LOCATION,
+    STATUS_UPDATE,
+    USER,
+)
 from kaffepause.common.properties import UUIDProperty
+from kaffepause.location.enums import LocationRelationship
 from kaffepause.relationships.enums import UserRelationship
 from kaffepause.relationships.models import FriendRel, RelationshipRel
 from kaffepause.statusupdates.enums import StatusUpdateRelationship
@@ -48,6 +55,13 @@ class User(DjangoNode):
 
     current_status = RelationshipTo(
         STATUS_UPDATE, StatusUpdateRelationship.CURRENT, cardinality=ZeroOrOne
+    )
+
+    preferred_location = RelationshipTo(
+        LOCATION, LocationRelationship.PREFERRED_LOCATION, cardinality=ZeroOrOne
+    )
+    current_location = RelationshipTo(
+        LOCATION, LocationRelationship.CURRENT_LOCATION, cardinality=ZeroOrOne
     )
 
     class Meta:
@@ -100,3 +114,9 @@ class User(DjangoNode):
 
     def get_current_status(self):
         return self.current_status.single()
+
+    def get_preferred_location(self):
+        return self.preferred_location.single()
+
+    def get_current_location(self):
+        return self.current_location.single()

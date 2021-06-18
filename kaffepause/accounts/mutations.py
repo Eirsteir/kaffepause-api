@@ -2,13 +2,9 @@ import logging
 
 import graphene
 from django.contrib.auth import get_user_model
-from graphql import GraphQLError
 from graphql_auth import mutations
-from neomodel import NeomodelException
 
-from kaffepause.accounts.exceptions import AccountCreationFailed
-from kaffepause.accounts.services import connect_user_and_account, validate_user
-from kaffepause.users.forms import UserCreationForm
+from kaffepause.accounts.services import create_user, validate_user
 from kaffepause.users.models import User
 
 logger = logging.getLogger(__name__)
@@ -25,18 +21,19 @@ class Register(mutations.Register):
     class Arguments:
         name = graphene.String(required=True)
         username = graphene.String(required=True)
+        preferred_location_uuid = graphene.UUID(required=False)
 
     @classmethod
-    def mutate(cls, root, info, name, username, **input):
+    def mutate(cls, root, info, preferred_location_uuid, **input):
         """
         Check if the user object is valid before creating the account
         and eventually creating the user if that was successful.
         """
-        user = validate_user(name=name, username=username)
+        user = validate_user(**input)
         registration = super().resolve_mutation(root, info, **input)
 
         if registration.success:
-            connect_user_and_account(user, **input)
+            create_user(user, preferred_location_uuid, **input)
 
         return registration
 

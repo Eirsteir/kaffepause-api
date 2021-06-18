@@ -1,4 +1,3 @@
-from cloudinary.forms import CloudinaryFileField
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models

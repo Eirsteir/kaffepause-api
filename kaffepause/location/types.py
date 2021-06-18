@@ -16,7 +16,6 @@ class LocationNode(graphene.ObjectType):
     children = relay.ConnectionField(lambda: LocationConnection)
 
     def resolve_children(parent, info):
-        print(parent)
         return parent.children.all()
 
 

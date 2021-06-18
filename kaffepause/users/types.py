@@ -2,6 +2,7 @@ import graphene
 from graphene import relay
 
 from kaffepause.common.types import CountableConnection
+from kaffepause.location.types import LocationNode
 from kaffepause.relationships.selectors import (
     get_friends,
     get_friendship_status,
@@ -30,6 +31,8 @@ class UserNode(graphene.ObjectType):
     social_context = graphene.String()
     current_status = graphene.Field(StatusUpdateNode)
     friendship_status = graphene.String()
+    preferred_location = graphene.Field(LocationNode)
+    current_location = graphene.Field(LocationNode)
 
     def resolve_is_viewer_friend(parent, info):
         current_user_account = info.context.user
@@ -61,6 +64,12 @@ class UserNode(graphene.ObjectType):
             return subject.get_current_status()
 
         return None
+
+    def resolve_preferred_location(parent, info):
+        return parent.get_preferred_location()
+
+    def resolve_current_location(parent, info):
+        return parent.get_current_location()
 
 
 class UserConnection(CountableConnection):

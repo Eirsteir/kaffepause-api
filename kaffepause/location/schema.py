@@ -9,8 +9,8 @@ class LocationQuery(graphene.ObjectType):
 
     locations = relay.ConnectionField(LocationConnection, query=graphene.String())
 
-    def resolve_locations(root, info, query=None, **kwargs):
-        return get_locations(query=query)
+    def resolve_locations(root, info, **kwargs):
+        return get_locations(**kwargs)
 
 
 class Query(LocationQuery, graphene.ObjectType):

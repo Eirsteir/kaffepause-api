@@ -5,6 +5,7 @@ from neomodel import NeomodelException
 
 from kaffepause.accounts.exceptions import AccountCreationFailed
 from kaffepause.accounts.models import Account
+from kaffepause.location.selectors import get_location
 from kaffepause.users.forms import UserCreationForm
 
 logger = logging.getLogger(__name__)
@@ -17,6 +18,18 @@ def validate_user(**kwargs):
         return form.save(commit=False)
 
     raise GraphQLError(form.errors.get_json_data())
+
+
+def create_user(user, preferred_location_uuid=None, **kwargs):
+    connect_user_and_account(user, **kwargs)
+    if preferred_location_uuid:
+        connect_preferred_location(preferred_location_uuid, user)
+    return user
+
+
+def connect_preferred_location(preferred_location_uuid, user):
+    preferred_location = get_location(location_uuid=preferred_location_uuid)
+    user.preferred_location.connect(preferred_location)
 
 
 def connect_user_and_account(user, **kwargs):
