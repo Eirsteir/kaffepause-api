@@ -3,10 +3,11 @@ from typing import Callable, List
 
 from kaffepause.breaks.models import Break, BreakInvitation
 from kaffepause.users.models import User
+from kaffepause.location.selectors import get_location_or_none
 
 
 def create_break_and_invitation(
-    actor: User, addressees: List[str] = None, starting_at: datetime = None
+    actor: User, addressees: List[str] = None, starting_at: datetime = None, location: str = None
 ) -> Break:
     """
     Create a break and an invitation to given addressees, optionally at the given start time.
@@ -18,20 +19,21 @@ def create_break_and_invitation(
     else:
         addressees = actor.followed_by.all()
 
-    return _create_break_and_invitation(actor, addressees, starting_at)
+    return _create_break_and_invitation(actor, addressees, starting_at, location)
 
 
 def _create_break_and_invitation(
-    actor: User, followers: List[User], starting_at: datetime = None
+    actor: User, followers: List[User], starting_at: datetime = None, location: str = None
 ) -> Break:
-    break_ = _create_break(actor, starting_at)
+    break_ = _create_break(actor, starting_at, location)
     _create_invitation(actor, break_, followers)
     return break_
 
 
-def _create_break(actor: User, starting_at: datetime) -> Break:
+def _create_break(actor: User, starting_at: datetime, location: str) -> Break:
     """Create break with given start time and connect actor to its participants."""
-    break_ = Break(starting_at=starting_at).save()
+    location = get_location_or_none(location_uuid=location)
+    break_ = Break(starting_at=starting_at, location=location).save()
     break_.participants.connect(actor)
     return break_
 

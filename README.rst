@@ -14,6 +14,50 @@ Schedule, invite and join your friends for a break.
 :License: MIT
 
 
+What is this?
+--------
+kaffepause is a GraphQL api.  
+
+
+Requirements
+--------
+- Python 
+- Make (optional but much easier setup)
+
+Development
+--------
+Getting started is easiest with GNU Make. Also, create an empty `.env`-file in the root directory otherwise Django complains:)
+
+```
+# Django needs this folder to serve
+mkdir kaffepause/static
+
+# Start the application and other services from scratch
+make fresh
+
+# Seeds the database with data and load locations/universities from MazeMap
+make seed 
+make load_locations
+```
+
+Endpoints
+--------
+`/graphql` - Main graphql entrypoint. Exposes an interactive gui to query the api (graphi).
+
+
+Example Queries
+--------
+
+Example Mutations
+--------
+
+Database Seed
+--------
+
+Locations/universities from MazeMap
+--------
+
+
 Settings
 --------
 

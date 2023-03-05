@@ -16,7 +16,7 @@ from kaffepause.breaks.exceptions import (
     InvitationExpired,
     InvitationNotAddressedAtUser,
 )
-from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER
+from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER, LOCATION
 from kaffepause.common.models import TimeStampedRel
 from kaffepause.common.properties import UUIDProperty
 from kaffepause.common.utils import fifteen_minutes_from_now, time_from_now
@@ -27,6 +27,7 @@ class Break(StructuredNode):
     starting_at = DateTimeProperty(default=lambda: fifteen_minutes_from_now())
     participants = RelationshipFrom(USER, BreakRelationship.PARTICIPATED_IN)
     invitation = RelationshipFrom(BREAK_INVITATION, BreakRelationship.REGARDING)
+    location = RelationshipTo(LOCATION, BreakRelationship.LOCATED_AT)
 
     @classmethod
     def create(cls, *props, **kwargs):
@@ -49,6 +50,9 @@ class Break(StructuredNode):
 
     def get_participants(self):
         return self.participants.all()
+
+    def get_location(self):
+        return self.location
 
 
 class BreakInvitation(StructuredNode):

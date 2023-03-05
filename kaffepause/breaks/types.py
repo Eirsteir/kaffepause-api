@@ -3,6 +3,7 @@ from graphene import relay
 
 from kaffepause.common.types import CountableConnection
 from kaffepause.users.types import UserConnection, UserNode
+from kaffepause.location.types import LocationNode
 
 
 class BreakInvitationNode(graphene.ObjectType):
@@ -35,12 +36,16 @@ class BreakNode(graphene.ObjectType):
     starting_at = graphene.DateTime()
     participants = relay.ConnectionField(UserConnection)
     invitation = graphene.Field(BreakInvitationNode)
+    location = graphene.Field(LocationNode)
 
     def resolve_invitation(parent, info):
         return parent.get_invitation()
 
     def resolve_participants(parent, info):
         return parent.get_participants()
+
+    def resolve_location(parent, info):
+        return parent.get_location()
 
 
 class BreakConnection(CountableConnection):

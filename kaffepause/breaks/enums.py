@@ -17,3 +17,4 @@ class BreakRelationship(NeomodelRelationshipEnum):
     REGARDING = _("Regarding")
     ACCEPTED = _("Accepted")
     DECLINED = _("Declined")
+    LOCATED_AT = _("Located at")

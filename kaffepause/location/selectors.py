@@ -11,6 +11,14 @@ from kaffepause.location.models import Location
 logger = logging.getLogger(__name__)
 
 
+def get_location_or_none(*, location_uuid: UUID):
+    try:
+        return get_location(location_uuid=location_uuid)
+    except LocationDoesNotExist as e:
+        logger.debug(f"Could not find location with uuid: {location_uuid}. Returning None", exc_info=e)
+        return None
+
+
 def get_location(*, location_uuid: UUID) -> Location:
     try:
         return Location.nodes.get(uuid=location_uuid)
