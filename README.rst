@@ -16,7 +16,7 @@ Schedule, invite and join your friends for a break.
 
 What is this?
 --------
-kaffepause is a GraphQL api.  
+kaffepause is a GraphQL API.  
 
 
 Requirements
@@ -55,6 +55,10 @@ Database Seed
 --------
 
 Locations/universities from MazeMap
+--------
+
+
+Authentication
 --------
 
 

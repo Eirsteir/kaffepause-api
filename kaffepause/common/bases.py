@@ -62,7 +62,7 @@ class NeomodelGraphQLMixin:
 
         if not current_user_account:
             raise PermissionDenied
-
+        
         current_user = get_user_from_account(account=current_user_account)
 
         return current_user

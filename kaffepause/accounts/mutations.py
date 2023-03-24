@@ -24,7 +24,7 @@ class Register(mutations.Register):
         preferred_location_uuid = graphene.UUID(required=False)
 
     @classmethod
-    def mutate(cls, root, info, preferred_location_uuid, **input):
+    def mutate(cls, root, info, preferred_location_uuid=None, **input):
         """
         Check if the user object is valid before creating the account
         and eventually creating the user if that was successful.

@@ -2,10 +2,13 @@ from kaffepause.statusupdates.enums import StatusUpdateType
 from kaffepause.statusupdates.models import StatusUpdate
 from kaffepause.users.models import User
 
+from neomodel.contrib.spatial_properties import NeomodelPoint
 
-def update_status(actor: User, status_type: StatusUpdateType):
+def update_status(actor: User, status_type: StatusUpdateType, latitude: float = None, longitude: float = None):
     """Update the users current status to that of the given type."""
-    new_status = StatusUpdate(status_type=status_type.name).save()
+    new_status = StatusUpdate(
+        status_type=status_type.name, geo_location=NeomodelPoint((latitude, longitude), crs='wgs-84')
+    ).save()
     previous_status = actor.current_status.single()
 
     if previous_status:

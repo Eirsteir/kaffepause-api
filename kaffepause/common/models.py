@@ -5,6 +5,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
 from neomodel import DateTimeProperty, StructuredNode, StructuredRel
+from neomodel.contrib.spatial_properties import PointProperty
+
 
 from kaffepause.common.enums import BaseStatusEnum
 
@@ -37,7 +39,18 @@ class TimeStampedRel(StructuredRel):
 
 
 class TimeStampedNode(StructuredNode):
+    __abstract_node__ = True
     created = DateTimeProperty(default=lambda: datetime.now(pytz.utc))
 
-    class Meta:
-        abstract = True
+
+class GeoLocatedNode(StructuredNode):
+    __abstract_node__ = True
+    geo_location = PointProperty(crs='wgs-84')
+
+    @property
+    def latitute(self):
+        return self.geo_location.x
+
+    @property
+    def longitude(self):
+        return self.geo_location.y

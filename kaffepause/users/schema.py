@@ -1,11 +1,11 @@
 import graphene
 from graphene import relay
 
-from kaffepause.common.bases import NeomodelGraphQLMixin
+from kaffepause.common.bases import NeomodelGraphQLMixin, LoginRequiredMixin
 from kaffepause.common.decorators import login_required
 from kaffepause.users.models import User
 from kaffepause.users.mutations import ChangeProfilePicture, UpdateProfile
-from kaffepause.users.selectors import get_users, search_users
+from kaffepause.users.selectors import get_user, get_users, search_users
 from kaffepause.users.types import UserConnection, UserNode
 
 
@@ -14,8 +14,10 @@ class UserQuery(NeomodelGraphQLMixin, graphene.ObjectType):
     user = graphene.Field(UserNode, id=graphene.UUID())
     search_users = relay.ConnectionField(UserConnection, query=graphene.String())
 
-    def resolve_user(root, info, id):
-        return User.nodes.get(uuid=id)
+    @classmethod
+    @login_required
+    def resolve_user(cls, root, info, id):
+        return get_user(user_uuid=id)
 
     @classmethod
     @login_required

@@ -4,6 +4,7 @@ from neomodel import (
     DateTimeProperty,
     One,
     OneOrMore,
+    ZeroOrOne,
     RelationshipFrom,
     RelationshipTo,
     StructuredNode,
@@ -27,7 +28,7 @@ class Break(StructuredNode):
     starting_at = DateTimeProperty(default=lambda: fifteen_minutes_from_now())
     participants = RelationshipFrom(USER, BreakRelationship.PARTICIPATED_IN)
     invitation = RelationshipFrom(BREAK_INVITATION, BreakRelationship.REGARDING)
-    location = RelationshipTo(LOCATION, BreakRelationship.LOCATED_AT)
+    location = RelationshipTo(LOCATION, BreakRelationship.LOCATED_AT, cardinality=ZeroOrOne)
 
     @classmethod
     def create(cls, *props, **kwargs):
@@ -52,7 +53,7 @@ class Break(StructuredNode):
         return self.participants.all()
 
     def get_location(self):
-        return self.location
+        return self.location.single()
 
 
 class BreakInvitation(StructuredNode):

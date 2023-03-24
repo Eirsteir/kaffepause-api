@@ -22,9 +22,9 @@ class UserNode(graphene.ObjectType):
 
     uuid = graphene.UUID()
     name = graphene.String()
+    short_name = graphene.String()
     locale = graphene.String()
     profile_pic = graphene.String()
-    # Short name
     username = graphene.String()
     is_viewer_friend = graphene.Boolean()
     friends = relay.ConnectionField(lambda: UserConnection)
@@ -33,6 +33,9 @@ class UserNode(graphene.ObjectType):
     friendship_status = graphene.String()
     preferred_location = graphene.Field(LocationNode)
     current_location = graphene.Field(LocationNode)
+
+    def resolve_short_name(parent, info):
+        return parent.name # TODO
 
     def resolve_is_viewer_friend(parent, info):
         current_user_account = info.context.user

@@ -61,9 +61,8 @@ GRAPHENE["MIDDLEWARE"] += ["graphene_django.debug.DjangoDebugMiddleware"]  # noq
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-# LOGGING["root"]["level"] = "DEBUG"  # noqa F405
+LOGGING["root"]["level"] = "DEBUG"  # noqa F405
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:19006",
-    "http://127.0.0.1:19006"
-    # your React App domain
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
 ]

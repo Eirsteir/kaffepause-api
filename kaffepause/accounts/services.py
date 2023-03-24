@@ -16,7 +16,7 @@ def validate_user(**kwargs):
     form = UserCreationForm(kwargs)
     if form.is_valid():
         return form.save(commit=False)
-
+    
     raise GraphQLError(form.errors.get_json_data())
 
 
