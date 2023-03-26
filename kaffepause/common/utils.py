@@ -31,3 +31,9 @@ def jwt_payload(user, context=None):
     payload = graphql_jwt_payload(user, context)
     payload["user_id"] = str(user.id)
     return payload
+
+def get_first_name(name):
+    """
+    Given a name string with or without spaces, return the first name.
+    """
+    return name.split()[0]

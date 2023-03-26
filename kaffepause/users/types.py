@@ -2,6 +2,7 @@ import graphene
 from graphene import relay
 
 from kaffepause.common.types import CountableConnection
+from kaffepause.common.utils import get_first_name
 from kaffepause.location.types import LocationNode
 from kaffepause.relationships.selectors import (
     get_friends,
@@ -35,7 +36,7 @@ class UserNode(graphene.ObjectType):
     current_location = graphene.Field(LocationNode)
 
     def resolve_short_name(parent, info):
-        return parent.name # TODO
+        return get_first_name(parent.name)
 
     def resolve_is_viewer_friend(parent, info):
         current_user_account = info.context.user

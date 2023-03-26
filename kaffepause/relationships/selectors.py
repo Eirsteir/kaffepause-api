@@ -69,8 +69,8 @@ def get_friendship_status(actor: User, user: User) -> object:
 
 def get_social_context_between(actor: User, other: User) -> str:
     mutual_friends_count = get_mutual_friends_count(actor=actor, user=other)
-    count = mutual_friends_count if mutual_friends_count else "No"
-    return _(f"{count} mutual friends")
+    count = mutual_friends_count if mutual_friends_count else "Ingen"
+    return _(f"{count} felles venner")
 
 
 def get_mutual_friends_count(actor: User, user: User) -> int:
