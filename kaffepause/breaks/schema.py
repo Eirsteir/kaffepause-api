@@ -11,6 +11,7 @@ from kaffepause.breaks.selectors import (
     get_break_history,
     get_expired_break_invitations,
     get_pending_break_invitations,
+    get_next_break
 )
 from kaffepause.breaks.types import (
     BreakConnection,
@@ -23,10 +24,17 @@ from kaffepause.common.decorators import login_required
 
 class Query(NeomodelGraphQLMixin, graphene.ObjectType):
 
+    next_break = graphene.Field(BreakNode)
     pending_break_invitations = relay.ConnectionField(BreakInvitationConnection)
     expired_break_invitations = relay.ConnectionField(BreakInvitationConnection)
     all_break_invitations = relay.ConnectionField(BreakInvitationConnection)
     break_history = relay.ConnectionField(BreakConnection)
+
+    @classmethod
+    @login_required
+    def resolve_next_break(cls, root, info, **kwargs):
+        current_user = cls.get_current_user()
+        return get_next_break(actor=current_user)
 
     @classmethod
     @login_required

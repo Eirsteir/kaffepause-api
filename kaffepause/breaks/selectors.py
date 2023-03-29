@@ -13,6 +13,11 @@ from kaffepause.common.typing import QuerySet
 from kaffepause.users.models import User
 
 
+def get_next_break(actor: User) -> Break:
+    """Return the next break in time where actor is a participant."""
+    return actor.breaks.filter(starting_at__gt=timezone.now()).first_or_none()
+
+
 def get_all_break_invitations(actor: User) -> List[BreakInvitation]:
     return actor.break_invitations.all()
 
