@@ -15,6 +15,8 @@ class BreakInvitationNode(graphene.ObjectType):
     created = graphene.DateTime()
     sender = graphene.Field(UserNode)
     addressee_count = graphene.Int()
+    addressees = relay.ConnectionField(UserConnection)
+    acceptees = relay.ConnectionField(UserConnection)
     subject = graphene.Field(lambda: BreakNode)
 
     def resolve_sender(parent, info):
@@ -22,6 +24,12 @@ class BreakInvitationNode(graphene.ObjectType):
 
     def resolve_addressee_count(parent, info):
         return parent.get_addressee_count()
+
+    def resolve_addressees(parent, info):
+        return parent.addressees.all()
+
+    def resolve_acceptees(parent, info):
+        return parent.acceptees.all()
 
     def resolve_subject(parent, info):
         return parent.get_subject()

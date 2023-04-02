@@ -5,6 +5,7 @@ fresh:
 	docker-compose -f local.yml down -v
 	docker-compose -f local.yml build
 	make install-labels
+	make load_locations
 	make start
 
 install:
@@ -48,3 +49,7 @@ test:
 coverage:
 	docker-compose -f local.yml run --rm django coverage run -m pytest kaffepause
 	docker-compose -f local.yml run --rm django coverage report
+
+startapp:
+	mkdir ./kaffepause/${appname}
+	docker-compose -f local.yml run --rm django django-admin.py startapp ${appname} ./kaffepause/${appname}
