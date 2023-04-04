@@ -3,6 +3,7 @@ from graphene import relay
 
 from kaffepause.common.types import CountableConnection
 from kaffepause.notifications.enums import SeenState
+from kaffepause.notifications.selectors import get_notification_badge_count
 from kaffepause.users.types import UserNode
 
 
@@ -27,6 +28,17 @@ class NotificationNode(graphene.ObjectType):
 
     def resolve_actor(parent, info):
         return parent.actor.single()
+
+
+class NotificationBadgeCount(graphene.ObjectType):
+    class Meta:
+        interfaces = (relay.Node,)
+        name = "NotificationBadgeCount"
+
+    count = graphene.Int()
+
+    def resolve_count(parent, info):
+        return get_notification_badge_count(actor=parent)
 
 
 class NotificationConnection(relay.Connection):
