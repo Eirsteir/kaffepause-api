@@ -1,5 +1,7 @@
 from enum import Enum
+from uuid import UUID
 
+from django.conf import settings
 
 class BaseStatusEnum(Enum):
     """
@@ -27,3 +29,12 @@ BREAK = "kaffepause.breaks.models.Break"
 BREAK_INVITATION = "kaffepause.breaks.models.BreakInvitation"
 STATUS_UPDATE = "kaffepause.statusupdates.models.StatusUpdate"
 LOCATION = "kaffepause.location.models.Location"
+NOTIFICATION = "kaffepause.notifications.models.Notification"
+
+
+class Endpoints(Enum):
+    USERS = f"{settings.WEBSITE_URL}/users/"
+    BREAKS = f"{settings.WEBSITE_URL}/breaks/"
+
+    def single(self, uuid: UUID):
+        return self.value + uuid

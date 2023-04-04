@@ -7,6 +7,7 @@ import kaffepause.location.schema
 import kaffepause.relationships.schema
 import kaffepause.statusupdates.schema
 import kaffepause.users.schema
+import kaffepause.notifications.schema
 
 
 class Query(
@@ -15,6 +16,7 @@ class Query(
     kaffepause.relationships.schema.Query,
     kaffepause.breaks.schema.Query,
     kaffepause.location.schema.Query,
+    kaffepause.notifications.schema.Query,
     graphene.ObjectType,
 ):
     debug = graphene.Field(DjangoDebug, name="__debug")

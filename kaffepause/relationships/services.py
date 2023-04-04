@@ -1,5 +1,7 @@
 from typing import Callable, Iterable
 
+from kaffepause.notifications.enums import NotificationEntityType
+from kaffepause.notifications.services import notify
 from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
     CannotFollowUser,
@@ -19,7 +21,8 @@ def send_friend_request(actor: User, to_user: User) -> FriendRel:
     if relationship_exists(actor, to_user):
         raise RelationshipAlreadyExists
 
-    return actor.send_friend_request(to_user)
+    request = actor.send_friend_request(to_user)
+    notify(user=to_user, entity_type=NotificationEntityType.USER_FRIEND_ADD, actor=actor)
 
 
 def cancel_friend_request(actor: User, to_user: User):

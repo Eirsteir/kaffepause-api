@@ -311,7 +311,7 @@ SITE = {
 }
 
 API_VERSION = "v1"
-
+WEBSITE_URL = "https://example.com"
 PROFILE_PIC_UPLOAD_FOLDER = env("CLOUDINARY_PROFILE_PIC_UPLOAD_FOLDER")
 
 # Social Auth

@@ -5,7 +5,7 @@ from neomodel import (
     RelationshipFrom,
     RelationshipTo,
     StringProperty,
-    ZeroOrOne,
+    ZeroOrOne, ZeroOrMore,
 )
 
 from kaffepause.breaks.enums import BreakRelationship
@@ -14,10 +14,11 @@ from kaffepause.common.enums import (
     BREAK_INVITATION,
     LOCATION,
     STATUS_UPDATE,
-    USER,
+    USER, NOTIFICATION,
 )
 from kaffepause.common.properties import UUIDProperty
 from kaffepause.location.enums import LocationRelationship
+from kaffepause.notifications.enums import NotificationRelationship
 from kaffepause.relationships.enums import UserRelationship
 from kaffepause.relationships.models import FriendRel, RelationshipRel
 from kaffepause.statusupdates.enums import StatusUpdateRelationship
@@ -62,6 +63,10 @@ class User(DjangoNode):
     )
     current_location = RelationshipTo(
         LOCATION, LocationRelationship.CURRENT_LOCATION, cardinality=ZeroOrOne
+    )
+
+    notifications = RelationshipFrom(
+        NOTIFICATION, NotificationRelationship.NOTIFIES, cardinality=ZeroOrMore
     )
 
     class Meta:
