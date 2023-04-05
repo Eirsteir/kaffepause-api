@@ -22,7 +22,8 @@ def send_friend_request(actor: User, to_user: User) -> FriendRel:
         raise RelationshipAlreadyExists
 
     request = actor.send_friend_request(to_user)
-    notify(user=to_user, entity_type=NotificationEntityType.USER_FRIEND_ADD, actor=actor)
+    notify(user=to_user, entity_type=NotificationEntityType.USER_FRIEND_ADD, entity_id=actor.uuid, actor=actor)
+    return request
 
 
 def cancel_friend_request(actor: User, to_user: User):
@@ -37,14 +38,15 @@ def accept_friend_request(actor: User, requester: User) -> FriendRel:
     Create a friendship relationship between given nodes.
     The requester must first have sent a friend request.
     """
-    # TODO: fix semantics
 
     existing_friendship = actor.friends.relationship(requester)
     if existing_friendship:
         return existing_friendship
 
     if can_reply_to_friend_request(actor, requester):
-        return requester.add_friend(actor)
+        friendship = requester.add_friend(actor)
+        notify(user=requester, entity_type=NotificationEntityType.USER_FRIEND_ACCEPT, entity_id=actor.uuid, actor=actor)
+        return friendship
 
     raise CannotAcceptFriendRequest
 

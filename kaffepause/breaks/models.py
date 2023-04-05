@@ -7,7 +7,7 @@ from neomodel import (
     ZeroOrOne,
     RelationshipFrom,
     RelationshipTo,
-    StructuredNode,
+    StructuredNode, ZeroOrMore,
 )
 
 from kaffepause.breaks.enums import BreakRelationship
@@ -60,7 +60,7 @@ class BreakInvitation(StructuredNode):
     uuid = UUIDProperty()
     created = DateTimeProperty(default=lambda: timezone.now())
     sender = RelationshipFrom(USER, BreakRelationship.SENT, cardinality=One)
-    addressees = RelationshipTo(USER, BreakRelationship.TO, cardinality=OneOrMore)
+    addressees = RelationshipTo(USER, BreakRelationship.TO, cardinality=ZeroOrMore)
     subject = RelationshipTo(BREAK, BreakRelationship.REGARDING, cardinality=One)
 
     acceptees = RelationshipFrom(USER, BreakRelationship.ACCEPTED, model=TimeStampedRel)

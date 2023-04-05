@@ -1,21 +1,33 @@
 from datetime import datetime, timedelta
 from itertools import chain
 from typing import List
+from uuid import UUID
 
 import pytz
-from django.db.models import Q
+from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from neomodel import db
 
 from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.breaks.models import Break, BreakInvitation
-from kaffepause.common.typing import QuerySet
 from kaffepause.users.models import User
 
 
 def get_next_break(actor: User) -> Break:
     """Return the next break in time where actor is a participant."""
+    print("\n\n\n\nTIMEZONE.NOW(): ----- ", timezone.now(), '\n\n\n\n')
+    print("\n\n\n\nTIMEZONE.NOW(): ----- ", timezone.localtime(timezone.now()), '\n\n\n\n')
     return actor.breaks.filter(starting_at__gt=timezone.now()).first_or_none()
+
+
+def get_break(actor: User, uuid: UUID) -> Break:
+    is_invited = actor.break_invitations.filter(uuid=uuid).first_or_none()
+    has_participated = actor.breaks.filter(uuid=uuid).first_or_none()
+
+    if not (is_invited or has_participated):
+        raise PermissionDenied
+
+    return Break.nodes.get(uuid=uuid)
 
 
 def get_all_break_invitations(actor: User) -> List[BreakInvitation]:

@@ -4,8 +4,10 @@ start:
 fresh:
 	docker-compose -f local.yml down -v
 	docker-compose -f local.yml build
+	make migrate
 	make install-labels
 	make load_locations
+	make seed
 	make start
 
 install:

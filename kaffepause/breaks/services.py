@@ -2,6 +2,8 @@ from datetime import datetime
 from typing import Callable, List
 
 from kaffepause.breaks.models import Break, BreakInvitation
+from kaffepause.notifications.enums import NotificationEntityType
+from kaffepause.notifications.services import bulk_notify
 from kaffepause.users.models import User
 from kaffepause.location.models import Location
 from kaffepause.location.selectors import get_location_or_none
@@ -21,8 +23,11 @@ def create_break_and_invitation(
         addressees = actor.followed_by.all()
 
     location = get_location_or_none(location_uuid=location)
-    
-    return _create_break_and_invitation(actor, addressees, starting_at, location)
+
+    break_ = _create_break_and_invitation(actor, addressees, starting_at, location)
+    bulk_notify(notifiers=addressees, entity_type=NotificationEntityType.BREAK_INVITATION_SENT, entity_id=break_.uuid, actor=actor)
+
+    return break_
 
 
 def _create_break_and_invitation(

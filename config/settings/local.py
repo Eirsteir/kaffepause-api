@@ -61,7 +61,35 @@ GRAPHENE["MIDDLEWARE"] += ["graphene_django.debug.DjangoDebugMiddleware"]  # noq
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-LOGGING["root"]["level"] = "DEBUG"  # noqa F405
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s "
+            "%(process)d %(thread)d %(message)s"
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        }
+    },
+    "root": {"level": "INFO", "handlers": ["console"]},
+    'loggers': {
+        '_bolt4x1': {
+            # The neomodel library is too verbose in it's logging, reducing the verbosity in our logs.
+            'handlers': ['console'],
+            'level': 'WARNING',
+        },
+        'kaffepause': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    }
+}
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://127.0.0.1:3000"
