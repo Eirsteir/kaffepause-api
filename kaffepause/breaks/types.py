@@ -1,6 +1,8 @@
 import graphene
 from graphene import relay
+from django.utils.translation import gettext_lazy as _
 
+from kaffepause.breaks.selectors import get_break_history, get_upcoming_breaks
 from kaffepause.common.types import CountableConnection
 from kaffepause.users.types import UserConnection, UserNode
 from kaffepause.location.types import LocationNode
@@ -59,6 +61,38 @@ class BreakNode(graphene.ObjectType):
 class BreakConnection(CountableConnection):
     class Meta:
         node = BreakNode
+
+
+class BreaksSectionNode(graphene.ObjectType):
+    class Meta:
+        interfaces = (relay.Node,)
+        name = "BreaksSection"
+
+    section_id = graphene.String()
+    heading = graphene.String()
+    breaks = relay.ConnectionField(BreakConnection)
+    is_empty = graphene.Boolean()
+
+    def resolve_is_empty(parent, info):
+        return not parent.breaks
+
+
+class BreaksPresentationNode(graphene.ObjectType):
+    class Meta:
+        interfaces = (relay.Node,)
+        name = "BreaksPresentation"
+
+    sections = graphene.List(BreaksSectionNode)
+
+    def resolve_sections(user, info):
+        upcoming = BreaksSectionNode(
+            section_id="UPCOMING_BREAKS", heading=_("Kommende pauser"), breaks=get_upcoming_breaks(actor=user)
+        )
+        past = BreaksSectionNode(
+            section_id="PAST_BREAKS", heading=_("Tidligere pauser"), breaks=get_break_history(actor=user)
+        )
+
+        return [upcoming, past]
 
 
 class BreakInvitationConnection(CountableConnection):

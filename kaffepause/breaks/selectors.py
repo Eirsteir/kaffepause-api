@@ -15,19 +15,25 @@ from kaffepause.users.models import User
 
 def get_next_break(actor: User) -> Break:
     """Return the next break in time where actor is a participant."""
-    print("\n\n\n\nTIMEZONE.NOW(): ----- ", timezone.now(), '\n\n\n\n')
-    print("\n\n\n\nTIMEZONE.NOW(): ----- ", timezone.localtime(timezone.now()), '\n\n\n\n')
     return actor.breaks.filter(starting_at__gt=timezone.now()).first_or_none()
 
 
 def get_break(actor: User, uuid: UUID) -> Break:
-    is_invited = actor.break_invitations.filter(uuid=uuid).first_or_none()
-    has_participated = actor.breaks.filter(uuid=uuid).first_or_none()
+    query = f"""
+    MATCH
+        (b:Break {{uuid: $break_uuid}}),
+        (u:User {{uuid: $user_uuid}})
+    WHERE (u)-[:{BreakRelationship.PARTICIPATED_IN}]->(b)
+        OR (u)-[:{BreakRelationship.SENT} | :{BreakRelationship.TO}]-(:BreakInvitation)-[:{BreakRelationship.REGARDING}]->(b)
+    RETURN b
+    """
+    params = dict(break_uuid=str(uuid), user_uuid=str(actor.uuid))
+    results, meta = db.cypher_query(query, params, resolve_objects=True)
 
-    if not (is_invited or has_participated):
+    if not results:
         raise PermissionDenied
 
-    return Break.nodes.get(uuid=uuid)
+    return results[0][0]
 
 
 def get_all_break_invitations(actor: User) -> List[BreakInvitation]:
@@ -76,6 +82,10 @@ def _run_break_invitation_query(query: str, actor: User) -> List[BreakInvitation
     results, meta = db.cypher_query(query, params=params)
     break_invitations = [BreakInvitation.inflate(row[0]) for row in results]
     return break_invitations
+
+
+def get_upcoming_breaks(actor: User) -> List[Break]:
+    return actor.breaks.filter(starting_at__gt=timezone.now())
 
 
 def get_break_history(actor: User) -> List[Break]:

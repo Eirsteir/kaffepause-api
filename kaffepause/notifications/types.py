@@ -14,6 +14,7 @@ class NotificationNode(graphene.ObjectType):
 
     uuid = graphene.UUID()
     seen_state = graphene.String()
+    created = graphene.DateTime()
     entity_type = graphene.String()
     entity_id = graphene.String()
     text = graphene.String()
@@ -22,9 +23,6 @@ class NotificationNode(graphene.ObjectType):
 
     def resolve_seen_state(parent, info):
         return SeenState[parent.seen_state].name
-
-    def resolve_url(parent, info):
-        return parent.url
 
     def resolve_actor(parent, info):
         return parent.actor.single()
