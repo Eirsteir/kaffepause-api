@@ -72,6 +72,8 @@ class BreaksSectionNode(graphene.ObjectType):
     heading = graphene.String()
     breaks = relay.ConnectionField(BreakConnection)
     is_empty = graphene.Boolean()
+    emptyStateText = graphene.String()
+    emptyStateActionText = graphene.String()
 
     def resolve_is_empty(parent, info):
         return not parent.breaks
@@ -86,10 +88,18 @@ class BreaksPresentationNode(graphene.ObjectType):
 
     def resolve_sections(user, info):
         upcoming = BreaksSectionNode(
-            section_id="UPCOMING_BREAKS", heading=_("Kommende pauser"), breaks=get_upcoming_breaks(actor=user)
+            section_id="UPCOMING_BREAKS",
+            heading=_("Kommende pauser"),
+            breaks=get_upcoming_breaks(actor=user),
+            emptyStateText=_("Når du er klar for å starte din neste pause, er vi her."),
+            emptyStateActionText=_("Planlegg en pause")
         )
         past = BreaksSectionNode(
-            section_id="PAST_BREAKS", heading=_("Tidligere pauser"), breaks=get_break_history(actor=user)
+            section_id="PAST_BREAKS",
+            heading=_("Tidligere pauser"),
+            breaks=get_break_history(actor=user),
+            emptyStateText=_("Kom i gang med pauseplanleggingen"),
+            emptyStateActionText=_("Ta din første pause")
         )
 
         return [upcoming, past]
