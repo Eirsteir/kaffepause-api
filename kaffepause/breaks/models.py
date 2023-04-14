@@ -46,6 +46,10 @@ class Break(StructuredNode):
         return time_from_now(minutes=5) >= self.starting_at
 
     @property
+    def has_passed(self):
+        return timezone.now() >= self.starting_at
+
+    @property
     def kicker(self):
         if self.starting_at > timezone.now():
             return format_kicker_message(self.starting_at)
@@ -74,6 +78,10 @@ class BreakInvitation(StructuredNode):
     @property
     def is_expired(self):
         return self.get_subject().is_expired
+
+    @property
+    def has_addressees(self):
+        return bool(self.addressees)
 
     def get_sender(self):
         return self.sender.single()

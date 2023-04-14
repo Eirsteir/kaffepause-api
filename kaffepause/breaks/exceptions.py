@@ -4,16 +4,16 @@ from kaffepause.common.exceptions import DefaultError
 
 
 class InvitationExpired(DefaultError):
-    default_message = _("Invitation has expired")
+    default_message = _("Invitasjonen er utgått.")
 
 
 class AlreadyReplied(DefaultError):
-    default_message = _("Invitation has already been replied to")
+    default_message = _("Du har allerede svart på invitasjonen.")
 
 
 class BreakInvitationExpiresBeforeStartTime(DefaultError):
     default_message = _(
-        "The invitation cannot expire before the break is supposed to start"
+        "Invitasjonen kan ikke utgå før pausen skal starte"
     )
 
 
@@ -22,12 +22,12 @@ class InvalidInvitationExpiration(DefaultError):
 
 
 class InvalidInvitationUpdate(DefaultError):
-    default_message = _("Cannot update invitation")
+    default_message = _("Kunne ikke oppdatere invitasjonen")
 
 
 class InvalidBreakStartTime(DefaultError):
-    default_message = _("The break start time must be in the future")
+    default_message = _("Pausen må begynne i fremtiden.")
 
 
 class InvitationNotAddressedAtUser(DefaultError):
-    default_message = _("Invitation is not addressed at this user")
+    default_message = _("Denne invitasjonen er ikke rettet mot denne brukeren.")

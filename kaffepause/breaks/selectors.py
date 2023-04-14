@@ -1,9 +1,7 @@
-from datetime import datetime, timedelta
-from itertools import chain
 from typing import List
 from uuid import UUID
+from django.utils.translation import gettext_lazy as _
 
-import pytz
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from neomodel import db
@@ -11,6 +9,30 @@ from neomodel import db
 from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.breaks.models import Break, BreakInvitation
 from kaffepause.users.models import User
+
+
+def can_user_edit_break(user: User, break_: Break) -> bool:
+    return is_viewer_initiator(actor=user, break_=break_) and not break_.has_passed
+
+
+def is_viewer_initiator(*, actor, break_: Break):
+    return actor.is_initiator_of(break_)
+
+
+def get_break_title(*, actor: User, break_: Break) -> str:
+    if break_.has_passed:
+        return _("Du tok en pause")
+
+    if actor.is_initiator_of(break_=break_) and break_.get_invitation().has_addressees:
+        return _("Du har invitert til pause")
+
+    if actor.is_initiator_of(break_=break_) or actor.is_participant_of(break_=break_):
+        return _("Du skal ta en pause")
+
+    if actor.is_invited_to(break_=break_):
+        return _("%(sender_name)s inviterte deg til pause" % {"sender_name": break_.get_invitation().get_sender().short_name})
+
+    return _("Pause")
 
 
 def get_next_break(actor: User) -> Break:
@@ -77,11 +99,11 @@ def _get_cypher_minutes_ago(minutes) -> str:
 
 
 def _run_break_invitation_query(query: str, actor: User) -> List[BreakInvitation]:
-    query += "RETURN invitation"
+    query += "RETURN break_"
     params = dict(user_uuid=str(actor.uuid))
     results, meta = db.cypher_query(query, params=params)
-    break_invitations = [BreakInvitation.inflate(row[0]) for row in results]
-    return break_invitations
+    breaks = [Break.inflate(row[0]) for row in results]
+    return breaks
 
 
 def get_upcoming_breaks(actor: User) -> List[Break]:

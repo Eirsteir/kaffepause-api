@@ -125,3 +125,13 @@ class User(DjangoNode):
 
     def get_current_location(self):
         return self.current_location.single()
+
+    def is_initiator_of(self, break_):
+        return self.sent_break_invitations.is_connected(break_.get_invitation())
+
+    def is_participant_of(self, break_):
+        return self.breaks.is_connected(break_)
+
+    @property
+    def short_name(self):
+        return self.name.split()[0]
