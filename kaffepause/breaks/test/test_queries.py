@@ -10,6 +10,7 @@ from kaffepause.breaks.test.graphql_requests import (
     EXPIRED_BREAK_INVITATIONS_QUERY,
     PENDING_BREAK_INVITATIONS_QUERY,
 )
+from kaffepause.common.utils import time_from_now
 
 pytestmark = pytest.mark.django_db
 
@@ -18,7 +19,7 @@ def test_pending_break_invitations_returns_unanswered_non_expired_invitations(
     client_query, friend, user, auth_headers
 ):
     """Should return the pending break invitations."""
-    break_ = create_break_and_invitation(actor=friend)
+    break_ = create_break_and_invitation(actor=friend, starting_at=time_from_now(hours=1))
 
     response = client_query(
         PENDING_BREAK_INVITATIONS_QUERY,
@@ -52,7 +53,7 @@ def test_all_break_invitations_returns_all_break_invitations(
     client_query, friend, auth_headers
 ):
     """Should return all break invitations."""
-    break_ = create_break_and_invitation(actor=friend)
+    break_ = create_break_and_invitation(actor=friend, starting_at=time_from_now(hours=1))
 
     response = client_query(
         ALL_BREAK_INVITATIONS_QUERY,
@@ -88,7 +89,7 @@ def test_expired_break_invitations_returns_all_expired_break_invitations(
 
     start_time = timezone.now() + timedelta(hours=-1)
     expired_break = create_break_and_invitation(actor=friend, starting_at=start_time)
-    create_break_and_invitation(actor=friend)
+    create_break_and_invitation(actor=friend, starting_at=time_from_now(hours=-1))
 
     response = client_query(
         EXPIRED_BREAK_INVITATIONS_QUERY,

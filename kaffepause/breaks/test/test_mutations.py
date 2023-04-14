@@ -9,13 +9,14 @@ from kaffepause.breaks.test.graphql_requests import (
     DECLINE_BREAK_INVITATION_MUTATION,
     INITIATE_BREAK_MUTATION,
 )
+from kaffepause.common.utils import time_from_now
 
 pytestmark = pytest.mark.django_db
 
 
 @pytest.fixture
 def invitation(friend):
-    break_ = create_break_and_invitation(actor=friend)
+    break_ = create_break_and_invitation(actor=friend, starting_at=time_from_now(hours=1))
     return break_.get_invitation()
 
 

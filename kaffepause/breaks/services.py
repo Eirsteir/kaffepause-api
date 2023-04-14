@@ -11,19 +11,18 @@ from kaffepause.location.selectors import get_location_or_none
 
 
 def create_break_and_invitation(
-    actor: User, addressees: List[str] = None, starting_at: datetime = None, location: str = None
+    actor: User, starting_at: datetime, addressees: List = None, location: str = None
 ) -> Break:
     """
-    Create a break and an invitation to given addressees, optionally at the given start time.
-    If addressees are specified, only send the invitation to the ones who are following the users.
-    If not, send to all followers.
+    Create a break and an invitation to given addressees, optionally at the given location.
+    Only invite the actors actual friends.
     """
     if addressees:
-        addressees = actor.followed_by.filter(uuid__in=addressees)
+        addressees = actor.friends.filter(uuid__in=addressees)
     else:
-        addressees = actor.followed_by.all()
+        addressees = []
 
-    location = get_location_or_none(location_uuid=location)  # TODO: skal pause være optional?
+    location = get_location_or_none(location_uuid=location)
 
     break_ = _create_break_and_invitation(actor, addressees, starting_at, location)
 
@@ -51,7 +50,8 @@ def _create_break(actor: User, starting_at: datetime, location: Location) -> Bre
     """Create break with given start time and connect actor to its participants."""
     break_ = Break(starting_at=starting_at).save()
     break_.participants.connect(actor)
-    break_.location.connect(location)
+    if location:
+        break_.location.connect(location)
     return break_
 
 

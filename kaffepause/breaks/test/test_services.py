@@ -6,6 +6,7 @@ from kaffepause.breaks.services import (
     decline_break_invitation,
 )
 from kaffepause.breaks.test.factories import BreakFactory, BreakInvitationFactory
+from kaffepause.common.utils import time_from_now
 from kaffepause.users.test.factories import UserFactory
 
 pytestmark = pytest.mark.django_db
@@ -44,15 +45,15 @@ def follower(actor_with_single_follower):
 def test_create_break_and_invitations_creates_break_and_invites_addressees_which_are_following_the_actor(
     actor, actor_friends, non_following_user
 ):
-    """When a break is created, only the friends following the actor should be invited."""
+    """When a break is created, only the friends of the actor should be invited."""
     addressee_ids = list(map(lambda user: user.uuid, actor_friends))
     addressee_ids.append(non_following_user.uuid)
 
-    break_ = create_break_and_invitation(actor, addressee_ids)
+    break_ = create_break_and_invitation(actor, starting_at=time_from_now(hours=1), addressees=addressee_ids)
     break_invitation = break_.invitation.single()
 
     actual_addressees = break_invitation.addressees.all()
-    expected_addressees = actor.followed_by.all()
+    expected_addressees = actor.friends.all()
 
     assert len(actual_addressees) == len(expected_addressees)
     assert all(a in actual_addressees for a in expected_addressees)
@@ -63,7 +64,7 @@ def test_create_and_invite_followers_to_a_break_creates_break_and_invites_all_th
     actor, actor_friends, non_following_user
 ):
     """When a break is created without specifying addressees, all of the actors followers should be invited."""
-    break_ = create_break_and_invitation(actor)
+    break_ = create_break_and_invitation(actor, starting_at=time_from_now(hours=1))
     break_invitation = break_.invitation.single()
 
     actual_addressees = break_invitation.addressees.all()
@@ -79,7 +80,7 @@ def test_create_break_and_invitation_creates_break_and_invitation(
 ):
     """Should create a break and corresponding invitation."""
     break_ = create_break_and_invitation(
-        actor_with_single_follower, addressees=[follower.uuid]
+        actor_with_single_follower, starting_at=time_from_now(hours=1), addressees=[follower.uuid]
     )
 
     assert break_
@@ -91,7 +92,7 @@ def test_create_break_creates_break_with_correct_connections(
 ):
     """Creating a break should connect the actor to its participants."""
     break_ = create_break_and_invitation(
-        actor_with_single_follower, addressees=[follower.uuid]
+        actor_with_single_follower, starting_at=time_from_now(hours=1), addressees=[follower.uuid]
     )
 
     assert break_
@@ -103,7 +104,7 @@ def test_create_invitation_creates_invitation_with_correct_connections(
 ):
     """Creating an invitation should connect the actor as sender, the break as subject and addressees as such."""
     break_ = create_break_and_invitation(
-        actor_with_single_follower, addressees=[follower.uuid]
+        actor_with_single_follower, starting_at=time_from_now(hours=1), addressees=[follower.uuid]
     )
     break_invitation = break_.invitation.single()
 
