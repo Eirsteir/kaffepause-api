@@ -47,6 +47,7 @@ class BreakNode(graphene.ObjectType):
     participants = relay.ConnectionField(UserConnection)
     invitation = graphene.Field(BreakInvitationNode)
     location = graphene.Field(LocationNode)
+    kicker = graphene.String()
 
     def resolve_invitation(parent, info):
         return parent.get_invitation()

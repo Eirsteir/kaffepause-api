@@ -1,4 +1,4 @@
-from kaffepause.common.utils import format_time_from_now
+from kaffepause.common.utils import format_time_from_now, format_kicker_message
 from kaffepause.notifications.enums import NotificationEntityType
 from django.utils.translation import gettext as _
 
@@ -33,8 +33,7 @@ def _get_user_friend_accept_kicker_message(**kwargs):
 def _get_break_invitation_sent_kicker_message(**kwargs):
     time = kwargs.get("time")
     if time:
-        time_str = format_time_from_now(time)
-        return _("Om %(time)s") % {"time": time_str}
+        return format_kicker_message(time)
     return None
 
 

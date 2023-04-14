@@ -21,6 +21,11 @@ def three_hours_from_now():
     return time_from_now(hours=3)
 
 
+def format_kicker_message(time):
+    time_str = format_time_from_now(time)
+    return _("Om %(time)s") % {"time": time_str}
+
+
 def format_time_from_now(target_time) -> str:
     # Calculate the difference between the target time and the current time
     time_diff = target_time - timezone.now()

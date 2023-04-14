@@ -19,7 +19,7 @@ from kaffepause.breaks.exceptions import (
 from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER, LOCATION
 from kaffepause.common.models import TimeStampedRel
 from kaffepause.common.properties import UUIDProperty
-from kaffepause.common.utils import fifteen_minutes_from_now, time_from_now
+from kaffepause.common.utils import fifteen_minutes_from_now, time_from_now, format_kicker_message
 
 
 class Break(StructuredNode):
@@ -44,6 +44,12 @@ class Break(StructuredNode):
     @property
     def is_expired(self):
         return time_from_now(minutes=5) >= self.starting_at
+
+    @property
+    def kicker(self):
+        if self.starting_at > timezone.now():
+            return format_kicker_message(self.starting_at)
+        return None
 
     def get_invitation(self):
         return self.invitation.single()
