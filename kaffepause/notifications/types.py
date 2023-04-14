@@ -18,6 +18,7 @@ class NotificationNode(graphene.ObjectType):
     entity_type = graphene.String()
     entity_id = graphene.String()
     text = graphene.String()
+    kicker = graphene.String()
     url = graphene.String()
     actor = graphene.Field(UserNode)
 

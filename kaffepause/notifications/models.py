@@ -1,4 +1,4 @@
-from neomodel import RelationshipTo, StringProperty
+from neomodel import RelationshipTo, StringProperty, DateTimeProperty
 
 from kaffepause.common.models import TimeStampedNode
 from kaffepause.common.properties import UUIDProperty
@@ -16,11 +16,15 @@ from neomodel import (
 
 
 #  https://docs.djangoproject.com/en/4.0/topics/i18n/translation/#:~:text=The%20strings%20you
+from kaffepause.notifications.messages import KickerMessages
+
+
 class Notification(TimeStampedNode):
     uuid = UUIDProperty()
     seen_state = StringProperty(choices=SeenState.choices(), default=SeenState.UNSEEN.name)
     entity_type = StringProperty(required=True, choices=NotificationEntityType.choices())
     entity_id = StringProperty(required=True)
+    entity_potential_start_time = DateTimeProperty(required=False)
     text = StringProperty(required=True)
     notifier = RelationshipTo(
         USER, NotificationRelationship.NOTIFIES, cardinality=One
@@ -33,3 +37,8 @@ class Notification(TimeStampedNode):
     def url(self):
         entity_type = NotificationEntityType[self.entity_type]
         return entityTypeToEndpointMapping[entity_type].single(self.entity_id)
+
+    @property
+    def kicker(self):
+        entity_type = NotificationEntityType[self.entity_type]
+        return KickerMessages[entity_type](time=self.entity_potential_start_time)

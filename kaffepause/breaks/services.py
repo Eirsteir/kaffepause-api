@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Callable, List
+from django.utils import timezone
 
 from kaffepause.breaks.models import Break, BreakInvitation
 from kaffepause.notifications.enums import NotificationEntityType
@@ -22,10 +23,18 @@ def create_break_and_invitation(
     else:
         addressees = actor.followed_by.all()
 
-    location = get_location_or_none(location_uuid=location)
+    location = get_location_or_none(location_uuid=location)  # TODO: skal pause være optional?
 
     break_ = _create_break_and_invitation(actor, addressees, starting_at, location)
-    bulk_notify(notifiers=addressees, entity_type=NotificationEntityType.BREAK_INVITATION_SENT, entity_id=break_.uuid, actor=actor)
+
+    bulk_notify(
+        notifiers=addressees,
+        entity_type=NotificationEntityType.BREAK_INVITATION_SENT,
+        entity_id=break_.uuid,
+        actor=actor,
+        entity_potential_start_time=starting_at,
+        location_name=location.title,
+        starting_at=timezone.localtime(starting_at).strftime("%H:%M"))
 
     return break_
 
