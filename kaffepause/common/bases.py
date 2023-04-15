@@ -107,3 +107,17 @@ class NeomodelRelationshipEnum(Enum):
         return self.name
 
     __repr__ = __str__
+
+
+class SectionNode(graphene.ObjectType):
+
+    section_id = graphene.String()
+    heading = graphene.String()
+    is_empty = graphene.Boolean()
+    emptyStateText = graphene.String()
+    emptyStateActionText = graphene.String()
+
+    def resolve_is_empty(parent, info):
+        return not parent.items
+
+

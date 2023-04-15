@@ -115,10 +115,10 @@ def _get_cypher_minutes_ago(minutes) -> str:
 
 
 def _run_break_invitation_query(query: str, actor: User) -> List[BreakInvitation]:
-    query += "RETURN break_"
+    query += "RETURN invitation"
     params = dict(user_uuid=str(actor.uuid))
     results, meta = db.cypher_query(query, params=params)
-    breaks = [Break.inflate(row[0]) for row in results]
+    breaks = [BreakInvitation.inflate(row[0]) for row in results]
     return breaks
 
 

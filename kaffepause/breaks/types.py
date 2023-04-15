@@ -4,7 +4,9 @@ from django.utils.translation import gettext_lazy as _
 
 from kaffepause.breaks.enums import InvitationReplyStatus
 from kaffepause.breaks.selectors import get_break_history, get_upcoming_breaks, \
-    can_user_edit_break, get_pending_break_invitations, get_break_title, get_invitation_context
+    can_user_edit_break, get_pending_break_invitations, get_break_title, get_invitation_context, \
+    get_all_break_invitations, get_expired_break_invitations
+from kaffepause.common.bases import SectionNode
 from kaffepause.common.types import CountableConnection
 from kaffepause.users.selectors import get_user_from_account
 from kaffepause.users.types import UserConnection, UserNode
@@ -93,20 +95,17 @@ class BreakConnection(CountableConnection):
         node = BreakNode
 
 
-class BreaksSectionNode(graphene.ObjectType):
+class BreakInvitationConnection(CountableConnection):
+    class Meta:
+        node = BreakInvitationNode
+
+
+class BreaksSectionNode(SectionNode, graphene.ObjectType):
     class Meta:
         interfaces = (relay.Node,)
         name = "BreaksSection"
 
-    section_id = graphene.String()
-    heading = graphene.String()
-    breaks = relay.ConnectionField(BreakConnection)
-    is_empty = graphene.Boolean()
-    emptyStateText = graphene.String()
-    emptyStateActionText = graphene.String()
-
-    def resolve_is_empty(parent, info):
-        return not parent.breaks
+    items = relay.ConnectionField(BreakConnection)
 
 
 class BreaksPresentationNode(graphene.ObjectType):
@@ -117,31 +116,62 @@ class BreaksPresentationNode(graphene.ObjectType):
     sections = graphene.List(BreaksSectionNode)
 
     def resolve_sections(user, info):
-        invitations = BreaksSectionNode(
-            section_id="PENDING_BREAK_INVITATIONS",
-            heading=_("Pauseinvitasjoner"),
-            breaks=get_pending_break_invitations(actor=user),
-            emptyStateText=_("Kanskje du kan invitere noen på pause?"),
-            emptyStateActionText=_("Få med folk på pause")
-        )
         upcoming = BreaksSectionNode(
             section_id="UPCOMING_BREAKS",
             heading=_("Kommende pauser"),
-            breaks=get_upcoming_breaks(actor=user),
+            items=get_upcoming_breaks(actor=user),
             emptyStateText=_("Når du er klar for å starte din neste pause, er vi her."),
             emptyStateActionText=_("Planlegg en pause")
         )
         past = BreaksSectionNode(
             section_id="PAST_BREAKS",
             heading=_("Tidligere pauser"),
-            breaks=get_break_history(actor=user),
+            items=get_break_history(actor=user),
             emptyStateText=_("Kom i gang med pauseplanleggingen"),
             emptyStateActionText=_("Ta din første pause")
         )
 
-        return [invitations, upcoming, past]
+        return [upcoming, past]
 
 
-class BreakInvitationConnection(CountableConnection):
+class BreakInvitationsSectionNode(SectionNode, graphene.ObjectType):
     class Meta:
-        node = BreakInvitationNode
+        interfaces = (relay.Node,)
+        name = "BreakInvitationsSection"
+
+    items = relay.ConnectionField(BreakInvitationConnection)
+
+
+class BreakInvitationsPresentationNode(graphene.ObjectType):
+    class Meta:
+        interfaces = (relay.Node,)
+        name = "BreakInvitationsPresentation"
+
+    sections = graphene.List(BreakInvitationsSectionNode)
+
+    def resolve_sections(user, info):
+        pending = BreakInvitationsSectionNode(
+            section_id="PENDING_BREAK_INVITATIONS",
+            heading=_("Ventende invitasjoner"),
+            items=get_pending_break_invitations(actor=user),
+            emptyStateText=_("Kanskje du kan invitere noen på pause?"),
+            emptyStateActionText=_("Få med folk på pause")
+        )
+        expired = BreakInvitationsSectionNode(
+            section_id="EXPIRED_BREAK_INVITATIONS",
+            heading=_("Utgåtte invitasjoner"),
+            items=get_expired_break_invitations(actor=user),
+            emptyStateText=_("Ingenting å se her"),
+            emptyStateActionText=_("Pause!")
+        )
+        all = BreakInvitationsSectionNode(
+            section_id="ALL_BREAK_INVITATIONS",
+            heading=_("Alle invitasjoner"),
+            items=get_all_break_invitations(actor=user),
+            emptyStateText=_("Ingenting å se her"),
+            emptyStateActionText=_("Pause!")
+        )
+
+        return [pending, expired, all]
+
+

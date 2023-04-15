@@ -16,7 +16,7 @@ from kaffepause.breaks.selectors import (
 from kaffepause.breaks.types import (
     BreakConnection,
     BreakInvitationConnection,
-    BreakNode, BreaksPresentationNode,
+    BreakNode, BreaksPresentationNode, BreakInvitationsPresentationNode,
 )
 from kaffepause.common.bases import NeomodelGraphQLMixin
 from kaffepause.common.decorators import login_required
@@ -25,16 +25,19 @@ from kaffepause.common.decorators import login_required
 class Query(NeomodelGraphQLMixin, graphene.ObjectType):
 
     breaks_presentation = graphene.Field(BreaksPresentationNode)
+    break_invitations_presentation = graphene.Field(BreakInvitationsPresentationNode)
     next_break = graphene.Field(BreakNode)
     break_ = graphene.Field(BreakNode, uuid=graphene.UUID())
-    pending_break_invitations = relay.ConnectionField(BreakInvitationConnection)
-    expired_break_invitations = relay.ConnectionField(BreakInvitationConnection)
-    all_break_invitations = relay.ConnectionField(BreakInvitationConnection)
     break_history = relay.ConnectionField(BreakConnection)
 
     @classmethod
     @login_required
     def resolve_breaks_presentation(cls, root, info, **kwargs):
+        return cls.get_current_user()
+
+    @classmethod
+    @login_required
+    def resolve_break_invitations_presentation(cls, root, info, **kwargs):
         return cls.get_current_user()
 
     @classmethod
@@ -48,24 +51,6 @@ class Query(NeomodelGraphQLMixin, graphene.ObjectType):
     def resolve_break_(cls, root, info, uuid, **kwargs):
         current_user = cls.get_current_user()
         return get_break(actor=current_user, uuid=uuid)
-
-    @classmethod
-    @login_required
-    def resolve_pending_break_invitations(cls, root, info, **kwargs):
-        current_user = cls.get_current_user()
-        return get_pending_break_invitations(actor=current_user)
-
-    @classmethod
-    @login_required
-    def resolve_expired_break_invitations(cls, root, info, **kwargs):
-        current_user = cls.get_current_user()
-        return get_expired_break_invitations(actor=current_user)
-
-    @classmethod
-    @login_required
-    def resolve_all_break_invitations(cls, root, info, **kwargs):
-        current_user = cls.get_current_user()
-        return get_all_break_invitations(actor=current_user)
 
     @classmethod
     @login_required
