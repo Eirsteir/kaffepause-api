@@ -22,6 +22,8 @@ class NotificationEntityType(Enum):
     USER_FRIEND_ADD = _("User sends a friend request")
     USER_FRIEND_ACCEPT = _("User accepts a friend request")
     BREAK_INVITATION_SENT = _("Break invitation is sent")
+    BREAK_INVITATION_ACCEPTED = _("Break invitation is accepted")
+    BREAK_INVITATION_DECLINED = _("Break invitation is declined")
 
     @classmethod
     def choices(cls):

@@ -4,7 +4,7 @@ from django.utils import timezone
 
 from kaffepause.breaks.models import Break, BreakInvitation
 from kaffepause.notifications.enums import NotificationEntityType
-from kaffepause.notifications.services import bulk_notify
+from kaffepause.notifications.services import bulk_notify, notify
 from kaffepause.users.models import User
 from kaffepause.location.models import Location
 from kaffepause.location.selectors import get_location_or_none
@@ -76,6 +76,7 @@ def accept_break_invitation(
         actor, invitation, invitation.accept_on_behalf_of
     )
     invitation.get_subject().participants.connect(actor)
+    __notify_invitation_reply(invitation=invitation, actor=actor, entity_type=NotificationEntityType.BREAK_INVITATION_ACCEPTED)
     return invitation
 
 
@@ -83,7 +84,10 @@ def decline_break_invitation(
     actor: User, invitation: BreakInvitation
 ) -> BreakInvitation:
 
-    return __reply_to_invitation(actor, invitation, invitation.decline_on_behalf_of)
+    invitation = __reply_to_invitation(actor, invitation, invitation.decline_on_behalf_of)
+    __notify_invitation_reply(invitation=invitation, actor=actor,
+                              entity_type=NotificationEntityType.BREAK_INVITATION_DECLINED)
+    return invitation
 
 
 def ignore_break_invitation(
@@ -100,3 +104,12 @@ def __reply_to_invitation(
     reply_action(actor)
 
     return invitation
+
+
+def __notify_invitation_reply(invitation: BreakInvitation, actor: User, entity_type: NotificationEntityType):
+    notify(
+        user=invitation.get_sender(),
+        entity_type=entity_type,
+        entity_id=invitation.get_subject().uuid,
+        actor=actor
+    )
