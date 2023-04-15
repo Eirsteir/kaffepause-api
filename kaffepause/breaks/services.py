@@ -32,7 +32,7 @@ def create_break_and_invitation(
         entity_id=break_.uuid,
         actor=actor,
         entity_potential_start_time=starting_at,
-        location_name=location.title,
+        location_name=location.title if location else None,
         starting_at=timezone.localtime(starting_at).strftime("%H:%M"))
 
     return break_
@@ -42,7 +42,8 @@ def _create_break_and_invitation(
     actor: User, followers: List[User], starting_at: datetime = None, location: Location = None
 ) -> Break:
     break_ = _create_break(actor, starting_at, location)
-    _create_invitation(actor, break_, followers)
+    if followers:
+        _create_invitation(actor, break_, followers)
     return break_
 
 
@@ -50,6 +51,7 @@ def _create_break(actor: User, starting_at: datetime, location: Location) -> Bre
     """Create break with given start time and connect actor to its participants."""
     break_ = Break(starting_at=starting_at).save()
     break_.participants.connect(actor)
+    break_.initiator.connect(actor)
     if location:
         break_.location.connect(location)
     return break_

@@ -26,7 +26,7 @@ def format_kicker_message(time):
     return _("Om %(time)s") % {"time": time_str}
 
 
-def format_time_from_now(target_time) -> str:
+def format_time_from_now(target_time) -> str: # TODO: håndter enkelte timer (time) og minutter (minutt)
     # Calculate the difference between the target time and the current time
     time_diff = target_time - timezone.now()
     # Extract the number of hours and minutes from the time difference

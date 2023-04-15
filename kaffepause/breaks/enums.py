@@ -12,6 +12,7 @@ class InvitationReply(models.TextChoices):
 
 class BreakRelationship(NeomodelRelationshipEnum):
     PARTICIPATED_IN = _("Participated in")
+    INITIATED = _("Initiated")
     SENT = _("Sent")
     TO = _("To")
     REGARDING = _("Regarding")

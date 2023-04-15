@@ -26,6 +26,7 @@ class Break(StructuredNode):
     uuid = UUIDProperty()
     starting_at = DateTimeProperty(default=lambda: fifteen_minutes_from_now())
     participants = RelationshipFrom(USER, BreakRelationship.PARTICIPATED_IN)
+    initiator = RelationshipFrom(USER, BreakRelationship.INITIATED)
     invitation = RelationshipFrom(BREAK_INVITATION, BreakRelationship.REGARDING)
     location = RelationshipTo(LOCATION, BreakRelationship.LOCATED_AT, cardinality=ZeroOrOne)
 
@@ -39,7 +40,7 @@ class Break(StructuredNode):
         if timezone.now() >= start_time:
             raise InvalidBreakStartTime
         elif time_from_now(minutes=5) >= start_time:
-            raise InvalidBreakStartTime(_("Break must start in minimum 5 minutes"))
+            raise InvalidBreakStartTime(_("Pausen må begynne om minimum 5 minutter."))
 
     @property
     def is_expired(self):
@@ -54,6 +55,10 @@ class Break(StructuredNode):
         if self.starting_at > timezone.now():
             return format_kicker_message(self.starting_at)
         return None
+
+    @property
+    def has_invitation(self):
+        return self.invitation.single() is not None
 
     def get_invitation(self):
         return self.invitation.single()

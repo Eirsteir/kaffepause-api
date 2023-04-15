@@ -12,7 +12,9 @@ def _get_user_friend_accept_message(actor_name, **kwargs):
 
 
 def _get_break_invitation_sent_message(actor_name, **kwargs):
-    return _("%(actor_name)s vil ta en pause på %(location_name)s kl %(starting_at)s.") % {"actor_name": actor_name, **kwargs}
+    if kwargs.get("location_name"):
+        return _("%(actor_name)s vil ta en pause på %(location_name)s kl %(starting_at)s.") % {"actor_name": actor_name, **kwargs}
+    return _("%(actor_name)s vil ta en pause kl %(starting_at)s.") % {"actor_name": actor_name, **kwargs}
 
 
 Messages = {

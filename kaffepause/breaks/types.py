@@ -48,6 +48,7 @@ class BreakNode(graphene.ObjectType):
     title = graphene.String()
     starting_at = graphene.DateTime()
     participants = relay.ConnectionField(UserConnection)
+    initiator = graphene.Field(UserNode)
     invitation = graphene.Field(BreakInvitationNode)
     location = graphene.Field(LocationNode)
     kicker = graphene.String()

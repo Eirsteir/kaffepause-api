@@ -23,7 +23,7 @@ def get_break_title(*, actor: User, break_: Break) -> str:
     if break_.has_passed:
         return _("Du tok en pause")
 
-    if actor.is_initiator_of(break_=break_) and break_.get_invitation().has_addressees:
+    if actor.is_initiator_of(break_=break_) and break_.has_invitation:
         return _("Du har invitert til pause")
 
     if actor.is_initiator_of(break_=break_) or actor.is_participant_of(break_=break_):

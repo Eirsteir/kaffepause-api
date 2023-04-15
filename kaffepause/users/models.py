@@ -45,6 +45,7 @@ class User(DjangoNode):
     )
 
     breaks = RelationshipTo(BREAK, BreakRelationship.PARTICIPATED_IN)
+    initiated_breaks = RelationshipTo(BREAK, BreakRelationship.INITIATED)
     break_invitations = RelationshipFrom(BREAK_INVITATION, BreakRelationship.TO)
     sent_break_invitations = RelationshipTo(BREAK_INVITATION, BreakRelationship.SENT)
     accepted_break_invitations = RelationshipTo(
@@ -127,7 +128,7 @@ class User(DjangoNode):
         return self.current_location.single()
 
     def is_initiator_of(self, break_):
-        return self.sent_break_invitations.is_connected(break_.get_invitation())
+        return self.initiated_breaks.is_connected(break_)
 
     def is_participant_of(self, break_):
         return self.breaks.is_connected(break_)
