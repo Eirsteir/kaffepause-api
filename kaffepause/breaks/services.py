@@ -86,6 +86,13 @@ def decline_break_invitation(
     return __reply_to_invitation(actor, invitation, invitation.decline_on_behalf_of)
 
 
+def ignore_break_invitation(
+    actor: User, invitation: BreakInvitation
+) -> BreakInvitation:
+
+    return __reply_to_invitation(actor, invitation, invitation.ignore_on_behalf_of)
+
+
 def __reply_to_invitation(
     actor: User, invitation: BreakInvitation, reply_action: Callable
 ) -> BreakInvitation:

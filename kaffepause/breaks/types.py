@@ -2,8 +2,9 @@ import graphene
 from graphene import relay
 from django.utils.translation import gettext_lazy as _
 
-from kaffepause.breaks.selectors import get_break_history, get_upcoming_breaks, is_viewer_initiator, \
-    can_user_edit_break, get_pending_break_invitations, get_break_title
+from kaffepause.breaks.enums import InvitationReplyStatus
+from kaffepause.breaks.selectors import get_break_history, get_upcoming_breaks, \
+    can_user_edit_break, get_pending_break_invitations, get_break_title, get_invitation_context
 from kaffepause.common.types import CountableConnection
 from kaffepause.users.selectors import get_user_from_account
 from kaffepause.users.types import UserConnection, UserNode
@@ -20,8 +21,9 @@ class BreakInvitationNode(graphene.ObjectType):
     sender = graphene.Field(UserNode)
     addressee_count = graphene.Int()
     addressees = relay.ConnectionField(UserConnection)
-    acceptees = relay.ConnectionField(UserConnection)
+    confirmed = relay.ConnectionField(UserConnection)
     subject = graphene.Field(lambda: BreakNode)
+    context = graphene.Field(graphene.Enum.from_enum(InvitationReplyStatus))
 
     def resolve_sender(parent, info):
         return parent.get_sender()
@@ -32,11 +34,16 @@ class BreakInvitationNode(graphene.ObjectType):
     def resolve_addressees(parent, info):
         return parent.addressees.all()
 
-    def resolve_acceptees(parent, info):
-        return parent.acceptees.all()
+    def resolve_confirmed(parent, info):
+        return parent.confirmed.all()
 
     def resolve_subject(parent, info):
         return parent.get_subject()
+
+    def resolve_context(parent, info):
+        current_user_account = info.context.user
+        current_user = get_user_from_account(account=current_user_account)
+        return get_invitation_context(actor=current_user, invitation=parent)
 
 
 class BreakNode(graphene.ObjectType):
@@ -47,6 +54,7 @@ class BreakNode(graphene.ObjectType):
     uuid = graphene.UUID()
     title = graphene.String()
     starting_at = graphene.DateTime()
+    has_passed = graphene.Boolean()
     participants = relay.ConnectionField(UserConnection)
     initiator = graphene.Field(UserNode)
     invitation = graphene.Field(BreakInvitationNode)

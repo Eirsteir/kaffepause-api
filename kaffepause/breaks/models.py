@@ -60,6 +60,10 @@ class Break(StructuredNode):
     def has_invitation(self):
         return self.invitation.single() is not None
 
+    @property
+    def invitation_sender(self):
+        return self.get_invitation().get_sender()
+
     def get_invitation(self):
         return self.invitation.single()
 
@@ -77,8 +81,9 @@ class BreakInvitation(StructuredNode):
     addressees = RelationshipTo(USER, BreakRelationship.TO, cardinality=ZeroOrMore)
     subject = RelationshipTo(BREAK, BreakRelationship.REGARDING, cardinality=One)
 
-    acceptees = RelationshipFrom(USER, BreakRelationship.ACCEPTED, model=TimeStampedRel)
-    declinees = RelationshipFrom(USER, BreakRelationship.DECLINED, model=TimeStampedRel)
+    confirmed = RelationshipFrom(USER, BreakRelationship.ACCEPTED, model=TimeStampedRel)
+    decliners = RelationshipFrom(USER, BreakRelationship.DECLINED, model=TimeStampedRel)
+    non_attenders = RelationshipFrom(USER, BreakRelationship.IGNORED, model=TimeStampedRel)
 
     @property
     def is_expired(self):
@@ -98,10 +103,13 @@ class BreakInvitation(StructuredNode):
         return len(self.addressees.all())
 
     def accept_on_behalf_of(self, user):
-        self.acceptees.connect(user)
+        self.confirmed.connect(user)
 
     def decline_on_behalf_of(self, user):
-        self.declinees.connect(user)
+        self.decliners.connect(user)
+
+    def ignore_on_behalf_of(self, user):
+        self.non_attenders.connect(user)
 
     def ready_for_reply(self, user):
         self._check_expiry()
@@ -117,7 +125,7 @@ class BreakInvitation(StructuredNode):
             raise InvitationNotAddressedAtUser
 
     def _assert_user_have_not_replied(self, user):
-        has_replied = user in self.acceptees or user in self.declinees
+        has_replied = user in self.confirmed or user in self.decliners
 
         if has_replied:
             raise AlreadyReplied

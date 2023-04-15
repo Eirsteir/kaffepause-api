@@ -132,7 +132,7 @@ def test_accept_break_invitation_when_invitation_exists_adds_user_to_break_parti
     break_ = invitation.get_subject()
 
     assert user.breaks.is_connected(break_)
-    assert invitation.acceptees.is_connected(user)
+    assert invitation.confirmed.is_connected(user)
 
 
 def test_accept_break_invitation_when_invitation_exists_returns_invitation(
@@ -179,7 +179,7 @@ def test_decline_break_invitation_when_invitation_exists_adds_user_to_invitation
         headers=auth_headers,
     )
 
-    assert invitation.declinees.is_connected(user)
+    assert invitation.decliners.is_connected(user)
 
 
 def test_decline_break_invitation_when_invitation_exists_returns_invitation(

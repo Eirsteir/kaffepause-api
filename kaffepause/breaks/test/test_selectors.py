@@ -26,12 +26,12 @@ def test_get_break_invitations_awaiting_reply_returns_unanswered_invitations(use
     accepted_break_invitation = BreakInvitationFactory()
     accepted_break_invitation.subject.connect(BreakFactory())
     accepted_break_invitation.addressees.connect(user)
-    accepted_break_invitation.acceptees.connect(user)
+    accepted_break_invitation.confirmed.connect(user)
 
     declined_break_invitation = BreakInvitationFactory()
     declined_break_invitation.subject.connect(BreakFactory())
     declined_break_invitation.addressees.connect(user)
-    declined_break_invitation.declinees.connect(user)
+    declined_break_invitation.decliners.connect(user)
 
     actual_break_invitations = get_pending_break_invitations(actor=user)
 

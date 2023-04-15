@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from neomodel import db
 
-from kaffepause.breaks.enums import BreakRelationship
+from kaffepause.breaks.enums import BreakRelationship, InvitationReplyStatus
 from kaffepause.breaks.models import Break, BreakInvitation
 from kaffepause.users.models import User
 
@@ -21,18 +21,34 @@ def is_viewer_initiator(*, actor, break_: Break):
 
 def get_break_title(*, actor: User, break_: Break) -> str:
     if break_.has_passed:
-        return _("Du tok en pause")
+        if actor.is_participant_of(break_=break_):
+            return _("Du tok en pause")
+        elif actor.is_invited_to(break_=break_):
+            return _("%(sender_name)s inviterte deg til pause" % {"sender_name": break_.invitation_sender.short_name})
 
-    if actor.is_initiator_of(break_=break_) and break_.has_invitation:
+    if is_invited_and_has_not_replied(actor, break_):
+        return _("%(sender_name)s har invitert deg til pause" % {
+            "sender_name": break_.invitation_sender.short_name})
+
+    if is_initiator_and_has_invited(actor, break_):
         return _("Du har invitert til pause")
 
-    if actor.is_initiator_of(break_=break_) or actor.is_participant_of(break_=break_):
-        return _("Du skal ta en pause")
-
-    if actor.is_invited_to(break_=break_):
-        return _("%(sender_name)s inviterte deg til pause" % {"sender_name": break_.get_invitation().get_sender().short_name})
+    if is_initiator_and_has_planned_break(actor, break_):
+        return _("Du har planlagt en pause")
 
     return _("Pause")
+
+
+def is_initiator_and_has_planned_break(actor, break_):
+    return actor.is_initiator_of(break_=break_) or actor.is_participant_of(break_=break_)
+
+
+def is_initiator_and_has_invited(actor, break_):
+    return actor.is_initiator_of(break_=break_) and break_.has_invitation
+
+
+def is_invited_and_has_not_replied(actor, break_):
+    return actor.is_invited_to(break_=break_) and not actor.is_participant_of(break_=break_)
 
 
 def get_next_break(actor: User) -> Break:
@@ -112,3 +128,22 @@ def get_upcoming_breaks(actor: User) -> List[Break]:
 
 def get_break_history(actor: User) -> List[Break]:
     return actor.breaks.filter(starting_at__lt=timezone.now())
+
+
+def get_invitation_context(actor: User, invitation: BreakInvitation):
+    if not invitation:
+        return None
+
+    if actor.accepted_break_invitations.is_connected(invitation):
+        return InvitationReplyStatus.HAS_ACCEPTED
+
+    if actor.ignored_break_invitations.is_connected(invitation):
+        return InvitationReplyStatus.HAS_IGNORED
+
+    if actor.declined_break_invitations.is_connected(invitation):
+        return InvitationReplyStatus.HAS_DECLINED
+
+    if not invitation.is_expired:
+        return InvitationReplyStatus.CAN_REPLY
+
+    return InvitationReplyStatus.CANNOT_REPLY

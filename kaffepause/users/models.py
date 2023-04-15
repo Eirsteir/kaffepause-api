@@ -54,6 +54,9 @@ class User(DjangoNode):
     declined_break_invitations = RelationshipTo(
         BREAK_INVITATION, BreakRelationship.DECLINED
     )
+    ignored_break_invitations = RelationshipTo(
+        BREAK_INVITATION, BreakRelationship.IGNORED
+    )
 
     current_status = RelationshipTo(
         STATUS_UPDATE, StatusUpdateRelationship.CURRENT, cardinality=ZeroOrOne
@@ -132,6 +135,11 @@ class User(DjangoNode):
 
     def is_participant_of(self, break_):
         return self.breaks.is_connected(break_)
+
+    def is_invited_to(self, break_):
+        if break_.has_invitation:
+            return self.break_invitations.is_connected(break_.get_invitation())
+        return False
 
     @property
     def short_name(self):

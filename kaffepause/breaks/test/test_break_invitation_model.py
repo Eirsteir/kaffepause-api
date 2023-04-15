@@ -36,7 +36,7 @@ def test_assert_user_has_not_replied_when_user_has_accepted_raises_exception():
     """Should raise an exception if the user has already accepted the invitation."""
     invitation = BreakInvitationFactory()
     user = UserFactory()
-    invitation.acceptees.connect(user)
+    invitation.confirmed.connect(user)
 
     with pytest.raises(AlreadyReplied):
         invitation._assert_user_have_not_replied(user)
@@ -46,7 +46,7 @@ def test_assert_user_has_not_replied_when_user_has_declined_raises_exception():
     """Should raise an exception if the user has already declined the invitation."""
     invitation = BreakInvitationFactory()
     user = UserFactory()
-    invitation.declinees.connect(user)
+    invitation.decliners.connect(user)
 
     with pytest.raises(AlreadyReplied):
         invitation._assert_user_have_not_replied(user)

@@ -122,7 +122,7 @@ def test_accept_break_invitation_connects_acceptee_to_acceptees(actor):
     actual_invitation = accept_break_invitation(actor, break_invitation)
     actual_break = actual_invitation.get_subject()
 
-    assert actor in actual_invitation.acceptees
+    assert actor in actual_invitation.confirmed
     assert actor in actual_break.participants
 
 
@@ -135,5 +135,5 @@ def test_decline_break_invitation_connects_declinee_to_declinees(actor):
     actual_invitation = decline_break_invitation(actor, break_invitation)
     actual_break = actual_invitation.get_subject()
 
-    assert actor in actual_invitation.declinees
+    assert actor in actual_invitation.decliners
     assert actor not in actual_break.participants

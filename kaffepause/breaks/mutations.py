@@ -6,7 +6,7 @@ from kaffepause.breaks.models import BreakInvitation
 from kaffepause.breaks.services import (
     accept_break_invitation,
     create_break_and_invitation,
-    decline_break_invitation,
+    decline_break_invitation, ignore_break_invitation,
 )
 from kaffepause.breaks.types import BreakInvitationNode, BreakNode
 from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
@@ -56,3 +56,7 @@ class AcceptBreakInvitation(BreakInvitationAction):
 
 class DeclineBreakInvitation(BreakInvitationAction):
     _invitation_action = decline_break_invitation
+
+
+class IgnoreBreakInvitation(BreakInvitationAction):
+    _invitation_action = ignore_break_invitation
