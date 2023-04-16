@@ -28,6 +28,7 @@ class Query(NeomodelGraphQLMixin, graphene.ObjectType):
     break_invitations_presentation = graphene.Field(BreakInvitationsPresentationNode)
     next_break = graphene.Field(BreakNode)
     break_ = graphene.Field(BreakNode, uuid=graphene.UUID())
+    pending_break_invitations = relay.ConnectionField(BreakInvitationConnection)
     break_history = relay.ConnectionField(BreakConnection)
 
     @classmethod
@@ -51,6 +52,12 @@ class Query(NeomodelGraphQLMixin, graphene.ObjectType):
     def resolve_break_(cls, root, info, uuid, **kwargs):
         current_user = cls.get_current_user()
         return get_break(actor=current_user, uuid=uuid)
+
+    @classmethod
+    @login_required
+    def resolve_pending_break_invitations(cls, root, info, **kwargs):
+        current_user = cls.get_current_user()
+        return get_pending_break_invitations(actor=current_user)
 
     @classmethod
     @login_required
