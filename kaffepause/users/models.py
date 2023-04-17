@@ -68,6 +68,9 @@ class User(DjangoNode):
     current_location = RelationshipTo(
         LOCATION, LocationRelationship.CURRENT_LOCATION, cardinality=ZeroOrOne
     )
+    custom_locations = RelationshipTo(
+        LOCATION, LocationRelationship.USER_CREATED_LOCATION, cardinality=ZeroOrMore
+    )
 
     notifications = RelationshipFrom(
         NOTIFICATION, NotificationRelationship.NOTIFIES, cardinality=ZeroOrMore

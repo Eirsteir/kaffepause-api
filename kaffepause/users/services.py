@@ -4,8 +4,10 @@ from uuid import UUID
 import cloudinary
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from graphene_file_upload.scalars import Upload
 
+from kaffepause.location.models import Location
 from kaffepause.users.forms import UserUpdateForm
 from kaffepause.users.models import User
 
@@ -34,3 +36,15 @@ def change_profile_picture(*, uploaded_by: User, profile_picture: Upload):
         height=100,
         crop="pad",
     )
+
+
+def update_preferred_location(*, user: User, location_uuid: UUID) -> User:
+    location = Location.nodes.get_or_none(uuid=location_uuid)
+
+    if location:
+        user.preferred_location.replace(location)
+        return user
+
+    logger.info(f"Failed to update users preferred location. Location does not exist (uuid:{user.uuid}, location_uuid: {location_uuid})")
+    raise ValidationError(_("Dette stedet eksisterer ikke"))
+
