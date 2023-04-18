@@ -147,3 +147,28 @@ def get_invitation_context(actor: User, invitation: BreakInvitation):
         return InvitationReplyStatus.CAN_REPLY
 
     return InvitationReplyStatus.CANNOT_REPLY
+
+
+def get_invitation_addressees_annotated(invitation):
+    if invitation is None:
+        return []
+    addressees = invitation.addressees.all()
+    response_data = []
+    for addressee in addressees:
+        user_data = {
+            "user": addressee
+        }
+        if invitation.confirmed.is_connected(addressee):
+            user_data['status'] = 'ACCEPTED'
+            user_data['statusTitle'] = _("Godtatt")
+        elif invitation.decliners.is_connected(addressee):
+            user_data['status'] = 'DECLINED'
+            user_data['statusTitle'] = _("Avslått")
+        elif invitation.non_attenders.is_connected(addressee):
+            user_data['status'] = 'IGNORED'
+            user_data['statusTitle'] = _("Ikke svart")
+        else:
+            user_data['status'] = 'NOT_RESPONDED'
+            user_data['statusTitle'] = _("Ikke svart")
+        response_data.append(user_data)
+    return response_data

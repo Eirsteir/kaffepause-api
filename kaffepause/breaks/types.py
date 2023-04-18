@@ -5,12 +5,27 @@ from django.utils.translation import gettext_lazy as _
 from kaffepause.breaks.enums import InvitationReplyStatus
 from kaffepause.breaks.selectors import get_break_history, get_upcoming_breaks, \
     can_user_edit_break, get_pending_break_invitations, get_break_title, get_invitation_context, \
-    get_all_break_invitations, get_expired_break_invitations
+    get_all_break_invitations, get_expired_break_invitations, get_invitation_addressees_annotated
 from kaffepause.common.bases import SectionNode
 from kaffepause.common.types import CountableConnection
 from kaffepause.users.selectors import get_user_from_account
 from kaffepause.users.types import UserConnection, UserNode
 from kaffepause.location.types import LocationNode
+
+
+class InvitationAddresseeNode(graphene.ObjectType):
+    class Meta:
+        interfaces = (relay.Node,)
+        name = "InvitationAddressee"
+
+    user = graphene.Field(UserNode)
+    status = graphene.String()
+    statusTitle = graphene.String()
+
+
+class InvitationAddresseeConnection(CountableConnection):
+    class Meta:
+        node = InvitationAddresseeNode
 
 
 class BreakInvitationNode(graphene.ObjectType):
@@ -22,8 +37,7 @@ class BreakInvitationNode(graphene.ObjectType):
     created = graphene.DateTime()
     sender = graphene.Field(UserNode)
     addressee_count = graphene.Int()
-    addressees = relay.ConnectionField(UserConnection)
-    confirmed = relay.ConnectionField(UserConnection)
+    addressees = relay.ConnectionField(InvitationAddresseeConnection)
     subject = graphene.Field(lambda: BreakNode)
     context = graphene.Field(graphene.Enum.from_enum(InvitationReplyStatus))
 
@@ -34,10 +48,7 @@ class BreakInvitationNode(graphene.ObjectType):
         return parent.get_addressee_count()
 
     def resolve_addressees(parent, info):
-        return parent.addressees.all()
-
-    def resolve_confirmed(parent, info):
-        return parent.confirmed.all()
+        return get_invitation_addressees_annotated(parent)
 
     def resolve_subject(parent, info):
         return parent.get_subject()
