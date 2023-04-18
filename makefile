@@ -43,7 +43,7 @@ seed:
 	docker-compose -f local.yml run --rm django python manage.py seed ${args}
 
 load_locations:
-	docker-compose -f local.yml run --rm django python manage.py load_locations
+	docker-compose -f local.yml run --rm django python manage.py load_locations  ${args}
 
 test:
 	docker-compose -f local.yml run --rm django pytest kaffepause ${args}

@@ -1,0 +1,3944 @@
+{
+    "appHeaderStyle": null,
+    "apps": [
+        {
+            "title": "maps",
+            "type": "maps",
+            "url": null
+        }
+    ],
+    "campusCollectionTag": "default",
+    "campusMenu": {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 1,
+                                "itemType": "campus",
+                                "title": "NTNU - Gl\u00f8shaugen",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 18,
+                                "itemType": "campus",
+                                "title": "NTNU - Dragvoll",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 20,
+                                "itemType": "campus",
+                                "title": "NTNU - Sydomr\u00e5det",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 21,
+                                "itemType": "campus",
+                                "title": "NTNU - Kalvskinnet",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 22,
+                                "itemType": "campus",
+                                "title": "NTNU - Tyholt",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 24,
+                                "itemType": "campus",
+                                "title": "NTNU - Bratt\u00f8rkaia",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 25,
+                                "itemType": "campus",
+                                "title": "NTNU - Heggdalen",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 26,
+                                "itemType": "campus",
+                                "title": "NTNU - Ringve",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 28,
+                                "itemType": "campus",
+                                "title": "NTNU - Olavskvartalet",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 29,
+                                "itemType": "campus",
+                                "title": "NTNU - Moholt",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-h-sigh",
+                                    "iconColor": "red"
+                                },
+                                "itemId": 3,
+                                "itemType": "campus",
+                                "title": "\u00d8ya",
+                                "type": "hospital"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 597,
+                                "itemType": "campus",
+                                "title": "NTNU - \u00d8ya",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 54,
+                                "itemType": "campus",
+                                "title": "NTNU - Tunga",
+                                "type": "university"
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 294,
+                                "itemType": "campus",
+                                "title": "NTNU - Sluppen",
+                                "type": "university"
+                            }
+                        ],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": null,
+                        "itemType": "group",
+                        "title": "NTNU i Trondheim",
+                        "type": "university"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 55,
+                                "itemType": "campus",
+                                "title": "NTNU i Gj\u00f8vik",
+                                "type": "university"
+                            }
+                        ],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": null,
+                        "itemType": "group",
+                        "title": "NTNU i Gj\u00f8vik",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 91,
+                        "itemType": "campus",
+                        "title": "NTNU i \u00c5lesund",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 148,
+                        "itemType": "campus",
+                        "title": "NTNU i Levanger",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 140,
+                        "itemType": "campus",
+                        "title": "NTNU & UIB - Tokyo",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 141,
+                        "itemType": "campus",
+                        "title": "NTNU & UIB - Brussel",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 370,
+                        "itemType": "campus",
+                        "title": "NTNU i Oslo",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "NTNU",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": 3,
+                "itemType": "campus",
+                "title": "St. Olavs hospital",
+                "type": "hospital"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 16,
+                        "itemType": "campus",
+                        "title": "UiB - Nyg\u00e5rdsh\u00f8yden nord",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 34,
+                        "itemType": "campus",
+                        "title": "UiB - Nyg\u00e5rdsh\u00f8yden midt",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 340,
+                        "itemType": "campus",
+                        "title": "UiB - Nyg\u00e5rdsh\u00f8yden syd",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 35,
+                        "itemType": "campus",
+                        "title": "UiB - \u00c5rstadvollen/Haukeland",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 96,
+                        "itemType": "campus",
+                        "title": "UiB - Andre",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 141,
+                        "itemType": "campus",
+                        "title": "NTNU & UIB - Brussel",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 140,
+                        "itemType": "campus",
+                        "title": "NTNU & UIB - Tokyo",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Universitetet i Bergen",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 9,
+                        "itemType": "campus",
+                        "title": "Campus Bergen",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 534,
+                        "itemType": "campus",
+                        "title": "Campus Sogndal",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 749,
+                        "itemType": "campus",
+                        "title": "Campus Haugesund",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 752,
+                        "itemType": "campus",
+                        "title": "Campus Stord",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 818,
+                        "itemType": "campus",
+                        "title": "Campus F\u00f8rde",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "H\u00f8gskulen p\u00e5 Vestlandet",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 33,
+                        "itemType": "campus",
+                        "title": "Universitetet i Stavanger",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 45,
+                        "itemType": "campus",
+                        "title": "Arkeologisk Museum",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 90,
+                        "itemType": "campus",
+                        "title": "Bjergsted",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Universitetet i Stavanger",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 5,
+                        "itemType": "campus",
+                        "title": "Breivika",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 131,
+                        "itemType": "campus",
+                        "title": "Sentrum",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 37,
+                        "itemType": "campus",
+                        "title": "S\u00f8r-Troms\u00f8ya",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 39,
+                        "itemType": "campus",
+                        "title": "Campus Alta",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 38,
+                        "itemType": "campus",
+                        "title": "Campus Hammerfest",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 92,
+                        "itemType": "campus",
+                        "title": "Campus Narvik",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 170,
+                        "itemType": "campus",
+                        "title": "UiT - Campus Harstad",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Universitetet i Troms\u00f8",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 241,
+                        "itemType": "campus",
+                        "title": "NMBU og Veterin\u00e6rinstituttet",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "NMBU",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 225,
+                        "itemType": "campus",
+                        "title": "Campus Grimstad",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 239,
+                        "itemType": "campus",
+                        "title": "Campus Kristiansand",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Universitetet i Agder",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 194,
+                "itemType": "campus",
+                "title": "Norges Handelsh\u00f8yskole",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 49,
+                        "itemType": "campus",
+                        "title": "Uppsala universitet",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 100,
+                        "itemType": "campus",
+                        "title": "Campus Gotland",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Uppsala universitet",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-h-sigh",
+                            "iconColor": "red"
+                        },
+                        "itemId": 195,
+                        "itemType": "campus",
+                        "title": "Miami Valley Hospital South",
+                        "type": "hospital"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-h-sigh",
+                            "iconColor": "red"
+                        },
+                        "itemId": 201,
+                        "itemType": "campus",
+                        "title": "Atrium Medical Center",
+                        "type": "hospital"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-h-sigh",
+                            "iconColor": "red"
+                        },
+                        "itemId": 224,
+                        "itemType": "campus",
+                        "title": "Miami Valley Hospital",
+                        "type": "hospital"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-h-sigh",
+                            "iconColor": "red"
+                        },
+                        "itemId": 251,
+                        "itemType": "campus",
+                        "title": "Upper Valley Medical Center",
+                        "type": "hospital"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-h-sigh",
+                            "iconColor": "red"
+                        },
+                        "itemId": 259,
+                        "itemType": "campus",
+                        "title": "Miami Valley Hospital North",
+                        "type": "hospital"
+                    },
+                    {
+                        "children": [],
+                        "icon": null,
+                        "itemId": 337,
+                        "itemType": "campus",
+                        "title": "110 North Main",
+                        "type": "business"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Premier Health",
+                "type": "hospital"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 123,
+                        "itemType": "campus",
+                        "title": "Campus \u00d6rebro",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 138,
+                        "itemType": "campus",
+                        "title": "Campus Grythyttan",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 125,
+                        "itemType": "campus",
+                        "title": "Campus US\u00d6",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-h-sigh",
+                            "iconColor": "red"
+                        },
+                        "itemId": 265,
+                        "itemType": "campus",
+                        "title": "Universitetssjukhuset \u00d6rebro",
+                        "type": "hospital"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 369,
+                        "itemType": "campus",
+                        "title": "Congrego",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "\u00d6rebro universitet ",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 171,
+                "itemType": "campus",
+                "title": "University of Twente",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 247,
+                        "itemType": "campus",
+                        "title": "Griffith College-Dublin",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 274,
+                        "itemType": "campus",
+                        "title": "Griffith College-Wolf Tone Street",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 676,
+                        "itemType": "campus",
+                        "title": "Griffith College-Limerick",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 623,
+                        "itemType": "campus",
+                        "title": "Griffith College-Cork",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Griffith College",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 85,
+                "itemType": "campus",
+                "title": "Karlstads universitet",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 53,
+                        "itemType": "campus",
+                        "title": "Pilestredet",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 266,
+                        "itemType": "campus",
+                        "title": "Kjeller",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "OsloMet",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 162,
+                        "itemType": "campus",
+                        "title": "SC Johnson iMET Center",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 143,
+                        "itemType": "campus",
+                        "title": "Racine Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 155,
+                        "itemType": "campus",
+                        "title": "Kenosha Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 173,
+                        "itemType": "campus",
+                        "title": "Hero Center",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 174,
+                        "itemType": "campus",
+                        "title": "Burlington Center",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 154,
+                        "itemType": "campus",
+                        "title": "Elkhorn Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 181,
+                        "itemType": "campus",
+                        "title": "Horizon Center",
+                        "type": "university"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 143,
+                                "itemType": "campus",
+                                "title": "GTC - Racine Campus",
+                                "type": null
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 154,
+                                "itemType": "campus",
+                                "title": "GTC - Elkhorn Campus",
+                                "type": null
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 155,
+                                "itemType": "campus",
+                                "title": "GTC - Kenosha Campus",
+                                "type": null
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 162,
+                                "itemType": "campus",
+                                "title": "GTC - Racine Campus - SC Johnson iMET Center",
+                                "type": null
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 173,
+                                "itemType": "campus",
+                                "title": "GTC - HERO Center",
+                                "type": null
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 174,
+                                "itemType": "campus",
+                                "title": "GTC - Burlington Center",
+                                "type": null
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 181,
+                                "itemType": "campus",
+                                "title": "GTC - Horizon Center",
+                                "type": null
+                            }
+                        ],
+                        "icon": null,
+                        "itemId": null,
+                        "itemType": "group",
+                        "title": "Gateway Technical College",
+                        "type": null
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Gateway Technical College",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 57,
+                "itemType": "campus",
+                "title": "H\u00f8gskulen i Volda",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 117,
+                        "itemType": "campus",
+                        "title": "UON - Newcastle (Callaghan)",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 128,
+                        "itemType": "campus",
+                        "title": "UON - Newcastle City (CBD)",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 193,
+                        "itemType": "campus",
+                        "title": "UON - Central Coast (Ourimbah)",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 202,
+                        "itemType": "campus",
+                        "title": "UON - Sydney",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 203,
+                        "itemType": "campus",
+                        "title": "UON - Port Macquarie",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 204,
+                        "itemType": "campus",
+                        "title": "UON - Singapore",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 228,
+                        "itemType": "campus",
+                        "title": "UON - HMRI",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 227,
+                        "itemType": "campus",
+                        "title": "UON - John Hunter Hospital",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 927,
+                        "itemType": "campus",
+                        "title": "UON - Taree",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-h-sigh",
+                            "iconColor": "red"
+                        },
+                        "itemId": 572,
+                        "itemType": "campus",
+                        "title": "UON \u2013 Gosford Hospital - Gosford Hospital",
+                        "type": null
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "The University of Newcastle",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 10,
+                        "itemType": "campus",
+                        "title": "BI Campus Oslo",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 806,
+                        "itemType": "campus",
+                        "title": "BI Campus Trondheim",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 807,
+                        "itemType": "campus",
+                        "title": "BI Campus Stavanger",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 817,
+                        "itemType": "campus",
+                        "title": "BI Campus Bergen",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "BI Norwegian Business School",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 119,
+                "itemType": "campus",
+                "title": "Community College of Philadelphia",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 103,
+                        "itemType": "campus",
+                        "title": "AUT - City Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 113,
+                        "itemType": "campus",
+                        "title": "AUT - South Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 114,
+                        "itemType": "campus",
+                        "title": "AUT - North Campus",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Auckland University of Technology",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-plane-1",
+                    "iconColor": "purple"
+                },
+                "itemId": 161,
+                "itemType": "campus",
+                "title": "Luxembourg Airport",
+                "type": "airport"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-briefcase-cap",
+                    "iconColor": "darkblue"
+                },
+                "itemId": 11,
+                "itemType": "campus",
+                "title": "Stavanger Forum",
+                "type": "business"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 88,
+                        "itemType": "campus",
+                        "title": "Ballerup",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 89,
+                        "itemType": "campus",
+                        "title": "Lyngby",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "DTU",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": 265,
+                "itemType": "campus",
+                "title": "Universitetssjukhuset \u00d6rebro",
+                "type": "hospital"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": 50,
+                "itemType": "campus",
+                "title": "University of Virginia Health Systems",
+                "type": "hospital"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 198,
+                "itemType": "campus",
+                "title": "University of Luxembourg",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 368,
+                        "itemType": "campus",
+                        "title": "UClan Preston Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 864,
+                        "itemType": "campus",
+                        "title": "UClan Burnley Campus",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "University of Central Lancashire",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 82,
+                        "itemType": "campus",
+                        "title": "Strand campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 83,
+                        "itemType": "campus",
+                        "title": "Guy's campus",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "King's College London",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 352,
+                        "itemType": "campus",
+                        "title": "HiNN - Elverum",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 355,
+                        "itemType": "campus",
+                        "title": "HiNN - Evenstad",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 353,
+                        "itemType": "campus",
+                        "title": "HiNN - Hamar",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 359,
+                        "itemType": "campus",
+                        "title": "HiNN - Lillehammer",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 354,
+                        "itemType": "campus",
+                        "title": "HiNN - Rena",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 435,
+                        "itemType": "campus",
+                        "title": "HiNN - Oslo",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 436,
+                        "itemType": "campus",
+                        "title": "HiNN - Kongsvinger",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 437,
+                        "itemType": "campus",
+                        "title": "HiNN - Bl\u00e6stad",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "H\u00f8gskolen i Innlandet",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 446,
+                        "itemType": "campus",
+                        "title": "133 Castlereagh Street, CBD",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 450,
+                        "itemType": "campus",
+                        "title": "Broken Hill University Department of Rural Health",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 442,
+                        "itemType": "campus",
+                        "title": "Camden Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 441,
+                        "itemType": "campus",
+                        "title": "Cumberland Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 440,
+                        "itemType": "campus",
+                        "title": "Camperdown Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 394,
+                        "itemType": "campus",
+                        "title": "Darlington Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 443,
+                        "itemType": "campus",
+                        "title": "Mallett Street Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 445,
+                        "itemType": "campus",
+                        "title": "Surry Hills Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 447,
+                        "itemType": "campus",
+                        "title": "Sydney Conservatorium of Music",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 448,
+                        "itemType": "campus",
+                        "title": "Westmead Precinct",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 449,
+                        "itemType": "campus",
+                        "title": "One Tree Island Research Station",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "The University of Sydney",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 420,
+                        "itemType": "campus",
+                        "title": "Bond Institute of Health & Sport (BIHS)",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 388,
+                        "itemType": "campus",
+                        "title": "Bond University main campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 427,
+                        "itemType": "campus",
+                        "title": "Clinical Education & Research Centre (BUCERC)",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Bond University",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 159,
+                        "itemType": "campus",
+                        "title": "Clayton Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 410,
+                        "itemType": "campus",
+                        "title": "Caulfield Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 411,
+                        "itemType": "campus",
+                        "title": "Peninsula Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 412,
+                        "itemType": "campus",
+                        "title": "Parkville Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 413,
+                        "itemType": "campus",
+                        "title": "Melbourne CBD",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 414,
+                        "itemType": "campus",
+                        "title": "271 Collins Street",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 415,
+                        "itemType": "campus",
+                        "title": "Malaysia Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 416,
+                        "itemType": "campus",
+                        "title": "Suzhou Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 417,
+                        "itemType": "campus",
+                        "title": "IITB-Monash Research Academy",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 418,
+                        "itemType": "campus",
+                        "title": "Monash Prato Center",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 465,
+                        "itemType": "campus",
+                        "title": "Law Chambers",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 569,
+                        "itemType": "campus",
+                        "title": "30 Collins St",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 569,
+                        "itemType": "campus",
+                        "title": "30 Collins St",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 569,
+                        "itemType": "campus",
+                        "title": "30 Collins St",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 728,
+                        "itemType": "campus",
+                        "title": "Johor Bahru",
+                        "type": null
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Monash University",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 429,
+                "itemType": "campus",
+                "title": "RAI Amsterdam",
+                "type": "other"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 363,
+                "itemType": "campus",
+                "title": "Deichman",
+                "type": "other"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 47,
+                "itemType": "campus",
+                "title": "Adressahuset",
+                "type": "business"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": null,
+                        "itemId": 12,
+                        "itemType": "campus",
+                        "title": "Evry Stavanger",
+                        "type": "business"
+                    },
+                    {
+                        "children": [],
+                        "icon": null,
+                        "itemId": 46,
+                        "itemType": "campus",
+                        "title": "Evry Trondheim",
+                        "type": "business"
+                    }
+                ],
+                "icon": null,
+                "itemId": null,
+                "itemType": "group",
+                "title": "Evry",
+                "type": "business"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-h-sigh",
+                            "iconColor": "red"
+                        },
+                        "itemId": 79,
+                        "itemType": "campus",
+                        "title": "Red Cross Hospital",
+                        "type": "hospital"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-h-sigh",
+                            "iconColor": "red"
+                        },
+                        "itemId": 78,
+                        "itemType": "campus",
+                        "title": "Groote Schuur Hospitals",
+                        "type": "hospital"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 71,
+                        "itemType": "campus",
+                        "title": "Upper Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 72,
+                        "itemType": "campus",
+                        "title": "Middle & Lower Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 77,
+                        "itemType": "campus",
+                        "title": "Hiddingh Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 69,
+                        "itemType": "campus",
+                        "title": "Graduate School of Business",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 74,
+                        "itemType": "campus",
+                        "title": "Health Science Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 61,
+                        "itemType": "campus",
+                        "title": "Sports Science Institute of South Africa",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 65,
+                        "itemType": "campus",
+                        "title": "Dullah Omar Hall",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 62,
+                        "itemType": "campus",
+                        "title": "Ivan Toms Building",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 59,
+                        "itemType": "campus",
+                        "title": "ICTS on Main",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 60,
+                        "itemType": "campus",
+                        "title": "La Grotta & Cambria House",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 63,
+                        "itemType": "campus",
+                        "title": "Meulenhof Building",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 67,
+                        "itemType": "campus",
+                        "title": "Zeekoe Vlei Yacht Club House",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 66,
+                        "itemType": "campus",
+                        "title": "Cadbol Building",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 68,
+                        "itemType": "campus",
+                        "title": "Allan Cormack House",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 70,
+                        "itemType": "campus",
+                        "title": "Cambria House",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 84,
+                        "itemType": "campus",
+                        "title": "Standard Bank Building",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 70,
+                        "itemType": "campus",
+                        "title": "Avenue House",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 86,
+                        "itemType": "campus",
+                        "title": "Zeekoevlei Rowing & Water",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "University of Cape Town",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 95,
+                        "itemType": "campus",
+                        "title": "Sjukhusomr\u00e5det",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 94,
+                        "itemType": "campus",
+                        "title": "Universitetsholmen",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Malm\u00f6 universitet",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 107,
+                "itemType": "campus",
+                "title": "Studentersamfundet i Trondheim",
+                "type": "business"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 145,
+                "itemType": "campus",
+                "title": "Office Building",
+                "type": "business"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 147,
+                "itemType": "campus",
+                "title": "Stephen F. Austin State University",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 158,
+                "itemType": "campus",
+                "title": "Via University College",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 153,
+                "itemType": "campus",
+                "title": "Conscia Nederland BV",
+                "type": "business"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 178,
+                "itemType": "campus",
+                "title": "Cisco Live Barcelona",
+                "type": "business"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 209,
+                "itemType": "campus",
+                "title": "Roskilde University",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": null,
+                        "itemId": 150,
+                        "itemType": "campus",
+                        "title": "Gullbergsvass",
+                        "type": "business"
+                    },
+                    {
+                        "children": [],
+                        "icon": null,
+                        "itemId": 286,
+                        "itemType": "campus",
+                        "title": "Sk\u00f6vde ",
+                        "type": "business"
+                    },
+                    {
+                        "children": [],
+                        "icon": null,
+                        "itemId": 291,
+                        "itemType": "campus",
+                        "title": "M\u00f6lndal",
+                        "type": "business"
+                    },
+                    {
+                        "children": [],
+                        "icon": null,
+                        "itemId": 292,
+                        "itemType": "campus",
+                        "title": "G\u00f6teborg",
+                        "type": "business"
+                    }
+                ],
+                "icon": null,
+                "itemId": null,
+                "itemType": "group",
+                "title": "V\u00e4stra G\u00f6talandsregionen",
+                "type": "other"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 200,
+                        "itemType": "campus",
+                        "title": "Parkville",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 216,
+                        "itemType": "campus",
+                        "title": "Southbank",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 217,
+                        "itemType": "campus",
+                        "title": "Werribee",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 218,
+                        "itemType": "campus",
+                        "title": "Burnley",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 219,
+                        "itemType": "campus",
+                        "title": "Creswick",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 220,
+                        "itemType": "campus",
+                        "title": "Dookie",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 221,
+                        "itemType": "campus",
+                        "title": "Shepparton",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 243,
+                        "itemType": "campus",
+                        "title": "Hawthorn",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "University of Melbourne",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 233,
+                        "itemType": "campus",
+                        "title": "Campus Mechelen",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 232,
+                        "itemType": "campus",
+                        "title": "Campus Lier",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Thomas More University College",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-h-sigh",
+                            "iconColor": "red"
+                        },
+                        "itemId": 264,
+                        "itemType": "campus",
+                        "title": "Inselspital",
+                        "type": "hospital"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Insel Gruppe",
+                "type": "hospital"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 258,
+                        "itemType": "campus",
+                        "title": "Wollongong Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 280,
+                        "itemType": "campus",
+                        "title": "Innovation campus",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "University of Wollongong",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 255,
+                        "itemType": "campus",
+                        "title": "Nord - Bod\u00f8",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 284,
+                        "itemType": "campus",
+                        "title": "Nord - Levanger",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 290,
+                        "itemType": "campus",
+                        "title": "Nord - Mo i Rana",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 285,
+                        "itemType": "campus",
+                        "title": "Nord - Namsos",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 293,
+                        "itemType": "campus",
+                        "title": "Nord - Nesna",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 283,
+                        "itemType": "campus",
+                        "title": "Nord - Stj\u00f8rdal",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 336,
+                        "itemType": "campus",
+                        "title": "Nord - Steinkjer",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Nord universitet",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 303,
+                "itemType": "campus",
+                "title": "H\u00f8gskolen i Molde",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 296,
+                        "itemType": "campus",
+                        "title": "Perth Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 307,
+                        "itemType": "campus",
+                        "title": "Kalgoorlie Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 318,
+                        "itemType": "campus",
+                        "title": "Perth City Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 321,
+                        "itemType": "campus",
+                        "title": "Joondalup Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 317,
+                        "itemType": "campus",
+                        "title": "Challis Primary School",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 315,
+                        "itemType": "campus",
+                        "title": "Sarich Neuroscience",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 319,
+                        "itemType": "campus",
+                        "title": "Cockburn",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 320,
+                        "itemType": "campus",
+                        "title": "Cockburn GP Super Clinic",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 325,
+                        "itemType": "campus",
+                        "title": "Dubai",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 326,
+                        "itemType": "campus",
+                        "title": "Malaysia Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 327,
+                        "itemType": "campus",
+                        "title": "Mauritius Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 328,
+                        "itemType": "campus",
+                        "title": "Singapore Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 314,
+                        "itemType": "campus",
+                        "title": "Boat Shed",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 316,
+                        "itemType": "campus",
+                        "title": "Midland Campus",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Curtin University",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 309,
+                        "itemType": "campus",
+                        "title": "Crawley Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 310,
+                        "itemType": "campus",
+                        "title": "Claremont Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 311,
+                        "itemType": "campus",
+                        "title": "QEII",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 312,
+                        "itemType": "campus",
+                        "title": "Shenton-McGillivray",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "UWA",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": 333,
+                "itemType": "campus",
+                "title": "Akademiska Sjukhuset",
+                "type": "hospital"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 341,
+                        "itemType": "campus",
+                        "title": "Lancaster University campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 380,
+                        "itemType": "campus",
+                        "title": "Forest Hills",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Lancaster University",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 345,
+                "itemType": "campus",
+                "title": "Cisco Norway Lysaker",
+                "type": "business"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 361,
+                "itemType": "campus",
+                "title": "Pirsenteret",
+                "type": "business"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 372,
+                        "itemType": "campus",
+                        "title": "Telenor Smarte Bygg - Tyholt",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": null,
+                        "itemId": 287,
+                        "itemType": "campus",
+                        "title": "Telenor Smarte Bygg",
+                        "type": "business"
+                    }
+                ],
+                "icon": null,
+                "itemId": null,
+                "itemType": "group",
+                "title": "Telenor Smarte Bygg",
+                "type": "business"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": 391,
+                "itemType": "campus",
+                "title": "St. Joseph\u2019s Health Care London",
+                "type": "hospital"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 392,
+                "itemType": "campus",
+                "title": "Cisco Smart Spaces Summit & Hackathon",
+                "type": "other"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 399,
+                "itemType": "campus",
+                "title": "Victoria University",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 454,
+                "itemType": "campus",
+                "title": "Aventus",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 456,
+                "itemType": "campus",
+                "title": "KLA Laboraties (Ford)",
+                "type": "other"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 278,
+                        "itemType": "campus",
+                        "title": "H\u00f6gskolan i Halmstad",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 423,
+                        "itemType": "campus",
+                        "title": "HiH - Campus Varberg",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "H\u00f6gskolan i Halmstad",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": 463,
+                "itemType": "campus",
+                "title": "Anthem Atlanta",
+                "type": "hospital"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": null,
+                        "itemId": 424,
+                        "itemType": "campus",
+                        "title": "NTT Munich Office",
+                        "type": "business"
+                    },
+                    {
+                        "children": [],
+                        "icon": null,
+                        "itemId": 426,
+                        "itemType": "campus",
+                        "title": "NTT German HQ - Bad Homburg",
+                        "type": "business"
+                    }
+                ],
+                "icon": null,
+                "itemId": null,
+                "itemType": "group",
+                "title": "NTT DimensionData German HQ",
+                "type": "business"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 289,
+                        "itemType": "campus",
+                        "title": "Ume\u00e5 Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 452,
+                        "itemType": "campus",
+                        "title": "Konstn\u00e4rligt Campus",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Ume\u00e5 Universitet",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": 499,
+                "itemType": "campus",
+                "title": "Norrlands universitetssjukhus Nus",
+                "type": "hospital"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 501,
+                "itemType": "campus",
+                "title": "VIPsenteret",
+                "type": "business"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": 503,
+                "itemType": "campus",
+                "title": "The Queen's Medical Center",
+                "type": "hospital"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 518,
+                "itemType": "campus",
+                "title": "The Grove Resort and Water Park Orlando",
+                "type": "other"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 523,
+                "itemType": "campus",
+                "title": "144 Gheringhap St",
+                "type": "other"
+            },
+            {
+                "children": [],
+                "icon": null,
+                "itemId": 528,
+                "itemType": "campus",
+                "title": "L&T Technology Services",
+                "type": "business"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 190,
+                        "itemType": "campus",
+                        "title": "QUT - Gardens Point Campus",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 531,
+                        "itemType": "campus",
+                        "title": "QUT - Kevin Grove Campus",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "QUT - Queensland University of Technology",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 530,
+                        "itemType": "campus",
+                        "title": "Campus Oslo",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 704,
+                        "itemType": "campus",
+                        "title": "Campus Bergen",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 779,
+                        "itemType": "campus",
+                        "title": "Campus Stavanger",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "VID Vitenskapelige H\u00f8gskole",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 406,
+                        "itemType": "campus",
+                        "title": "St. Lucia",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 467,
+                        "itemType": "campus",
+                        "title": "Gatton Campus (Coming Soon)",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 468,
+                        "itemType": "campus",
+                        "title": "Herston Campus (Coming Soon)",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 544,
+                        "itemType": "campus",
+                        "title": "Toowong Office",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 562,
+                        "itemType": "campus",
+                        "title": "Long Pocket Campus",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 563,
+                        "itemType": "campus",
+                        "title": "PACE Campus",
+                        "type": null
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "University of Queensland",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-briefcase",
+                    "iconColor": "darkblue"
+                },
+                "itemId": 6,
+                "itemType": "campus",
+                "title": "Cisco San Jose",
+                "type": null
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 593,
+                        "itemType": "campus",
+                        "title": "Rozelle",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 589,
+                        "itemType": "campus",
+                        "title": "Mount Pleasant",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 580,
+                        "itemType": "campus",
+                        "title": "Sandy Bay",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 586,
+                        "itemType": "campus",
+                        "title": "Newnham",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 584,
+                        "itemType": "campus",
+                        "title": "Cradle Coast - Moorville Rd",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 583,
+                        "itemType": "campus",
+                        "title": "Hobart City",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 581,
+                        "itemType": "campus",
+                        "title": "IMAS \u2013 Taroona",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 592,
+                        "itemType": "campus",
+                        "title": "Cradle Coast - West Park",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 587,
+                        "itemType": "campus",
+                        "title": "Beauty Point",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 585,
+                        "itemType": "campus",
+                        "title": "Inveresk",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 642,
+                        "itemType": "campus",
+                        "title": "Bisdee Tier",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 643,
+                        "itemType": "campus",
+                        "title": "North West Region Hospital",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 644,
+                        "itemType": "campus",
+                        "title": "Burnie",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 646,
+                        "itemType": "campus",
+                        "title": "King Island Rural Health Accommodation ",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 647,
+                        "itemType": "campus",
+                        "title": "Mersey",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 648,
+                        "itemType": "campus",
+                        "title": "AMC - Sydney",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 649,
+                        "itemType": "campus",
+                        "title": "University Farm",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 588,
+                        "itemType": "campus",
+                        "title": "Bell Bay",
+                        "type": null
+                    }
+                ],
+                "icon": null,
+                "itemId": null,
+                "itemType": "group",
+                "title": "University of Tasmania",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 662,
+                        "itemType": "campus",
+                        "title": "IE University - IE Tower",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 659,
+                        "itemType": "campus",
+                        "title": "IE University - Madrid Maria de Molina",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 660,
+                        "itemType": "campus",
+                        "title": "IE University - Segovia",
+                        "type": null
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "IE University",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 745,
+                        "itemType": "campus",
+                        "title": "NTU - Clifton Campus",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 640,
+                        "itemType": "campus",
+                        "title": "NTU - City Campus",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 761,
+                        "itemType": "campus",
+                        "title": "NTU - Brackenhurst",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 786,
+                        "itemType": "campus",
+                        "title": "NTU - Creative Quarter Campus",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 786,
+                        "itemType": "campus",
+                        "title": "NTU - Creative Quarter Campus",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 787,
+                        "itemType": "campus",
+                        "title": "NTU - Mansfield Campus",
+                        "type": null
+                    }
+                ],
+                "icon": null,
+                "itemId": null,
+                "itemType": "group",
+                "title": "Nottingham Trent University",
+                "type": null
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": 710,
+                "itemType": "campus",
+                "title": "Universit\u00e4t St.Gallen",
+                "type": null
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-briefcase-cap",
+                    "iconColor": "darkblue"
+                },
+                "itemId": 654,
+                "itemType": "campus",
+                "title": "Vlaanderen (Government of Flanders)",
+                "type": "business"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 750,
+                        "itemType": "campus",
+                        "title": "Campus Oslo",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 751,
+                        "itemType": "campus",
+                        "title": "Campus Bergen",
+                        "type": "university"
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "H\u00f8yskolen Kristiania",
+                "type": "university"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-briefcase",
+                            "iconColor": "darkblue"
+                        },
+                        "itemId": 813,
+                        "itemType": "campus",
+                        "title": "N\u00e6ringsg\u00e5rden",
+                        "type": null
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-briefcase",
+                            "iconColor": "darkblue"
+                        },
+                        "itemId": 857,
+                        "itemType": "campus",
+                        "title": "Rotvoll Park",
+                        "type": null
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-briefcase",
+                    "iconColor": "darkblue"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "AHA Eiendom",
+                "type": "business"
+            },
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 797,
+                                "itemType": "campus",
+                                "title": "Blindern",
+                                "type": null
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 799,
+                                "itemType": "campus",
+                                "title": "Gaustad",
+                                "type": null
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 800,
+                                "itemType": "campus",
+                                "title": "Geitmyra",
+                                "type": null
+                            }
+                        ],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": null,
+                        "itemType": "group",
+                        "title": "Campus Blindern",
+                        "type": "university"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 801,
+                                "itemType": "campus",
+                                "title": "Sentrum",
+                                "type": null
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 891,
+                                "itemType": "campus",
+                                "title": "Sentrum - Observatoriet",
+                                "type": null
+                            }
+                        ],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": null,
+                        "itemType": "group",
+                        "title": "Campus Sentrum",
+                        "type": null
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 814,
+                                "itemType": "campus",
+                                "title": "Silurveien",
+                                "type": null
+                            },
+                            {
+                                "children": [],
+                                "icon": {
+                                    "iconClass": "dj-mm-university-cap",
+                                    "iconColor": "green"
+                                },
+                                "itemId": 815,
+                                "itemType": "campus",
+                                "title": "Sandakerveien 130",
+                                "type": null
+                            }
+                        ],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": null,
+                        "itemType": "group",
+                        "title": "Andre Oslo",
+                        "type": "university"
+                    },
+                    {
+                        "children": [],
+                        "icon": {
+                            "iconClass": "dj-mm-university-cap",
+                            "iconColor": "green"
+                        },
+                        "itemId": 870,
+                        "itemType": "campus",
+                        "title": "Utland - Roma",
+                        "type": null
+                    }
+                ],
+                "icon": {
+                    "iconClass": "dj-mm-university-cap",
+                    "iconColor": "green"
+                },
+                "itemId": null,
+                "itemType": "group",
+                "title": "Universitetet i Oslo",
+                "type": "university"
+            },
+            {
+                "children": [],
+                "icon": {
+                    "iconClass": "dj-h-sigh",
+                    "iconColor": "red"
+                },
+                "itemId": 582,
+                "itemType": "campus",
+                "title": "Sunnaas Sykehus",
+                "type": "hospital"
+            }
+        ],
+        "icon": null,
+        "itemId": null,
+        "itemType": "group",
+        "title": null,
+        "type": null
+    },
+    "customAppDomainUrl": null,
+    "description": null,
+    "draft": false,
+    "floorSelectorType": null,
+    "iconId": 2230,
+    "isAppProfile": true,
+    "mapStyle": "mazemap://v2022",
+    "mapView": null,
+    "maps3dSupported": false,
+    "requiresViewAccessToken": false,
+    "ssoLoginSupported": false,
+    "tag": "default",
+    "theme": {
+        "primaryColor": "#283150"
+    },
+    "title": "MazeMap",
+    "useProxyApis": false
+}
