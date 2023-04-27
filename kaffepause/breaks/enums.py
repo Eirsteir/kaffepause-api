@@ -27,3 +27,4 @@ class BreakRelationship(NeomodelRelationshipEnum):
     CHANGE_REQUESTED_FOR = _("Change request for")
     ACCEPTED_CHANGE = _("Accepted change")
     DENIED_CHANGE = _("Denied change")
+    REQUESTED_LOCATION = _("Requested location")

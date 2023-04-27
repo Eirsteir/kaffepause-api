@@ -7,6 +7,7 @@ from django.utils import timezone
 from neomodel import db
 
 from kaffepause.breaks.enums import BreakRelationship, InvitationReplyStatus
+from kaffepause.breaks.exceptions import BreakNotFound
 from kaffepause.breaks.models import Break, BreakInvitation
 from kaffepause.users.models import User
 
@@ -57,11 +58,12 @@ def get_next_break(actor: User) -> Break:
 
 
 def get_break(actor: User, uuid: UUID) -> Break:
+    """Return the break if actor has participated or has been invited or initiated to the requested break."""
     query = f"""
     MATCH
         (b:Break {{uuid: $break_uuid}}),
         (u:User {{uuid: $user_uuid}})
-    WHERE (u)-[:{BreakRelationship.PARTICIPATED_IN}]->(b)
+    WHERE (u)-[:{BreakRelationship.PARTICIPATED_IN} | :{BreakRelationship.INITIATED}]->(b)
         OR (u)-[:{BreakRelationship.SENT} | :{BreakRelationship.TO}]-(:BreakInvitation)-[:{BreakRelationship.REGARDING}]->(b)
     RETURN b
     """
@@ -69,7 +71,7 @@ def get_break(actor: User, uuid: UUID) -> Break:
     results, meta = db.cypher_query(query, params, resolve_objects=True)
 
     if not results:
-        raise PermissionDenied
+        raise BreakNotFound
 
     return results[0][0]
 

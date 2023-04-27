@@ -3,6 +3,10 @@ from django.utils.translation import gettext_lazy as _
 from kaffepause.common.exceptions import DefaultError
 
 
+class BreakNotFound(DefaultError):
+    default_message = _("Denne pausen eksisterer ikke")
+
+
 class InvitationExpired(DefaultError):
     default_message = _("Invitasjonen er utgått.")
 
@@ -31,3 +35,11 @@ class InvalidBreakStartTime(DefaultError):
 
 class InvitationNotAddressedAtUser(DefaultError):
     default_message = _("Denne invitasjonen er ikke rettet mot denne brukeren.")
+
+
+class MissingTimeOrLocationInChangeRequestException(DefaultError):
+    default_message = _("Du må inkludere forslag til enten ny tid eller sted.")
+
+
+class InvalidChangeRequestForExpiredBreak(DefaultError):
+    default_message = _("Du kan ikke komme med endringsforslag til denne pausen lengre.")

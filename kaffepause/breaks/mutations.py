@@ -1,12 +1,10 @@
-from uuid import UUID
-
 import graphene
 
 from kaffepause.breaks.models import BreakInvitation
 from kaffepause.breaks.services import (
     accept_break_invitation,
     create_break_and_invitation,
-    decline_break_invitation, ignore_break_invitation,
+    decline_break_invitation, ignore_break_invitation, request_change,
 )
 from kaffepause.breaks.types import BreakInvitationNode, BreakNode
 from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
@@ -60,3 +58,23 @@ class DeclineBreakInvitation(BreakInvitationAction):
 
 class IgnoreBreakInvitation(BreakInvitationAction):
     _invitation_action = ignore_break_invitation
+
+
+class RequestChange(
+    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+):
+    class Arguments:
+        break_uuid = graphene.UUID(required=True)
+        requested_time = graphene.DateTime(required=False)
+        requested_location_uuid = graphene.UUID(required=False)
+
+    break_ = graphene.Field(BreakNode)
+
+    @classmethod
+    def resolve_mutation(cls, root, info, break_uuid, requested_time=None, requested_location_uuid=None):
+        current_user = cls.get_current_user()
+
+        break_ = request_change(
+            actor=current_user, break_uuid=break_uuid, requested_time=requested_time, requested_location_uuid=requested_location_uuid
+        )
+        return cls(break_=break_, success=True)

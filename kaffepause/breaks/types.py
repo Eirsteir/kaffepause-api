@@ -75,6 +75,7 @@ class BreakNode(graphene.ObjectType):
     kicker = graphene.String()
     is_viewer_initiator = graphene.Boolean()
     can_viewer_edit_break = graphene.Boolean()
+    change_requests = graphene.List(lambda: ChangeRequestNode)
 
     def resolve_title(parent, info):
         current_user_account = info.context.user
@@ -184,5 +185,37 @@ class BreakInvitationsPresentationNode(graphene.ObjectType):
         )
 
         return [pending, expired, all]
+
+
+class ChangeRequestNode(graphene.ObjectType):
+    class Meta:
+        interfaces = (relay.Node,)
+        name = "ChangeRequest"
+
+    uuid = graphene.UUID()
+    created = graphene.DateTime()
+    requested_time = graphene.DateTime()
+    requested_location = graphene.Field(LocationNode)
+    requested_by = graphene.Field(UserNode)
+    requested_for = graphene.Field(BreakNode)
+    accepted = graphene.Field(BreakNode)
+    denied = graphene.Field(BreakNode)
+
+    def resolve_requested_location(parent, info):
+        return parent.requested_location.single()
+
+    def resolve_requested_by(parent, info):
+        return parent.requested_by.single()
+
+    def resolve_requested_for(parent, info):
+        return parent.requested_for.single()
+
+    def resolve_accepted(parent, info):
+        return parent.accepted.single()
+
+    def resolve_denied(parent, info):
+        return parent.denied.single()
+
+
 
 

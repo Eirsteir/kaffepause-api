@@ -4,7 +4,7 @@ from graphene import relay
 from kaffepause.breaks.mutations import (
     AcceptBreakInvitation,
     DeclineBreakInvitation,
-    InitiateBreak, IgnoreBreakInvitation,
+    InitiateBreak, IgnoreBreakInvitation, RequestChange,
 )
 from kaffepause.breaks.selectors import (
     get_all_break_invitations,
@@ -72,3 +72,4 @@ class Mutation(graphene.ObjectType):
     accept_break_invitation = AcceptBreakInvitation.Field()
     decline_break_invitation = DeclineBreakInvitation.Field()
     ignore_break_invitation = IgnoreBreakInvitation.Field()
+    request_change = RequestChange.Field()

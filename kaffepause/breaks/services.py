@@ -1,8 +1,14 @@
 from datetime import datetime
 from typing import Callable, List
+from uuid import UUID
+
 from django.utils import timezone
 
-from kaffepause.breaks.models import Break, BreakInvitation
+from kaffepause.breaks.exceptions import MissingTimeOrLocationInChangeRequestException, \
+    InvalidChangeRequestForExpiredBreak
+from kaffepause.breaks.models import Break, BreakInvitation, ChangeRequest
+from kaffepause.breaks.selectors import get_break
+from kaffepause.common.utils import time_from_now
 from kaffepause.notifications.enums import NotificationEntityType
 from kaffepause.notifications.services import bulk_notify, notify
 from kaffepause.users.models import User
@@ -113,3 +119,24 @@ def __notify_invitation_reply(invitation: BreakInvitation, actor: User, entity_t
         entity_id=invitation.get_subject().uuid,
         actor=actor
     )
+
+
+def request_change(
+    *, actor: User, break_uuid: UUID, requested_time: datetime, requested_location_uuid: UUID
+) -> ChangeRequest:
+    break_ = get_break(actor=actor, uuid=break_uuid)
+
+    if break_.is_expired:
+        raise InvalidChangeRequestForExpiredBreak
+
+    if not (requested_time and requested_location_uuid):
+        raise MissingTimeOrLocationInChangeRequestException
+
+    requested_location = get_location_or_none(location_uuid=requested_location_uuid)
+
+    change_request = ChangeRequest(requested_time=requested_time).save()
+    change_request.requested_location.connect(requested_location)
+    change_request.requested_by.connect(actor)
+    change_request.requested_for.connect(break_)
+
+    return break_

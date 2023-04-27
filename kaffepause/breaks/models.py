@@ -38,7 +38,7 @@ class Break(StructuredNode):
 
     def clean(self, *props, **kwargs):
         start_time = self.get("starting_at")
-        if timezone.now() >= start_time:
+        if timezone.now() >= start_time or not start_time:
             raise InvalidBreakStartTime
         elif time_from_now(minutes=5) >= start_time:
             raise InvalidBreakStartTime(_("Pausen må begynne om minimum 5 minutter."))
@@ -135,7 +135,7 @@ class BreakInvitation(StructuredNode):
 class ChangeRequest(TimeStampedNode):
     uuid = UUIDProperty()
     requested_time = DateTimeProperty()
-    requested_location = StringProperty()
+    requested_location = RelationshipTo(LOCATION, BreakRelationship.REQUESTED_LOCATION, cardinality=ZeroOrOne)
 
     requested_by = RelationshipFrom(USER, BreakRelationship.REQUESTED_CHANGE, cardinality=One)
     requested_for = RelationshipTo(BREAK, BreakRelationship.CHANGE_REQUESTED_FOR, cardinality=One)

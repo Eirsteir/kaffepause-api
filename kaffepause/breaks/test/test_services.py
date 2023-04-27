@@ -1,5 +1,6 @@
 import pytest
 
+from kaffepause.breaks.exceptions import InvalidBreakStartTime
 from kaffepause.breaks.services import (
     accept_break_invitation,
     create_break_and_invitation,
@@ -30,87 +31,71 @@ def non_following_user():
     return UserFactory()
 
 
-@pytest.fixture
-def actor_with_single_follower():
-    return UserFactory()
-
-
-@pytest.fixture
-def follower(actor_with_single_follower):
-    follower = UserFactory()
-    actor_with_single_follower.add_friend(follower)
-    return follower
-
-
-def test_create_break_and_invitations_creates_break_and_invites_addressees_which_are_following_the_actor(
-    actor, actor_friends, non_following_user
-):
-    """When a break is created, only the friends of the actor should be invited."""
-    addressee_ids = list(map(lambda user: user.uuid, actor_friends))
-    addressee_ids.append(non_following_user.uuid)
-
-    break_ = create_break_and_invitation(actor, starting_at=time_from_now(hours=1), addressees=addressee_ids)
-    break_invitation = break_.invitation.single()
-
-    actual_addressees = break_invitation.addressees.all()
-    expected_addressees = actor.friends.all()
-
-    assert len(actual_addressees) == len(expected_addressees)
-    assert all(a in actual_addressees for a in expected_addressees)
-    assert non_following_user not in actual_addressees
-
-
-def test_create_and_invite_followers_to_a_break_creates_break_and_invites_all_the_actors_followers(
-    actor, actor_friends, non_following_user
-):
-    """When a break is created without specifying addressees, all of the actors followers should be invited."""
-    break_ = create_break_and_invitation(actor, starting_at=time_from_now(hours=1))
-    break_invitation = break_.invitation.single()
-
-    actual_addressees = break_invitation.addressees.all()
-    expected_addressees = actor.followed_by.all()
-
-    assert len(actual_addressees) == len(expected_addressees)
-    assert all(a in actual_addressees for a in expected_addressees)
-    assert non_following_user not in actual_addressees
-
-
 def test_create_break_and_invitation_creates_break_and_invitation(
-    actor_with_single_follower, follower
+    actor
 ):
     """Should create a break and corresponding invitation."""
     break_ = create_break_and_invitation(
-        actor_with_single_follower, starting_at=time_from_now(hours=1), addressees=[follower.uuid]
+        actor, starting_at=time_from_now(hours=1)
     )
 
     assert break_
     assert break_.invitation.single()
 
 
-def test_create_break_creates_break_with_correct_connections(
-    actor_with_single_follower, follower
-):
-    """Creating a break should connect the actor to its participants."""
+def test_create_break_without_location_creates_break(actor):
+    """Should create a break without a location"""
     break_ = create_break_and_invitation(
-        actor_with_single_follower, starting_at=time_from_now(hours=1), addressees=[follower.uuid]
+        actor, starting_at=time_from_now(hours=1)
     )
 
     assert break_
-    assert actor_with_single_follower, follower in break_.participants
+    assert not break_.location.single()
 
 
-def test_create_invitation_creates_invitation_with_correct_connections(
-    actor_with_single_follower, follower
-):
-    """Creating an invitation should connect the actor as sender, the break as subject and addressees as such."""
+def test_create_break_without_start_time_fails(actor):
+    """Should fail to create a break without a start time"""
+    with pytest.raises(InvalidBreakStartTime):
+        create_break_and_invitation(
+            actor, starting_at=None
+        )
+
+
+def test_create_break_without_addressees_does_not_invite_anybody(actor):
+    """Should create a break and invitation without any addressees."""
     break_ = create_break_and_invitation(
-        actor_with_single_follower, starting_at=time_from_now(hours=1), addressees=[follower.uuid]
+        actor, starting_at=time_from_now(hours=1)
     )
-    break_invitation = break_.invitation.single()
+    invitation = break_.invitation.single()
+    actual_addressees = invitation.addressees.all()
 
-    assert actor_with_single_follower, follower in break_invitation.sender
-    assert follower in break_invitation.addressees
-    assert break_ in break_invitation.subject
+    assert len(actual_addressees) == 0
+
+
+def test_create_break_with_addressees_sends_invitation_to_all_addressees(actor, actor_friends):
+    """All addressees should be sent an invitation to the break."""
+    expected_addressees = list(map(lambda friend: friend.id, actor_friends))
+    break_ = create_break_and_invitation(
+        actor, starting_at=time_from_now(hours=1), addressees=expected_addressees
+    )
+    invitation = break_.invitation.single()
+    actual_addressees = invitation.addressees.all()
+
+    assert all(a in expected_addressees for a in actual_addressees)
+
+
+def test_create_break_with_addressees_only_sends_invitation_to_actors_friends(actor, actor_friends):
+    """Only friends of the actor should be invited to the break."""
+    non_friend = UserFactory()
+    addressees = list(map(lambda friend: friend.id, actor_friends)) + [non_friend]
+
+    break_ = create_break_and_invitation(
+        actor, starting_at=time_from_now(hours=1), addressees=addressees
+    )
+    invitation = break_.invitation.single()
+    actual_addressees = invitation.addressees.all()
+
+    assert non_friend not in actual_addressees
 
 
 def test_accept_break_invitation_connects_acceptee_to_acceptees(actor):
@@ -137,3 +122,4 @@ def test_decline_break_invitation_connects_declinee_to_declinees(actor):
 
     assert actor in actual_invitation.decliners
     assert actor not in actual_break.participants
+
