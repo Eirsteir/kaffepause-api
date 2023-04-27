@@ -27,10 +27,10 @@ class BaseStatusEnum(Enum):
 USER = "kaffepause.users.models.User"
 BREAK = "kaffepause.breaks.models.Break"
 BREAK_INVITATION = "kaffepause.breaks.models.BreakInvitation"
+CHANGE_REQUEST = "kaffepause.breaks.models.ChangeRequest"
 STATUS_UPDATE = "kaffepause.statusupdates.models.StatusUpdate"
 LOCATION = "kaffepause.location.models.Location"
 NOTIFICATION = "kaffepause.notifications.models.Notification"
-
 
 class Endpoints(Enum):
     USERS = f"{settings.WEBSITE_URL}/users/"

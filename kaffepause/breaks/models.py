@@ -6,7 +6,7 @@ from neomodel import (
     ZeroOrOne,
     RelationshipFrom,
     RelationshipTo,
-    StructuredNode, ZeroOrMore,
+    StructuredNode, ZeroOrMore, StringProperty,
 )
 
 from kaffepause.breaks.enums import BreakRelationship
@@ -16,8 +16,8 @@ from kaffepause.breaks.exceptions import (
     InvitationExpired,
     InvitationNotAddressedAtUser,
 )
-from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER, LOCATION
-from kaffepause.common.models import TimeStampedRel
+from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER, LOCATION, CHANGE_REQUEST
+from kaffepause.common.models import TimeStampedRel, TimeStampedNode
 from kaffepause.common.properties import UUIDProperty
 from kaffepause.common.utils import fifteen_minutes_from_now, time_from_now, format_kicker_message
 
@@ -29,6 +29,7 @@ class Break(StructuredNode):
     initiator = RelationshipFrom(USER, BreakRelationship.INITIATED)
     invitation = RelationshipFrom(BREAK_INVITATION, BreakRelationship.REGARDING)
     location = RelationshipTo(LOCATION, BreakRelationship.LOCATED_AT, cardinality=ZeroOrOne)
+    change_requests = RelationshipFrom(CHANGE_REQUEST, BreakRelationship.CHANGE_REQUESTED_FOR, cardinality=ZeroOrMore)
 
     @classmethod
     def create(cls, *props, **kwargs):
@@ -129,3 +130,15 @@ class BreakInvitation(StructuredNode):
 
         if has_replied:
             raise AlreadyReplied
+
+
+class ChangeRequest(TimeStampedNode):
+    uuid = UUIDProperty()
+    requested_time = DateTimeProperty()
+    requested_location = StringProperty()
+
+    requested_by = RelationshipFrom(USER, BreakRelationship.REQUESTED_CHANGE, cardinality=One)
+    requested_for = RelationshipTo(BREAK, BreakRelationship.CHANGE_REQUESTED_FOR, cardinality=One)
+    accepted = RelationshipTo(BREAK, BreakRelationship.ACCEPTED_CHANGE, cardinality=ZeroOrOne)
+    denied = RelationshipTo(BREAK, BreakRelationship.DENIED_CHANGE, cardinality=ZeroOrOne)
+
