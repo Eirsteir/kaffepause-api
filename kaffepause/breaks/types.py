@@ -19,8 +19,8 @@ class InvitationAddresseeNode(graphene.ObjectType):
         name = "InvitationAddressee"
 
     user = graphene.Field(UserNode)
-    status = graphene.String()
-    statusTitle = graphene.String()
+    rsvp = graphene.String()
+    rsvpTitle = graphene.String()
 
 
 class InvitationAddresseeConnection(CountableConnection):

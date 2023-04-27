@@ -149,6 +149,7 @@ def get_invitation_context(actor: User, invitation: BreakInvitation):
     return InvitationReplyStatus.CANNOT_REPLY
 
 
+# TODO: reuse enums
 def get_invitation_addressees_annotated(invitation):
     if invitation is None:
         return []
@@ -159,16 +160,16 @@ def get_invitation_addressees_annotated(invitation):
             "user": addressee
         }
         if invitation.confirmed.is_connected(addressee):
-            user_data['status'] = 'ACCEPTED'
-            user_data['statusTitle'] = _("Godtatt")
+            user_data['rsvp'] = 'ACCEPTED'
+            user_data['rsvpTitle'] = _("Godtatt")
         elif invitation.decliners.is_connected(addressee):
-            user_data['status'] = 'DECLINED'
-            user_data['statusTitle'] = _("Avslått")
+            user_data['rsvp'] = 'DECLINED'
+            user_data['rsvpTitle'] = _("Avslått")
         elif invitation.non_attenders.is_connected(addressee):
-            user_data['status'] = 'IGNORED'
-            user_data['statusTitle'] = _("Ikke svart")
+            user_data['rsvp'] = 'IGNORED'
+            user_data['rsvpTitle'] = _("Ikke svart")
         else:
-            user_data['status'] = 'NOT_RESPONDED'
-            user_data['statusTitle'] = _("Ikke svart")
+            user_data['rsvp'] = 'NOT_RESPONDED'
+            user_data['rsvpTitle'] = _("Ikke svart")
         response_data.append(user_data)
     return response_data
