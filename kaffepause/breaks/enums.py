@@ -8,9 +8,9 @@ from kaffepause.common.bases import NeomodelRelationshipEnum
 class InvitationReplyStatus(Enum):
     CAN_REPLY = "can reply"
     CANNOT_REPLY = "cannot reply"
-    HAS_ACCEPTED = "has accepted"
-    HAS_DECLINED = "has declined"
-    HAS_IGNORED = "has ignored"
+    ACCEPTED = "accepted"
+    DECLINED = "has declined"
+    IGNORED = "has ignored"
 
 
 class BreakRelationship(NeomodelRelationshipEnum):

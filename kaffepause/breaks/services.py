@@ -4,7 +4,7 @@ from uuid import UUID
 
 from django.utils import timezone
 
-from kaffepause.breaks.exceptions import MissingTimeOrLocationInChangeRequestException, \
+from kaffepause.breaks.exceptions import MissingTimeAndLocationInChangeRequestException, \
     InvalidChangeRequestForExpiredBreak, InvalidChangeRequestRequestedTime
 from kaffepause.breaks.models import Break, BreakInvitation, ChangeRequest
 from kaffepause.breaks.selectors import get_break
@@ -122,24 +122,27 @@ def __notify_invitation_reply(invitation: BreakInvitation, actor: User, entity_t
 
 
 def request_change(
-    *, actor: User, break_uuid: UUID, requested_time: datetime, requested_location_uuid: UUID
+    *, actor: User, break_uuid: UUID, requested_time: datetime = None, requested_location_uuid: UUID = None
 ) -> ChangeRequest:
     break_ = get_break(actor=actor, uuid=break_uuid)
 
     if break_.is_expired:
         raise InvalidChangeRequestForExpiredBreak
 
-    if not (requested_time and requested_location_uuid):
-        raise MissingTimeOrLocationInChangeRequestException
+    if not requested_time and not requested_location_uuid:
+        raise MissingTimeAndLocationInChangeRequestException
 
-    if requested_time >= time_from_now(minutes=5):  # TODO: setting
+    if requested_time and requested_time <= time_from_now(minutes=5):  # TODO: setting
         raise InvalidChangeRequestRequestedTime
 
-    requested_location = get_location_or_none(location_uuid=requested_location_uuid)
+    # TODO: same location or time - what about same location different time?
 
     change_request = ChangeRequest(requested_time=requested_time).save()
-    change_request.requested_location.connect(requested_location)
     change_request.requested_by.connect(actor)
     change_request.requested_for.connect(break_)
+
+    if requested_location_uuid:
+        requested_location = get_location_or_none(location_uuid=requested_location_uuid)
+        change_request.requested_location.connect(requested_location)
 
     return break_

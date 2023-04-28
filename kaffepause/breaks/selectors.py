@@ -137,13 +137,13 @@ def get_invitation_context(actor: User, invitation: BreakInvitation):
         return None
 
     if actor.accepted_break_invitations.is_connected(invitation):
-        return InvitationReplyStatus.HAS_ACCEPTED
+        return InvitationReplyStatus.ACCEPTED
 
     if actor.ignored_break_invitations.is_connected(invitation):
-        return InvitationReplyStatus.HAS_IGNORED
+        return InvitationReplyStatus.IGNORED
 
     if actor.declined_break_invitations.is_connected(invitation):
-        return InvitationReplyStatus.HAS_DECLINED
+        return InvitationReplyStatus.DECLINED
 
     if not invitation.is_expired:
         return InvitationReplyStatus.CAN_REPLY

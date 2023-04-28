@@ -68,6 +68,7 @@ class BreakNode(graphene.ObjectType):
     title = graphene.String()
     starting_at = graphene.DateTime()
     has_passed = graphene.Boolean()
+    is_expired = graphene.Boolean()
     participants = relay.ConnectionField(UserConnection)
     initiator = graphene.Field(UserNode)
     invitation = graphene.Field(BreakInvitationNode)
@@ -100,6 +101,9 @@ class BreakNode(graphene.ObjectType):
         current_user_account = info.context.user
         current_user = get_user_from_account(account=current_user_account)
         return can_user_edit_break(user=current_user, break_=parent)
+
+    def resolve_initiator(parent, info):
+        return parent.initiator.single()
 
 
 class BreakConnection(CountableConnection):

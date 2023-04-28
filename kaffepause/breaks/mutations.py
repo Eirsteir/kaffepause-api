@@ -75,6 +75,7 @@ class RequestChange(
         current_user = cls.get_current_user()
 
         break_ = request_change(
-            actor=current_user, break_uuid=break_uuid, requested_time=requested_time, requested_location_uuid=requested_location_uuid
+            actor=current_user, break_uuid=break_uuid,
+            requested_time=requested_time, requested_location_uuid=requested_location_uuid
         )
         return cls(break_=break_, success=True)
