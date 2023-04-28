@@ -5,7 +5,7 @@ from uuid import UUID
 from django.utils import timezone
 
 from kaffepause.breaks.exceptions import MissingTimeOrLocationInChangeRequestException, \
-    InvalidChangeRequestForExpiredBreak
+    InvalidChangeRequestForExpiredBreak, InvalidChangeRequestRequestedTime
 from kaffepause.breaks.models import Break, BreakInvitation, ChangeRequest
 from kaffepause.breaks.selectors import get_break
 from kaffepause.common.utils import time_from_now
@@ -131,6 +131,9 @@ def request_change(
 
     if not (requested_time and requested_location_uuid):
         raise MissingTimeOrLocationInChangeRequestException
+
+    if requested_time >= time_from_now(minutes=5):  # TODO: setting
+        raise InvalidChangeRequestRequestedTime
 
     requested_location = get_location_or_none(location_uuid=requested_location_uuid)
 

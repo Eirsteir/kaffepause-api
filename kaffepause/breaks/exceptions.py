@@ -43,3 +43,7 @@ class MissingTimeOrLocationInChangeRequestException(DefaultError):
 
 class InvalidChangeRequestForExpiredBreak(DefaultError):
     default_message = _("Du kan ikke komme med endringsforslag til denne pausen lengre.")
+
+
+class InvalidChangeRequestRequestedTime(DefaultError):
+    default_message = _("Forslag til ny til må være minst 5 minutter frem i tid.")

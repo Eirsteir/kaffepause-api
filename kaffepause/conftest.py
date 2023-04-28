@@ -16,7 +16,7 @@ from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.users.models import User
 from kaffepause.users.test.factories import UserFactory
 
-
+#
 @pytest.fixture(autouse=True)
 def setup_and_teardown():
     """Fixture to clear database in between each test function."""
@@ -40,6 +40,7 @@ def pytest_addoption(parser):
     )
 
 
+
 def pytest_sessionstart(session):
     """
     Provides initial connection to the database and sets up the rest of the test suite
@@ -59,6 +60,7 @@ def pytest_sessionstart(session):
         database_is_populated, _ = db.cypher_query(
             "MATCH (a) return count(a)>0 as database_is_populated"
         )
+
         if database_is_populated[0][0] and not session.config.getoption("resetdb"):
             raise SystemError(
                 "Please note: The database seems to be populated.\n\tEither delete all nodes and edges manually, "
