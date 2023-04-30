@@ -2,7 +2,7 @@ import uuid
 
 import pytest
 
-from kaffepause.breaks.exceptions import InvalidBreakStartTime, MissingTimeAndLocationInChangeRequestException, \
+from kaffepause.breaks.exceptions import InvalidBreakStartTime, MissingOrIdenticalTimeAndLocationInChangeRequestException, \
     InvalidChangeRequestRequestedTime, InvalidChangeRequestForExpiredBreak, BreakNotFound
 from kaffepause.breaks.services import (
     accept_break_invitation,
@@ -145,7 +145,7 @@ def test_decline_break_invitation_connects_declinee_to_declinees(actor):
 
 def test_request_change_without_time_and_location_fails(actor, break_):
     """Should not be able to request a change without new time or location."""
-    with pytest.raises(MissingTimeAndLocationInChangeRequestException):
+    with pytest.raises(MissingOrIdenticalTimeAndLocationInChangeRequestException):
         request_change(actor=actor, break_uuid=break_.uuid, requested_time=None, requested_location_uuid=None)
 
 

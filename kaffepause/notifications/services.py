@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import List
 from uuid import UUID
 
-from kaffepause.notifications.enums import NotificationEntityType
+from kaffepause.notifications.enums import NotificationEntityType, SeenState
 from kaffepause.notifications.messages import Messages
 from kaffepause.notifications.models import Notification
 from kaffepause.users.models import User
@@ -25,3 +25,11 @@ def notify(*, user: User, entity_type: NotificationEntityType, entity_id: UUID, 
     notification.actor.connect(actor)
 
     logger.debug(f"Notification created (notifier id: {user.uuid}): {notification}")
+
+
+def mark_all_as_seen(*, user: User):
+    # TODO: bulk_update?
+    notifications_to_mark = user.notifications.filter(seen_state=SeenState.UNSEEN.name)
+    for notification in notifications_to_mark:
+        notification.seen_state = SeenState.SEEN.name
+        notification.save()

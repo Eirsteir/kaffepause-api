@@ -28,6 +28,7 @@ class Mutation(
     kaffepause.relationships.schema.Mutation,
     kaffepause.breaks.schema.Mutation,
     kaffepause.location.schema.Mutation,
+    kaffepause.notifications.schema.Mutation,
     kaffepause.statusupdates.schema.Mutation,
     graphene.ObjectType,
 ):

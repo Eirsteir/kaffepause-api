@@ -3,6 +3,7 @@ from graphene import relay
 
 from kaffepause.common.bases import NeomodelGraphQLMixin
 from kaffepause.common.decorators import login_required
+from kaffepause.notifications.mutations import MarkAllAsSeen
 from kaffepause.notifications.selectors import get_notifications_for, get_notification_badge_count
 from kaffepause.notifications.types import NotificationConnection, NotificationBadgeCount
 
@@ -26,3 +27,7 @@ class NotificationQuery(NeomodelGraphQLMixin, graphene.ObjectType):
 
 class Query(NotificationQuery, graphene.ObjectType):
     pass
+
+
+class Mutation(graphene.ObjectType):
+    mark_all_as_seen = MarkAllAsSeen.Field()

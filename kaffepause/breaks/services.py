@@ -4,7 +4,7 @@ from uuid import UUID
 
 from django.utils import timezone
 
-from kaffepause.breaks.exceptions import MissingTimeAndLocationInChangeRequestException, \
+from kaffepause.breaks.exceptions import MissingOrIdenticalTimeAndLocationInChangeRequestException, \
     InvalidChangeRequestForExpiredBreak, InvalidChangeRequestRequestedTime
 from kaffepause.breaks.models import Break, BreakInvitation, ChangeRequest
 from kaffepause.breaks.selectors import get_break
@@ -129,13 +129,17 @@ def request_change(
     if break_.is_expired:
         raise InvalidChangeRequestForExpiredBreak
 
+    if requested_location_uuid and requested_location_uuid == break_.location.single().uuid:
+        requested_location_uuid = None
+
+    if requested_time == break_.starting_at:
+        requested_time = None
+
     if not requested_time and not requested_location_uuid:
-        raise MissingTimeAndLocationInChangeRequestException
+        raise MissingOrIdenticalTimeAndLocationInChangeRequestException
 
     if requested_time and requested_time <= time_from_now(minutes=5):  # TODO: setting
         raise InvalidChangeRequestRequestedTime
-
-    # TODO: same location or time - what about same location different time?
 
     change_request = ChangeRequest(requested_time=requested_time).save()
     change_request.requested_by.connect(actor)

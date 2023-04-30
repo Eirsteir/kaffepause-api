@@ -40,4 +40,6 @@ entityTypeToEndpointMapping = {
     NotificationEntityType.USER_FRIEND_ADD: Endpoints.USERS,
     NotificationEntityType.USER_FRIEND_ACCEPT: Endpoints.USERS,
     NotificationEntityType.BREAK_INVITATION_SENT: Endpoints.BREAKS,
+    NotificationEntityType.BREAK_INVITATION_DECLINED: Endpoints.BREAKS,
+    NotificationEntityType.BREAK_INVITATION_ACCEPTED: Endpoints.BREAKS,
 }

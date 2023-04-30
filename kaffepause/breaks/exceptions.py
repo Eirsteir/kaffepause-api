@@ -37,8 +37,8 @@ class InvitationNotAddressedAtUser(DefaultError):
     default_message = _("Denne invitasjonen er ikke rettet mot denne brukeren.")
 
 
-class MissingTimeAndLocationInChangeRequestException(DefaultError):
-    default_message = _("Du må inkludere forslag til enten ny tid eller sted.")
+class MissingOrIdenticalTimeAndLocationInChangeRequestException(DefaultError):
+    default_message = _("Forslaget må inkludere enten en ny tid eller nytt sted.")
 
 
 class InvalidChangeRequestForExpiredBreak(DefaultError):
