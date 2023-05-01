@@ -89,6 +89,8 @@ LOCAL_APPS = [
     "kaffepause.breaks",
     "kaffepause.statusupdates",
     "kaffepause.location",
+    "kaffepause.notifications",
+    "kaffepause.groups",
     "kaffepause.api",
     "kaffepause.common",
     "kaffepause.utils",

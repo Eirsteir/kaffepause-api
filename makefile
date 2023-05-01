@@ -53,5 +53,5 @@ coverage:
 	docker-compose -f local.yml run --rm django coverage report
 
 startapp:
-	mkdir ./kaffepause/${appname}
+# 	mkdir ./kaffepause/${appname}
 	docker-compose -f local.yml run --rm django django-admin.py startapp ${appname} ./kaffepause/${appname}
