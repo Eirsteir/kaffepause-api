@@ -31,6 +31,8 @@ CHANGE_REQUEST = "kaffepause.breaks.models.ChangeRequest"
 STATUS_UPDATE = "kaffepause.statusupdates.models.StatusUpdate"
 LOCATION = "kaffepause.location.models.Location"
 NOTIFICATION = "kaffepause.notifications.models.Notification"
+GROUP = "kaffepause.groups.models.Group"
+
 
 class Endpoints(Enum):
     USERS = f"{settings.WEBSITE_URL}/users/"

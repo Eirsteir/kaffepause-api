@@ -14,9 +14,10 @@ from kaffepause.common.enums import (
     BREAK_INVITATION,
     LOCATION,
     STATUS_UPDATE,
-    USER, NOTIFICATION,
+    USER, NOTIFICATION, GROUP,
 )
 from kaffepause.common.properties import UUIDProperty
+from kaffepause.groups.enums import GroupRelationship
 from kaffepause.location.enums import LocationRelationship
 from kaffepause.notifications.enums import NotificationRelationship
 from kaffepause.relationships.enums import UserRelationship
@@ -75,6 +76,8 @@ class User(DjangoNode):
     notifications = RelationshipFrom(
         NOTIFICATION, NotificationRelationship.NOTIFIES, cardinality=ZeroOrMore
     )
+
+    groups = RelationshipFrom(GROUP, GroupRelationship.HAS_MEMBER, cardinality=ZeroOrMore)
 
     class Meta:
         app_label = "users"
