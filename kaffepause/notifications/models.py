@@ -2,8 +2,7 @@ from neomodel import RelationshipTo, StringProperty, DateTimeProperty
 
 from kaffepause.common.models import TimeStampedNode
 from kaffepause.common.properties import UUIDProperty
-from kaffepause.notifications.enums import SeenState, NotificationRelationship, NotificationEntityType, \
-    entityTypeToEndpointMapping
+from kaffepause.notifications.enums import SeenState, NotificationRelationship, NotificationEntityType
 from kaffepause.common.enums import (
     USER,
 )
@@ -16,7 +15,7 @@ from neomodel import (
 
 
 #  https://docs.djangoproject.com/en/4.0/topics/i18n/translation/#:~:text=The%20strings%20you
-from kaffepause.notifications.messages import KickerMessages
+from kaffepause.notifications.messages import KickerMessages, entityTypeToEndpointMapping
 
 
 class Notification(TimeStampedNode):

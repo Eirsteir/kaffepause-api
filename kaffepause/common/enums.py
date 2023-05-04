@@ -35,6 +35,7 @@ GROUP = "kaffepause.groups.models.Group"
 
 
 class Endpoints(Enum):
+    GROUPS = f"{settings.WEBSITE_URL}/groups/"
     USERS = f"{settings.WEBSITE_URL}/users/"
     BREAKS = f"{settings.WEBSITE_URL}/breaks/"
 

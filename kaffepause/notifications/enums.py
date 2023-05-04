@@ -1,10 +1,8 @@
 from enum import Enum
 
-from django.db import models
 from django.utils.translation import gettext as _
 
 from kaffepause.common.bases import NeomodelRelationshipEnum
-from kaffepause.common.enums import Endpoints
 
 
 class SeenState(Enum):
@@ -24,6 +22,7 @@ class NotificationEntityType(Enum):
     BREAK_INVITATION_SENT = _("Break invitation is sent")
     BREAK_INVITATION_ACCEPTED = _("Break invitation is accepted")
     BREAK_INVITATION_DECLINED = _("Break invitation is declined")
+    GROUP_MEMBER_ADDED = _("User is added to group")
 
     @classmethod
     def choices(cls):
@@ -36,10 +35,3 @@ class NotificationRelationship(NeomodelRelationshipEnum):
     SUBJECT = _("Is about")
 
 
-entityTypeToEndpointMapping = {
-    NotificationEntityType.USER_FRIEND_ADD: Endpoints.USERS,
-    NotificationEntityType.USER_FRIEND_ACCEPT: Endpoints.USERS,
-    NotificationEntityType.BREAK_INVITATION_SENT: Endpoints.BREAKS,
-    NotificationEntityType.BREAK_INVITATION_DECLINED: Endpoints.BREAKS,
-    NotificationEntityType.BREAK_INVITATION_ACCEPTED: Endpoints.BREAKS,
-}
