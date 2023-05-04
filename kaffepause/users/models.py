@@ -147,6 +147,9 @@ class User(DjangoNode):
             return self.break_invitations.is_connected(break_.get_invitation())
         return False
 
+    def is_member_of(self, group):
+        return self.groups.is_connected(group)
+
     @property
     def short_name(self):
         return self.name.split()[0]
