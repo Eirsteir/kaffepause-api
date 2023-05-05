@@ -16,7 +16,7 @@ from kaffepause.breaks.exceptions import (
     InvitationExpired,
     InvitationNotAddressedAtUser,
 )
-from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER, LOCATION, CHANGE_REQUEST
+from kaffepause.common.enums import BREAK, BREAK_INVITATION, USER, LOCATION, CHANGE_REQUEST, GROUP
 from kaffepause.common.models import TimeStampedRel, TimeStampedNode
 from kaffepause.common.properties import UUIDProperty
 from kaffepause.common.utils import fifteen_minutes_from_now, time_from_now, format_kicker_message
@@ -79,7 +79,8 @@ class BreakInvitation(StructuredNode):
     uuid = UUIDProperty()
     created = DateTimeProperty(default=lambda: timezone.now())
     sender = RelationshipFrom(USER, BreakRelationship.SENT, cardinality=One)
-    addressees = RelationshipTo(USER, BreakRelationship.TO, cardinality=ZeroOrMore)
+    addressees = RelationshipTo(USER, BreakRelationship.TO_USER, cardinality=ZeroOrMore)
+    recipient_group = RelationshipTo(GROUP, BreakRelationship.TO_GROUP, cardinality=ZeroOrOne)
     subject = RelationshipTo(BREAK, BreakRelationship.REGARDING, cardinality=One)
 
     confirmed = RelationshipFrom(USER, BreakRelationship.ACCEPTED, model=TimeStampedRel)

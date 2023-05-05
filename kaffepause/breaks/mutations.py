@@ -15,16 +15,17 @@ class InitiateBreak(
 ):
     class Arguments:
         addressees = graphene.List(graphene.UUID, required=False)
-        start_time = graphene.DateTime(required=False)
+        recipient_group_id = graphene.UUID(required=False)
+        start_time = graphene.DateTime(required=True)
         location = graphene.UUID(required=False)
 
     break_ = graphene.Field(BreakNode)
 
     @classmethod
-    def resolve_mutation(cls, root, info, addressees=None, start_time=None, location=None):
+    def resolve_mutation(cls, root, info, addressees=None, recipient_group_id=None, start_time=None, location=None):
         current_user = cls.get_current_user()
         break_ = create_break_and_invitation(
-            actor=current_user, addressees=addressees, starting_at=start_time, location=location
+            actor=current_user, recipient_user_ids=addressees, recipient_group_id=recipient_group_id, starting_at=start_time, location=location
         )
         return cls(break_=break_, success=True)
 
@@ -37,7 +38,6 @@ class BreakInvitationAction(
 
     _invitation_action = None
 
-    # TODO: Return invitation or break?
     invitation = graphene.Field(BreakInvitationNode)
 
     @classmethod

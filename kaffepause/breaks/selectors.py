@@ -64,7 +64,7 @@ def get_break(actor: User, uuid: UUID) -> Break:
         (b:Break {{uuid: $break_uuid}}),
         (u:User {{uuid: $user_uuid}})
     WHERE (u)-[:{BreakRelationship.PARTICIPATED_IN} | :{BreakRelationship.INITIATED}]->(b)
-        OR (u)-[:{BreakRelationship.SENT} | :{BreakRelationship.TO}]-(:BreakInvitation)-[:{BreakRelationship.REGARDING}]->(b)
+        OR (u)-[:{BreakRelationship.SENT} | :{BreakRelationship.TO_USER}]-(:BreakInvitation)-[:{BreakRelationship.REGARDING}]->(b)
     RETURN b
     """
     params = dict(break_uuid=str(uuid), user_uuid=str(actor.uuid))
@@ -105,7 +105,7 @@ def get_expired_break_invitations(actor: User) -> List[BreakInvitation]:
 
 def _get_unanswered_invitations_query() -> str:
     query = f"""
-    MATCH (invitation:BreakInvitation)-[:{BreakRelationship.TO}]->(user:User {{uuid: $user_uuid}})
+    MATCH (invitation:BreakInvitation)-[:{BreakRelationship.TO_USER}]->(user:User {{uuid: $user_uuid}})
     MATCH (invitation)-[:{BreakRelationship.REGARDING}]->(break_:Break)
     WHERE NOT (user)-[:{BreakRelationship.ACCEPTED} | {BreakRelationship.DECLINED}]->(invitation)
     """

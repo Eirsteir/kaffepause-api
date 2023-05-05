@@ -85,3 +85,39 @@ def get_mutual_friends_count(actor: User, user: User) -> int:
     mutual_friends_count = results[0][0]
 
     return mutual_friends_count
+
+
+def get_friend_recommendations(user, limit=10):
+    """
+    Recommends friends for a given user based on the number of mutual friends and shared campus and groups.
+
+    Args:
+        current_user_uuid (str): The UUID of the current user.
+
+    Returns:
+        list of tuples: A list of recommended user UUIDs along with their campus and group membership status.
+
+    Raises:
+        Neo4jError: If there was an error executing the query.
+    """
+    query = """
+        MATCH (u:User {uuid: $user_uuid})-[:ARE_FRIENDS]-(f:User)-[:ARE_FRIENDS]-(recommended_user:User)
+        WHERE NOT (u)-[:ARE_FRIENDS]-(recommended_user) AND NOT recommended_user.uuid = $user_uuid
+        WITH recommended_user, u, COUNT(f) AS mutual_friends
+        OPTIONAL MATCH (u)-[:PREFERRED_LOCATION]->(u_loc:Location)<-[:PREFERRED_LOCATION]-(recommended_user)
+        WITH recommended_user, u, mutual_friends, u_loc,
+             [(recommended_user)-[:ARE_FRIENDS]-(f:User) | f.uuid] AS friends_uuids,
+             [(recommended_user)-[:HAS_MEMBER]-(g:Group) | g.uuid] AS group_uuids
+        ORDER BY mutual_friends DESC
+        WITH recommended_user, u, mutual_friends, u_loc, friends_uuids, group_uuids,
+             [loc IN [(recommended_user)-[:PREFERRED_LOCATION]->(loc:Location) | loc] WHERE loc = u_loc | loc] AS same_campus,
+             [(recommended_user)-[:HAS_MEMBER]-(g:Group) WHERE NOT (u)-[:HAS_MEMBER]-(g) | g] AS same_group
+        RETURN recommended_user
+        //, same_campus, same_group, mutual_friends
+        LIMIT $limit
+    """
+    params = dict(user_uuid=user.uuid, limit=limit)
+    results, meta = db.cypher_query(query, params)
+    recommendations = [User.inflate(row[0]) for row in results]
+
+    return recommendations

@@ -2,6 +2,7 @@ import graphene
 from graphene import relay
 
 from kaffepause.common.types import CountableConnection
+import kaffepause.groups.types
 from kaffepause.location.types import LocationNode
 from kaffepause.relationships.selectors import (
     get_friends,
@@ -32,6 +33,7 @@ class UserNode(graphene.ObjectType):
     friendship_status = graphene.String()
     preferred_location = graphene.Field(LocationNode)
     current_location = graphene.Field(LocationNode)
+    groups = graphene.List(lambda: kaffepause.groups.types.GroupNode)
 
     def resolve_short_name(parent, info):
         return parent.short_name
@@ -72,6 +74,9 @@ class UserNode(graphene.ObjectType):
 
     def resolve_current_location(parent, info):
         return parent.get_current_location()
+
+    def resolve_groups(parent, info):
+        return parent.groups.all()
 
 
 class UserConnection(CountableConnection):

@@ -8,6 +8,7 @@ from kaffepause.breaks.selectors import get_break_history, get_upcoming_breaks, 
     get_all_break_invitations, get_expired_break_invitations, get_invitation_addressees_annotated
 from kaffepause.common.bases import SectionNode
 from kaffepause.common.types import CountableConnection
+import kaffepause.groups.types
 from kaffepause.users.selectors import get_user_from_account
 from kaffepause.users.types import UserConnection, UserNode
 from kaffepause.location.types import LocationNode
@@ -38,6 +39,7 @@ class BreakInvitationNode(graphene.ObjectType):
     sender = graphene.Field(UserNode)
     addressee_count = graphene.Int()
     addressees = relay.ConnectionField(InvitationAddresseeConnection)
+    recipient_group = graphene.Field(lambda: kaffepause.groups.types.GroupNode)
     subject = graphene.Field(lambda: BreakNode)
     context = graphene.Field(graphene.Enum.from_enum(InvitationReplyStatus))
 
@@ -49,6 +51,9 @@ class BreakInvitationNode(graphene.ObjectType):
 
     def resolve_addressees(parent, info):
         return get_invitation_addressees_annotated(parent)
+
+    def resolve_recipient_group(parent, info):
+        return parent.recipient_group.single()
 
     def resolve_subject(parent, info):
         return parent.get_subject()

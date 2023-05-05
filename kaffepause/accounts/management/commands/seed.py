@@ -115,7 +115,7 @@ class Command(BaseCommand):
         AND (u)-[:{UserRelationship.ARE_FRIENDS}]-(s)
         AND NOT ()-[:{BreakRelationship.SENT}]->(i)
         MERGE (u)-[:{BreakRelationship.SENT}]->(i)
-        MERGE (i)-[:{BreakRelationship.TO}]->(s)
+        MERGE (i)-[:{BreakRelationship.TO_USER}]->(s)
         MERGE (u)-[:{BreakRelationship.PARTICIPATED_IN}]->(b)
         """
 

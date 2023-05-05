@@ -1,6 +1,5 @@
 import graphene
 from graphene import relay
-
 from kaffepause.users.types import UserNode
 
 

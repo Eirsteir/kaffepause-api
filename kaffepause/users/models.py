@@ -47,7 +47,7 @@ class User(DjangoNode):
 
     breaks = RelationshipTo(BREAK, BreakRelationship.PARTICIPATED_IN)
     initiated_breaks = RelationshipTo(BREAK, BreakRelationship.INITIATED)
-    break_invitations = RelationshipFrom(BREAK_INVITATION, BreakRelationship.TO)
+    break_invitations = RelationshipFrom(BREAK_INVITATION, BreakRelationship.TO_USER)
     sent_break_invitations = RelationshipTo(BREAK_INVITATION, BreakRelationship.SENT)
     accepted_break_invitations = RelationshipTo(
         BREAK_INVITATION, BreakRelationship.ACCEPTED

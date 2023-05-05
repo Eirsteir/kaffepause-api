@@ -5,10 +5,11 @@ from uuid import UUID
 from django.utils import timezone
 
 from kaffepause.breaks.exceptions import MissingOrIdenticalTimeAndLocationInChangeRequestException, \
-    InvalidChangeRequestForExpiredBreak, InvalidChangeRequestRequestedTime
+    InvalidChangeRequestForExpiredBreak, InvalidChangeRequestRequestedTime, InvalidInvitationRecipients
 from kaffepause.breaks.models import Break, BreakInvitation, ChangeRequest
 from kaffepause.breaks.selectors import get_break
 from kaffepause.common.utils import time_from_now
+from kaffepause.groups.models import Group
 from kaffepause.notifications.enums import NotificationEntityType
 from kaffepause.notifications.services import bulk_notify, notify
 from kaffepause.users.models import User
@@ -17,39 +18,36 @@ from kaffepause.location.selectors import get_location_or_none
 
 
 def create_break_and_invitation(
-    actor: User, starting_at: datetime, addressees: List = None, location: str = None
+    actor: User, starting_at: datetime, recipient_user_ids: List[UUID] = None, recipient_group_id: UUID = None, location: UUID = None
 ) -> Break:
     """
-    Create a break and an invitation to given addressees, optionally at the given location.
+    Create a break and an invitation to given addressees or group, optionally at the given location.
     Only invite the actors actual friends.
     """
-    if addressees:
-        addressees = actor.friends.filter(uuid__in=addressees)
+    if recipient_user_ids and recipient_group_id:
+        raise InvalidInvitationRecipients
+
+    if recipient_user_ids:
+        addressees = actor.friends.filter(uuid__in=recipient_user_ids)
     else:
         addressees = []
 
+    recipient_group = Group.nodes.get_or_none(uuid=recipient_group_id)
     location = get_location_or_none(location_uuid=location)
-
-    break_ = _create_break_and_invitation(actor, addressees, starting_at, location)
-
-    bulk_notify(
-        notifiers=addressees,
-        entity_type=NotificationEntityType.BREAK_INVITATION_SENT,
-        entity_id=break_.uuid,
-        actor=actor,
-        entity_potential_start_time=starting_at,
-        location_name=location.title if location else None,
-        starting_at=timezone.localtime(starting_at).strftime("%H:%M"))
-
+    break_ = _create_break_and_invitation(actor, starting_at, addressees, recipient_group, location)
     return break_
 
 
+
+
 def _create_break_and_invitation(
-    actor: User, followers: List[User], starting_at: datetime = None, location: Location = None
+    actor: User,  starting_at: datetime, addressees: List[User] = None,  recipient_group: Group = None, location: Location = None
 ) -> Break:
     break_ = _create_break(actor, starting_at, location)
-    if followers:
-        _create_invitation(actor, break_, followers)
+    if addressees:
+        _create_individual_invitation(actor, break_, addressees)
+    elif recipient_group:
+        _create_group_invitation(actor, break_, recipient_group)
     return break_
 
 
@@ -63,16 +61,46 @@ def _create_break(actor: User, starting_at: datetime, location: Location) -> Bre
     return break_
 
 
-def _create_invitation(actor: User, break_: Break, addressees: List[User]) -> None:
+def _create_individual_invitation(actor: User, break_: Break, addressees: List[User]) -> None:
     """
     Create an invitation for given break and connect the actor as its sender and the break as its subject.
     Will be addressed to all given addressees.
     """
-    break_invitation = BreakInvitation().save()
-    break_invitation.sender.connect(actor)
-    break_invitation.subject.connect(break_)
+    invitation = create_invitation(actor, break_)
     for addressee in addressees:
-        break_invitation.addressees.connect(addressee)
+        invitation.addressees.connect(addressee)
+
+    bulk_notify(
+        notifiers=addressees,
+        entity_type=NotificationEntityType.BREAK_INVITATION_SENT_INDIVIDUALLY,
+        entity_id=break_.uuid,
+        actor=actor,
+        entity_potential_start_time=break_.locationstarting_at,
+        location_name=break_.location.title if break_.location else None,
+        starting_at=timezone.localtime(break_.starting_at).strftime("%H:%M"),
+    )
+
+
+def _create_group_invitation(actor: User, break_: Break, recipient_group: Group):
+    invitation = create_invitation(actor, break_)
+    invitation.recipient_group.connect(recipient_group)
+
+    bulk_notify(
+        notifiers=recipient_group.members.exclude(uuid=actor.uuid),
+        entity_type=NotificationEntityType.BREAK_INVITATION_SENT_TO_GROUP,
+        entity_id=break_.uuid,
+        actor=actor,
+        entity_potential_start_time=break_.starting_at,
+        location_name=break_.location.title if break_.location else None,
+        starting_at=timezone.localtime(break_.starting_at).strftime("%H:%M"),
+        group_name=recipient_group.name
+    )
+
+def create_invitation(actor, break_):
+    invitation = BreakInvitation().save()
+    invitation.sender.connect(actor)
+    invitation.subject.connect(break_)
+    return invitation
 
 
 def accept_break_invitation(

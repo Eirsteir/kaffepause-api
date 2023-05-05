@@ -25,6 +25,10 @@ class InvalidInvitationExpiration(DefaultError):
     default_message = _("The invitation expiration is invalid")
 
 
+class InvalidInvitationRecipients(DefaultError):
+    default_message = _("Invitasjonen kan ikke ha både individuelle brukere og en gruppe som mottaker.")
+
+
 class InvalidInvitationUpdate(DefaultError):
     default_message = _("Kunne ikke oppdatere invitasjonen")
 

@@ -19,7 +19,8 @@ class SeenState(Enum):
 class NotificationEntityType(Enum):
     USER_FRIEND_ADD = _("User sends a friend request")
     USER_FRIEND_ACCEPT = _("User accepts a friend request")
-    BREAK_INVITATION_SENT = _("Break invitation is sent")
+    BREAK_INVITATION_SENT_INDIVIDUALLY = _("Individual break invitation is sent")
+    BREAK_INVITATION_SENT_TO_GROUP = _("Group break invitation is sent")
     BREAK_INVITATION_ACCEPTED = _("Break invitation is accepted")
     BREAK_INVITATION_DECLINED = _("Break invitation is declined")
     GROUP_MEMBER_ADDED = _("User is added to group")
