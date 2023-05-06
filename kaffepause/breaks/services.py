@@ -75,8 +75,8 @@ def _create_individual_invitation(actor: User, break_: Break, addressees: List[U
         entity_type=NotificationEntityType.BREAK_INVITATION_SENT_INDIVIDUALLY,
         entity_id=break_.uuid,
         actor=actor,
-        entity_potential_start_time=break_.locationstarting_at,
-        location_name=break_.location.title if break_.location else None,
+        entity_potential_start_time=break_.starting_at,
+        location_name=break_.location.single().title if break_.location else None,
         starting_at=timezone.localtime(break_.starting_at).strftime("%H:%M"),
     )
 
@@ -91,7 +91,7 @@ def _create_group_invitation(actor: User, break_: Break, recipient_group: Group)
         entity_id=break_.uuid,
         actor=actor,
         entity_potential_start_time=break_.starting_at,
-        location_name=break_.location.title if break_.location else None,
+        location_name=break_.location.single().title if break_.location else None,
         starting_at=timezone.localtime(break_.starting_at).strftime("%H:%M"),
         group_name=recipient_group.name
     )

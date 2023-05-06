@@ -9,6 +9,7 @@ from neomodel import db
 from kaffepause.breaks.enums import BreakRelationship, InvitationReplyStatus
 from kaffepause.breaks.exceptions import BreakNotFound
 from kaffepause.breaks.models import Break, BreakInvitation
+from kaffepause.groups.enums import GroupRelationship
 from kaffepause.users.models import User
 
 
@@ -58,13 +59,15 @@ def get_next_break(actor: User) -> Break:
 
 
 def get_break(actor: User, uuid: UUID) -> Break:
-    """Return the break if actor has participated or has been invited or initiated to the requested break."""
+    """Return the break if actor has participated or has been invited (either individually or through group) or
+    initiated to the requested break. """
     query = f"""
     MATCH
         (b:Break {{uuid: $break_uuid}}),
         (u:User {{uuid: $user_uuid}})
     WHERE (u)-[:{BreakRelationship.PARTICIPATED_IN} | :{BreakRelationship.INITIATED}]->(b)
         OR (u)-[:{BreakRelationship.SENT} | :{BreakRelationship.TO_USER}]-(:BreakInvitation)-[:{BreakRelationship.REGARDING}]->(b)
+        OR (u)<-[:{GroupRelationship.HAS_MEMBER}]-(:Group)-[:{BreakRelationship.TO_GROUP}]-(:BreakInvitation)-[:{BreakRelationship.REGARDING}]->(b)
     RETURN b
     """
     params = dict(break_uuid=str(uuid), user_uuid=str(actor.uuid))
@@ -77,7 +80,25 @@ def get_break(actor: User, uuid: UUID) -> Break:
 
 
 def get_all_break_invitations(actor: User) -> List[BreakInvitation]:
-    return actor.break_invitations.all()
+    query = f"""
+        MATCH (user:User {{uuid: $user_uuid}})
+        MATCH (user)<-[:{GroupRelationship.HAS_MEMBER}]-(group:Group)<-[:{BreakRelationship.TO_GROUP}]-(invitation:BreakInvitation)
+        WITH invitation
+        MATCH (invitation)-[:{BreakRelationship.REGARDING}]->(break:Break)
+        RETURN invitation, break.starting_at
+        ORDER BY break.starting_at DESC
+        UNION
+        MATCH (user:User {{uuid: $user_uuid}})
+        MATCH (user)<-[:{BreakRelationship.TO_USER}]-(invitation:BreakInvitation)
+        WITH invitation
+        MATCH (invitation)-[:{BreakRelationship.REGARDING}]->(break:Break)
+        RETURN invitation, break.starting_at
+        ORDER BY break.starting_at DESC
+    """
+    params = dict(user_uuid=str(actor.uuid))
+    results, meta = db.cypher_query(query, params=params)
+    invitations = [BreakInvitation.inflate(row[0]) for row in results]
+    return invitations
 
 
 def get_pending_break_invitations(actor: User) -> List[BreakInvitation]:
@@ -105,9 +126,13 @@ def get_expired_break_invitations(actor: User) -> List[BreakInvitation]:
 
 def _get_unanswered_invitations_query() -> str:
     query = f"""
-    MATCH (invitation:BreakInvitation)-[:{BreakRelationship.TO_USER}]->(user:User {{uuid: $user_uuid}})
-    MATCH (invitation)-[:{BreakRelationship.REGARDING}]->(break_:Break)
-    WHERE NOT (user)-[:{BreakRelationship.ACCEPTED} | {BreakRelationship.DECLINED}]->(invitation)
+    MATCH (invitation:BreakInvitation)-[:{BreakRelationship.REGARDING}]->(break_:Break),
+        (user:User {{uuid: $user_uuid}})
+    WHERE NOT (user)-[:{BreakRelationship.ACCEPTED} | {BreakRelationship.DECLINED} | {BreakRelationship.IGNORED}]->(invitation)
+        AND (
+            (invitation)-[:{BreakRelationship.TO_USER}]->(user)
+            OR (invitation)-[:{BreakRelationship.TO_GROUP}]->(:Group)-[:{GroupRelationship.HAS_MEMBER}]->(user)
+        )
     """
     return query
 
@@ -117,7 +142,7 @@ def _get_cypher_minutes_ago(minutes) -> str:
 
 
 def _run_break_invitation_query(query: str, actor: User) -> List[BreakInvitation]:
-    query += "RETURN invitation"
+    query += "RETURN DISTINCT invitation"
     params = dict(user_uuid=str(actor.uuid))
     results, meta = db.cypher_query(query, params=params)
     breaks = [BreakInvitation.inflate(row[0]) for row in results]

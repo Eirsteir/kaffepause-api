@@ -55,7 +55,7 @@ class Break(StructuredNode):
     def kicker(self):
         if self.starting_at > timezone.now():
             return format_kicker_message(self.starting_at)
-        return None
+        return _("Utgått")
 
     @property
     def has_invitation(self):
