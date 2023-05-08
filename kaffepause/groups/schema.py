@@ -2,7 +2,7 @@ import graphene
 
 from kaffepause.common.bases import NeomodelGraphQLMixin
 from kaffepause.common.decorators import login_required
-from kaffepause.groups.mutations import CreateGroup
+from kaffepause.groups.mutations import CreateGroup, RemoveGroupMember
 from kaffepause.groups.selectors import get_groups_for, get_group
 from kaffepause.groups.types import GroupNode
 
@@ -27,3 +27,4 @@ class Query(NeomodelGraphQLMixin, graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     create_group = CreateGroup.Field()
+    remove_group_member = RemoveGroupMember.Field()

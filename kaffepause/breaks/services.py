@@ -96,6 +96,7 @@ def _create_group_invitation(actor: User, break_: Break, recipient_group: Group)
         group_name=recipient_group.name
     )
 
+
 def create_invitation(actor, break_):
     invitation = BreakInvitation().save()
     invitation.sender.connect(actor)

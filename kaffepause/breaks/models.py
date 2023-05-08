@@ -123,7 +123,7 @@ class BreakInvitation(StructuredNode):
             raise InvitationExpired
 
     def _assert_is_addressed_at_user(self, user):
-        if user not in self.addressees:
+        if not self.addressees.is_connected(user) and not user.is_member_of(self.recipient_group.single()):
             raise InvitationNotAddressedAtUser
 
     def _assert_user_have_not_replied(self, user):
