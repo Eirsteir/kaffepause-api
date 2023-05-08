@@ -47,7 +47,7 @@ def remove_group_member(*, actor: User, group_uuid: UUID, member_uuid: UUID) -> 
     if not actor.is_member_of(group):
         raise PermissionDenied
 
-    actor_leaves_as_last_member = len(group.members.all()) == 1 and member_uuid == actor.uuid
+    actor_leaves_as_last_member = len(group.members.all()) == 1 and str(member_uuid) == actor.uuid
     if actor_leaves_as_last_member:
         raise CannotLeaveGroupWhenSingleMember
 
@@ -55,3 +55,14 @@ def remove_group_member(*, actor: User, group_uuid: UUID, member_uuid: UUID) -> 
 
     return group
 
+
+def add_group_members(*, actor: User, group_uuid: UUID, user_uuids: List[UUID]) -> Group:
+    group = get_group(actor=actor, uuid=group_uuid)
+
+    if not actor.is_member_of(group):
+        raise PermissionDenied
+
+    users = User.nodes.filter(uuid__in=user_uuids)
+    add_members_to_group(actor=actor, group=group, members=users)
+
+    return group
