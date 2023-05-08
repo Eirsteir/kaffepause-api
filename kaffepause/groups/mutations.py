@@ -1,7 +1,7 @@
 import graphene
 
 from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
-from kaffepause.groups.services import create_group, remove_group_member, add_group_members
+from kaffepause.groups.services import create_group, remove_group_member, add_group_members, edit_group_name
 from kaffepause.groups.types import GroupNode
 from kaffepause.users.exceptions import UserDoesNotExist
 
@@ -54,5 +54,21 @@ class AddGroupMembers(
     def resolve_mutation(cls, root, info, group_uuid, user_uuids):
         current_user = cls.get_current_user()
         group = add_group_members(actor=current_user, group_uuid=group_uuid, user_uuids=user_uuids)
+        return cls(group=group, success=True)
+
+
+class EditGroupName(
+    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+):
+    class Arguments:
+        group_uuid = graphene.UUID(required=True)
+        name = graphene.String(required=True)
+
+    group = graphene.Field(GroupNode)
+
+    @classmethod
+    def resolve_mutation(cls, root, info, group_uuid, name):
+        current_user = cls.get_current_user()
+        group = edit_group_name(actor=current_user, group_uuid=group_uuid, name=name)
         return cls(group=group, success=True)
 

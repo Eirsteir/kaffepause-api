@@ -24,7 +24,7 @@ class Notification(TimeStampedNode):
     entity_type = StringProperty(required=True, choices=NotificationEntityType.choices())
     entity_id = StringProperty(required=True)
     entity_potential_start_time = DateTimeProperty(required=False)
-    text = StringProperty(required=True)
+    text = StringProperty(required=True, max_length=500)
     notifier = RelationshipTo(
         USER, NotificationRelationship.NOTIFIES, cardinality=One
     )

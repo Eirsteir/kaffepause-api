@@ -66,3 +66,19 @@ def add_group_members(*, actor: User, group_uuid: UUID, user_uuids: List[UUID]) 
     add_members_to_group(actor=actor, group=group, members=users)
 
     return group
+
+
+def edit_group_name(*, actor: User, group_uuid: UUID,  name: str) -> Group:
+    group = get_group(actor=actor, uuid=group_uuid)
+    old_name = name
+    group.name = old_name
+    group.save()
+    bulk_notify(
+        notifiers=group.members.all(),
+        actor=actor,
+        entity_type=NotificationEntityType.GROUP_NAME_CHANGED,
+        entity_id=group.uuid,
+        group_name=old_name,
+        new_group_name=name
+    )
+    return group

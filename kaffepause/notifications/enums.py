@@ -24,6 +24,7 @@ class NotificationEntityType(Enum):
     BREAK_INVITATION_ACCEPTED = _("Break invitation is accepted")
     BREAK_INVITATION_DECLINED = _("Break invitation is declined")
     GROUP_MEMBER_ADDED = _("User is added to group")
+    GROUP_NAME_CHANGED = _("A user changed name of a group")
 
     @classmethod
     def choices(cls):
