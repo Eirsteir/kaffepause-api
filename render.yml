@@ -1,0 +1,69 @@
+services:
+  # A Docker web service
+  - type: web
+    name: kaffepause-api
+    env: docker
+    repo: git@github.com:Eirsteir/kaffepause-api.git # optional
+    region: frankfurt # optional (defaults to oregon)
+    plan: standard # optional (defaults to starter instance type)
+    branch: main # optional (defaults to master)
+    rootDir: .
+    dockerCommand: /start # optional (defaults to Dockerfile command)
+    dockerfilePath: ./compose/production/django/Dockerfile
+    dockerContext: .
+    numInstances: 1 # optional (defaults to 1)
+    healthCheckPath: /health
+    envVars:
+      - fromGroup: postgres_env
+      - fromGroup: django_env
+      - fromGroup: neo4j_env
+
+databases:
+  - name: prod
+    region: frankfurt
+    plan: standard
+    databaseName: prod_app
+    user: kaffepause
+    ipAllowList: [ ] # only allow internal connections
+
+envVarGroups:
+  - name: postgres_env
+    envVars:
+      - key: POSTGRES_HOST
+          fromDatabase:
+            name: prod
+            property: host
+      - key: POSTGRES_PORT
+          fromDatabase:
+            name: prod
+            property: port
+      - key: POSTGRES_DB
+          fromDatabase:
+            name: prod
+            property: database
+      - key: POSTGRES_USER
+          fromDatabase:
+            name: prod
+            property: user
+      - key: POSTGRES_PASSWORD
+          fromDatabase:
+            name: prod
+            property: password
+  - name: django_env
+    envVars:
+      - key: CLOUDINARY_PROFILE_PIC_UPLOAD_FOLDER
+        value: profiles/
+      - key: DJANGO_SECRET_KEY
+        sync: false
+  - name: neo4j_env
+    envVars:
+    - key: NEO4J_BOLT_URL
+        sync: false
+    - key: NEO4J_AUTH
+        sync: false
+    - key: NEOMODEL_SIGNALS
+      value: True
+    - key: NEOMODEL_FORCE_TIMEZONE
+      value: True
+    - key: NEOMODEL_ENCRYPTED_CONNECTION
+      value: True
