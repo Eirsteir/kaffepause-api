@@ -15,25 +15,25 @@ services:
     healthCheckPath: /health
     envVars:
       - key: POSTGRES_HOST
-          fromDatabase:
-            name: prod
-            property: host
+        fromDatabase:
+          name: prod
+          property: host
       - key: POSTGRES_PORT
-          fromDatabase:
-            name: prod
-            property: port
+        fromDatabase:
+          name: prod
+          property: port
       - key: POSTGRES_DB
-          fromDatabase:
-            name: prod
-            property: database
+        fromDatabase:
+          name: prod
+          property: database
       - key: POSTGRES_USER
-          fromDatabase:
-            name: prod
-            property: user
+        fromDatabase:
+          name: prod
+          property: user
       - key: POSTGRES_PASSWORD
-          fromDatabase:
-            name: prod
-            property: password
+        fromDatabase:
+          name: prod
+          property: password
       - fromGroup: django_env
 
 databases:
