@@ -52,9 +52,9 @@ envVarGroups:
       - key: DJANGO_SECRET_KEY
         sync: false
       - key: NEO4J_BOLT_URL
-          sync: false
+        sync: false
       - key: NEO4J_AUTH
-          sync: false
+        sync: false
       - key: NEOMODEL_SIGNALS
         value: True
       - key: NEOMODEL_FORCE_TIMEZONE
