@@ -14,21 +14,6 @@ services:
     numInstances: 1 # optional (defaults to 1)
     healthCheckPath: /health
     envVars:
-      - fromGroup: postgres_env
-      - fromGroup: django_env
-      - fromGroup: neo4j_env
-
-databases:
-  - name: prod
-    region: frankfurt
-    plan: standard
-    databaseName: prod_app
-    user: kaffepause
-    ipAllowList: [ ] # only allow internal connections
-
-envVarGroups:
-  - name: postgres_env
-    envVars:
       - key: POSTGRES_HOST
           fromDatabase:
             name: prod
@@ -49,21 +34,30 @@ envVarGroups:
           fromDatabase:
             name: prod
             property: password
+      - fromGroup: django_env
+
+databases:
+  - name: prod
+    region: frankfurt
+    plan: standard
+    databaseName: prod_app
+    user: kaffepause
+    ipAllowList: [ ] # only allow internal connections
+
+envVarGroups:
   - name: django_env
     envVars:
       - key: CLOUDINARY_PROFILE_PIC_UPLOAD_FOLDER
         value: profiles/
       - key: DJANGO_SECRET_KEY
         sync: false
-  - name: neo4j_env
-    envVars:
-    - key: NEO4J_BOLT_URL
-        sync: false
-    - key: NEO4J_AUTH
-        sync: false
-    - key: NEOMODEL_SIGNALS
-      value: True
-    - key: NEOMODEL_FORCE_TIMEZONE
-      value: True
-    - key: NEOMODEL_ENCRYPTED_CONNECTION
-      value: True
+      - key: NEO4J_BOLT_URL
+          sync: false
+      - key: NEO4J_AUTH
+          sync: false
+      - key: NEOMODEL_SIGNALS
+        value: True
+      - key: NEOMODEL_FORCE_TIMEZONE
+        value: True
+      - key: NEOMODEL_ENCRYPTED_CONNECTION
+        value: True
