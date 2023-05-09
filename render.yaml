@@ -3,15 +3,15 @@ services:
   - type: web
     name: kaffepause-api
     env: docker
-    repo: git@github.com:Eirsteir/kaffepause-api.git # optional
-    region: frankfurt # optional (defaults to oregon)
-    plan: standard # optional (defaults to starter instance type)
-    branch: main # optional (defaults to master)
+    repo: https://github.com/Eirsteir/kaffepause-api.git
+    region: frankfurt
+    plan: standard
+    branch: main
     rootDir: .
     dockerCommand: /start # optional (defaults to Dockerfile command)
     dockerfilePath: ./compose/production/django/Dockerfile
     dockerContext: .
-    numInstances: 1 # optional (defaults to 1)
+    numInstances: 1 
     healthCheckPath: /health
     envVars:
       - key: POSTGRES_HOST
