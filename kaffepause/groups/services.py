@@ -74,7 +74,7 @@ def edit_group_name(*, actor: User, group_uuid: UUID,  name: str) -> Group:
     group.name = old_name
     group.save()
     bulk_notify(
-        notifiers=group.members.all(),
+        notifiers=group.members.exclude(uuid=actor.uuid),
         actor=actor,
         entity_type=NotificationEntityType.GROUP_NAME_CHANGED,
         entity_id=group.uuid,

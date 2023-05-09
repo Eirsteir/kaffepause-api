@@ -48,7 +48,7 @@ Messages = {
     NotificationEntityType.BREAK_INVITATION_ACCEPTED: _get_break_invitation_accepted_message,
     NotificationEntityType.BREAK_INVITATION_DECLINED: _get_break_invitation_declined_message,
     NotificationEntityType.GROUP_MEMBER_ADDED: _get_group_member_added_message,
-    NotificationEntityType.GROUP_NAME_CHANGED: _get_group_member_added_message,
+    NotificationEntityType.GROUP_NAME_CHANGED: _get_group_name_changed_message,
 }
 
 
