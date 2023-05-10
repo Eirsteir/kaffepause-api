@@ -1,4 +1,4 @@
-pytz==2020.1  # https://github.com/stub42/pytz
+pytz==2021.1  # https://github.com/stub42/pytz
 python-slugify==4.0.1  # https://github.com/un33k/python-slugify
 Pillow==8.0.0  # https://github.com/python-pillow/Pillow
 argon2-cffi==20.1.0  # https://github.com/hynek/argon2_cffi
@@ -20,9 +20,9 @@ django-cors-headers==3.5.0 # https://github.com/adamchainz/django-cors-headers
 
 # Neomodel
 # ------------------------------------------------------------------------------
-neomodel==4.0.3  # https://neomodel.readthedocs.io/en/latest/
-# Django-neomodel
-git+https://github.com/neo4j-contrib/django-neomodel.git@master#egg=django-neomodel
+neomodel~=4.0.10  # https://neomodel.readthedocs.io/en/latest/
+# Django-neomodel: the commit before the breaking change where Django version is locked to ~=2.2
+git+https://github.com/neo4j-contrib/django-neomodel.git@d8c754a39912a6fb93c9ab35fa31b6fe6ea8ad45
 
 # GraphQL
 # ------------------------------------------------------------------------------
