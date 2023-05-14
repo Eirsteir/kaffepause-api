@@ -25,9 +25,7 @@ try:
         user="${POSTGRES_USER}",
         password="${POSTGRES_PASSWORD}",
         host="${POSTGRES_HOST}",
-        port="${POSTGRES_PORT}",
-        options="${POSTGRES_CONNECTION_OPTIONS}",
-        sslmode="${POSTGRES_CONNECTION_SSLMODE}",
+        port="${POSTGRES_PORT}"
     )
 except psycopg2.OperationalError:
     sys.exit(-1)

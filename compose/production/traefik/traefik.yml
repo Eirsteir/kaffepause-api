@@ -1,55 +1,75 @@
 log:
-  level: INFO
+  level: DEBUG # TODO: change back to INFO
 
 entryPoints:
   web:
     # http
-    address: ":80"
+    address: ":8080"
 
-  web-secure:
-    # https
-    address: ":443"
+#  web-secure:
+#    # https
+#    address: ":443"
 
-certificatesResolvers:
-  letsencrypt:
-    # https://docs.traefik.io/master/https/acme/#lets-encrypt
-    acme:
-      email: "steiraeirik@gmail.com"
-      storage: /etc/traefik/acme/acme.json
-      # https://docs.traefik.io/master/https/acme/#httpchallenge
-      httpChallenge:
-        entryPoint: web
+#api:
+#  #https://doc.traefik.io/traefik/operations/dashboard/
+#  dashboard: true
+
+#certificatesResolvers:
+#  letsencrypt:
+#    # https://docs.traefik.io/master/https/acme/#lets-encrypt
+#    acme:
+#      email: "steiraeirik@gmail.com"
+#      storage: /etc/traefik/acme/acme.json
+#      # https://docs.traefik.io/master/https/acme/#httpchallenge
+#      httpChallenge:
+#        entryPoint: web
+#  letsencrypt-staging:
+#    acme:
+#      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+#      email: "steiraeirik@gmail.com"
+#      storage: /etc/traefik/acme/acme.json
+##      tlsChallenge: { }
+#      httpChallenge:  # try: tlschallenge
+#        entryPoint: web
 
 http:
   routers:
     web-router:
-      rule: "Host(`kaffepause.com`) || Host(`www.kaffepause.com`)"
-      
+      rule: "Host(`kaffepause-api.azurewebsites.net`)"
+
       entryPoints:
         - web
       middlewares:
-        - redirect
+#        - redirect
         - csrf
       service: django
 
-    web-secure-router:
-      rule: "Host(`kaffepause.com`) || Host(`www.kaffepause.com`)"
-      
-      entryPoints:
-        - web-secure
-      middlewares:
-        - csrf
-      service: django
-      tls:
-        # https://docs.traefik.io/master/routing/routers/#certresolver
-        certResolver: letsencrypt
+#    web-secure-router:
+#      rule: "Host(`kaffepause-api.azurewebsites.net`)"
+#
+#      entryPoints:
+#        - web-secure
+#      middlewares:
+#        - csrf
+#      service: django
+#      tls:
+#        # https://docs.traefik.io/master/routing/routers/#certresolver
+#        certResolver: letsencrypt-staging
+
+#    api:
+#      entryPoints:
+#        - web
+#      service: "api@internal"
+#      rule: "Host(`kaffepause-api.azurewebsites.net`)" # "Host(`{{env "WEBSITE_HOSTNAME"}}`)"
+#      tls:
+#        certResolver: letsencrypt-staging
 
   middlewares:
-    redirect:
-      # https://docs.traefik.io/master/middlewares/redirectscheme/
-      redirectScheme:
-        scheme: https
-        permanent: true
+#    redirect:
+#      # https://docs.traefik.io/master/middlewares/redirectscheme/
+#      redirectScheme:
+#        scheme: https
+#        permanent: true
     csrf:
       # https://docs.traefik.io/master/middlewares/headers/#hostsproxyheaders
       # https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
