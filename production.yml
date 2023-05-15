@@ -2,6 +2,12 @@ version: '3'
 
 volumes:
   production_traefik: {}
+  azure_file_storage:
+    driver: azure_file
+    driver_opts:
+      share_name: ${AZURE_NEO4J_SHARE_NAME}
+      storage_account_name: ${AZURE_STORAGE_ACCOUNT_KEY}
+      storage_account_key: ${AZURE_STORAGE_ACCOUNT_NAME}
 
 services:
   api:
@@ -16,6 +22,26 @@ services:
   redis:
     container_name: redis
     image: redis:6
+
+  neo4j:
+    image: neo4j:4.1
+    container_name: neo4j
+    restart: always
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - azure_file_storage:/neo4j
+    environment:
+      - NEO4J_AUTH=${NEO4J_AUTH}
+      - NEO4J_PLUGINS='["apoc"]'
+      - NEO4J_dbms_memory_heap_max_size=1G
+      - NEO4J_dbms_memory_pagecache_size=1G
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - NEO4J_dbms_security_procedures_whitelist=apoc.*
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_dbms_shell_enabled=true
+      - NEO4JLABS_PLUGINS=["apoc"]
 
   traefik:
     image: kaffepause.azurecr.io/kaffepause_production_traefik:latest
