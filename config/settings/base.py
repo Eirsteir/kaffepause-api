@@ -182,7 +182,7 @@ TEMPLATES = [
         # https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
         "DIRS": [str(APPS_DIR / "templates")],
         # https://django-graphql-auth.readthedocs.io/en/latest/installation/#5-email-templates
-        "APP_DIRS": True,
+        # "APP_DIRS": True, ImproperlyConfigured exception
         "OPTIONS": {
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             "context_processors": [
