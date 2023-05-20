@@ -2,5 +2,6 @@
 # ------------------------------------------------------------------------------
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
+DJANGO_SETTINGS_MODULE=config.settings.local
 
 CLOUDINARY_PROFILE_PIC_UPLOAD_FOLDER=profiles/

@@ -1,10 +1,10 @@
 log:
-  level: DEBUG # TODO: change back to INFO
+  level: INFO
 
 api:
-  insecure: true
+#  insecure: true
   dashboard: true
-  debug: true
+#  debug: true
 
 entryPoints:
   web:
@@ -14,52 +14,83 @@ entryPoints:
   web-secure:
     # https
     address: ":443"
+#    http:
+#      tls:
+#        certResolver: letsencrypt-staging
+#        domains:
+#          - main: kaffepause-api.eiriksteira.com
+#            sans:
+#              - "*.kaffepause-api.eiriksteira.com"
 
-certificatesResolvers:
-  letsencrypt:
-    # https://docs.traefik.io/master/https/acme/#lets-encrypt
-    acme:
-      email: "steiraeirik@gmail.com"
-      storage: /etc/traefik/acme/acme.json
-      # https://docs.traefik.io/master/https/acme/#httpchallenge
-      httpChallenge:
-        entryPoint: web
-  letsencrypt-staging:
-    acme:
-      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      email: "steiraeirik@gmail.com"
-      storage: /etc/traefik/acme/acme.json
-#      tlsChallenge: { }
-      httpChallenge:  # try: tlschallenge
-        entryPoint: web
+#certificatesResolvers:
+#  letsencrypt:
+#    # https://docs.traefik.io/master/https/acme/#lets-encrypt
+#    acme:
+#      email: "steiraeirik@gmail.com"
+#      storage: /etc/traefik/acme/acme.json
+#      # https://docs.traefik.io/master/https/acme/#httpchallenge
+#      httpChallenge:
+#        entryPoint: web
+#  letsencrypt-staging:
+#    acme:
+#      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+#      email: "steiraeirik@gmail.com"
+#      storage: /etc/traefik/acme/acme.json
+#      dnsChallenge:
+#        provider: vercel
+#        delayBeforeCheck: "0"
+#        resolvers:
+#          - "1.1.1.1:53"
+#          - "8.8.8.8:53"
 
 http:
   routers:
     web-router:
-      rule: "Host(`kaffepause-api.azurewebsites.net`)"
+      rule: "Host(`kaffepause-api.eiriksteira.com`)"
       entryPoints:
         - web
       middlewares:
-        - redirect
+#        - redirect
         - csrf
       service: django
 
     web-secure-router:
-      rule: "Host(`kaffepause-api.azurewebsites.net`)"
+      rule: "Host(`kaffepause-api.eiriksteira.com`)"
       entryPoints:
         - web-secure
       middlewares:
         - csrf
       service: django
-      tls:
-        # https://docs.traefik.io/master/routing/routers/#certresolver
-        certResolver: letsencrypt-staging
+#      tls:
+#        # https://docs.traefik.io/master/routing/routers/#certresolver
+#        certResolver: letsencrypt-staging
 
-#    api:
-#      entryPoints:
-#        - web
-#      service: "api@internal"
-#      rule: "Host(`kaffepause-api.azurewebsites.net`)" # "Host(`{{env "WEBSITE_HOSTNAME"}}`)"
+    neo4j-dashboard-router:
+      rule: "Host(`neo4j.kaffepause-api.eiriksteira.com`)"
+      entryPoints:
+        - web
+      service: neo4j
+      middlewares:
+        - redirect
+
+    neo4j-dashboard-secure-router:
+      rule: "Host(`neo4j.kaffepause-api.eiriksteira.com`)"
+      entryPoints:
+        - web-secure
+      middlewares:
+        - test-auth
+      service: neo4j
+#      tls:
+#        # https://docs.traefik.io/master/routing/routers/#certresolver
+#        certResolver: letsencrypt-staging
+
+    dashboard:
+      entryPoints:
+        - web
+      middlewares:
+        - test-auth
+      service: "api@internal"
+      rule: "Host(`traefik.kaffepause-api.eiriksteira.com`)" # "Host(`{{env "WEBSITE_HOSTNAME"}}`)"
 #      tls:
 #        certResolver: letsencrypt-staging
 
@@ -74,12 +105,21 @@ http:
       # https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
       headers:
         hostsProxyHeaders: ["X-CSRFToken"]
+    test-auth:
+      basicAuth:
+        users:
+          - "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/"
+          - "test2:$apr1$d9hr9HBB$4HxwgUir3HP4EsggP/QNo0"
 
   services:
     django:
       loadBalancer:
         servers:
           - url: http://django:5000
+    neo4j:
+      loadBalancer:
+        servers:
+          - url: http://neo4j:7474
 
 providers:
   # https://docs.traefik.io/master/providers/file/

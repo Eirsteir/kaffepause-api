@@ -2,34 +2,38 @@ version: '3'
 
 volumes:
   production_traefik: {}
-  azure_file_storage:
-    driver: azure_file
-    driver_opts:
-      share_name: ${AZURE_NEO4J_SHARE_NAME}
-      storage_account_name: ${AZURE_STORAGE_ACCOUNT_KEY}
-      storage_account_key: ${AZURE_STORAGE_ACCOUNT_NAME}
+  azure_file_storage: {}
+#    driver: azure_file
+#    driver_opts:
+#      share_name: neo4j
+#      storage_account_name: kaffepausestorage
+#      storage_account_key: 9sXBiTYwJs0PrKsMswVZbgIqa5rvTQrqwxlp0s3i5vM/kXCJGbrV9LkFPhp1FyWGAP7beNsxynYv+ASt1Gucmg==
 
 services:
-  api:
-    container_name: api
+  django:
+    container_name: django
     image: kaffepause.azurecr.io/kaffepause:latest
     command: /start
-    ports:
-      - "8000:8000"
+#    ports:
+#      - "8000:8000"
     depends_on:
       - redis
+    env_file:
+      - .env
 
   redis:
     container_name: redis
     image: redis:6
+    env_file:
+          - .env
 
   neo4j:
     image: neo4j:4.1
     container_name: neo4j
     restart: always
-    ports:
-      - 7474:7474
-      - 7687:7687
+#    ports:
+ #     - 7474:7474
+  #    - 7687:7687
     volumes:
       - azure_file_storage:/neo4j
     environment:
@@ -42,14 +46,18 @@ services:
       - NEO4J_apoc_import_file_enabled=true
       - NEO4J_dbms_shell_enabled=true
       - NEO4JLABS_PLUGINS=["apoc"]
+    env_file:
+          - .env
 
   traefik:
     image: kaffepause.azurecr.io/kaffepause_production_traefik:latest
     depends_on:
-      - api
+      - django
     volumes:
       - production_traefik:/etc/traefik/acme
     ports:
       - "8080:8080" # Traefik dashboard
       - "80:80"
       - "443:443"
+    env_file:
+          - .env

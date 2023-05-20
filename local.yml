@@ -53,12 +53,11 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
-  phppgadmin:
-    restart: always
-    image: dockage/phppgadmin:latest
-    container_name: phppgadmin
+  prisma-studio:  # Add to production.yml
+    container_name: prisma-studio
+    image: timothyjmiller/prisma-studio:latest
+    restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - 5555:5555
     env_file:
-      - .envs/.local/.phppgadmin
+      - ./.envs/.local/.postgres

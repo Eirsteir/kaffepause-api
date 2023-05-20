@@ -38,6 +38,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
@@ -140,8 +142,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -309,12 +311,12 @@ SITE = {
     "name": "kaffepause",
     "slogan": "Kaffe med venner ",
     "contact_email": "steiraeirik@gmail.com",
-    "domain": "kaffepause.no",
+    "domain": "eiriksteira.com",
     "owner": "kaffepause",
 }
 
 API_VERSION = "v1"
-WEBSITE_URL = "https://example.com"
+WEBSITE_URL = "https://eiriksteira.com"
 PROFILE_PIC_UPLOAD_FOLDER = env("CLOUDINARY_PROFILE_PIC_UPLOAD_FOLDER")
 
 # Social Auth
