@@ -1,0 +1,16 @@
+name: Deploy to Azure production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: Eirsteir/kaffepause-api/.github/workflows/deploy_to_azure.yml@master
+    with:
+      registry_name: kaffepause
+    secrets:
+      registry_username: ${{ secrets.ACR_USERNAME }}
+      registry_password: ${{ secrets.ACR_PASSWORD }}

@@ -17,6 +17,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
+            "--force",
+            default=False,
+            type=bool,
+            help=f"Force locations to be reloaded from {JSON_DATA_FILE}",
+        )
+        parser.add_argument(
             "--force_download",
             default=False,
             type=bool,
@@ -24,6 +30,10 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        if len(Location.nodes.all()) and not options["force"]:
+            print("Locations already loaded. Use --force to reload.")
+            return
+
         output = self.download_if_necessary(options["force_download"])
         locations = output["campusMenu"]["children"]
         self._parse_locations(locations)

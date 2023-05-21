@@ -13,21 +13,6 @@ from .base import env
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
-CORS_ALLOWED_ORIGINS = [
-    # "https://eiriksteira.com",
-    # "https://kaffepause.azurewebsites.net",
-    # "http://localhost",
-    # "http://127.0.0.1",
-    "*"
-]
-CSRF_TRUSTED_ORIGINS = [
-    # "https://eiriksteira.com/",
-    # "https://eiriksteira.com",
-    # "https://kaffepause.azurewebsites.net",
-    # "http://localhost",
-    # "http://127.0.0.1",
-    "*"
-]
 
 # DATABASES
 # ------------------------------------------------------------------------------
@@ -124,8 +109,6 @@ ADMIN_URL = env("DJANGO_ADMIN_URL")
 # ------------------------------------------------------------------------------
 # https://github.com/antonagestam/collectfast#installation
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-# COLLECTFAST_STRATEGY = "collectfast.strategies.filesystem.FileSystemStrategy"
-# INSTALLED_APPS = ["collectfast"] + INSTALLED_APPS  # noqa F405
 
 # LOGGING
 # ------------------------------------------------------------------------------
@@ -185,3 +168,28 @@ sentry_sdk.init(
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+
+
+# django-cors-headers
+# ------------------------------------------------------------------------------
+#  https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
+
+CORS_ALLOWED_ORIGINS = [
+    "https://eiriksteira.com",
+    "https://kaffepause.azurewebsites.net",
+    "http://localhost",
+    "http://127.0.0.1",
+]
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://eiriksteira.com",
+#     "https://kaffepause.azurewebsites.net",
+#     "http://localhost",
+#     "http://127.0.0.1",
+# ]
+#
+CORS_ALLOW_CREDENTIALS = True
+# # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
+# CSRF_COOKIE_HTTPONLY = False  # Trenger traefik hvis denne er True tror jeg (https)
+# # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
+# SESSION_COOKIE_HTTPONLY = False  # Trenger traefik hvis denne er True tror jeg (https)
