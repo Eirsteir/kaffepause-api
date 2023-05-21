@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    uses: Eirsteir/kaffepause-api/.github/workflows/deploy_to_azure.yml@master
+    uses: Eirsteir/kaffepause-api/.github/workflows/azure_deploy_flow.yml@main
     with:
       registry_name: kaffepause
     secrets:
