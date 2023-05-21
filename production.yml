@@ -3,11 +3,6 @@ version: '3'
 volumes:
   production_traefik: {}
   azure_file_storage: {}
-#    driver: azure_file
-#    driver_opts:
-#      share_name: neo4j
-#      storage_account_name: kaffepausestorage
-#      storage_account_key: 9sXBiTYwJs0PrKsMswVZbgIqa5rvTQrqwxlp0s3i5vM/kXCJGbrV9LkFPhp1FyWGAP7beNsxynYv+ASt1Gucmg==
 
 services:
   django:
