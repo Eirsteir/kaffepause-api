@@ -303,6 +303,8 @@ GRAPHQL_AUTH = {
         "status__verified": ["exact"],
         "status__secondary_email": ["exact"],
     },
+    "EMAIL_BACKEND": 'django.core.mail.backends.console.EmailBackend',
+    "SEND_ACTIVATION_EMAIL": False,
 }
 # Your stuff...
 # ------------------------------------------------------------------------------

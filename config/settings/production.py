@@ -182,4 +182,12 @@ CORS_ALLOWED_ORIGINS = CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1",
 ]
 
-CORS_ALLOW_CREDENTIALS = True  # TODO: try to set to false
+CORS_ALLOW_CREDENTIALS = True
+
+# django-grap
+# ------------------------------------------------------------------------------
+#  https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
+
+# ALLOW_PASSWORDLESS_REGISTRATION=True
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# SEND_ACTIVATION_EMAIL = False
