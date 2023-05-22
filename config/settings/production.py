@@ -175,6 +175,7 @@ sentry_sdk.init(
 #  https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
 
 CORS_ALLOWED_ORIGINS = [
+    "https://eiriksteira.com",
     "https://kaffepause.eiriksteira.com",
     "https://kaffepause.azurewebsites.net",
     "http://localhost",
