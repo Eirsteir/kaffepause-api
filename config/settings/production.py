@@ -170,26 +170,15 @@ sentry_sdk.init(
 # ------------------------------------------------------------------------------
 
 
-
 # django-cors-headers
 # ------------------------------------------------------------------------------
 #  https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
 
 CORS_ALLOWED_ORIGINS = [
-    "https://eiriksteira.com",
+    "https://kaffepause.eiriksteira.com",
     "https://kaffepause.azurewebsites.net",
     "http://localhost",
     "http://127.0.0.1",
 ]
-# CSRF_TRUSTED_ORIGINS = [
-#     "https://eiriksteira.com",
-#     "https://kaffepause.azurewebsites.net",
-#     "http://localhost",
-#     "http://127.0.0.1",
-# ]
-#
+
 CORS_ALLOW_CREDENTIALS = True
-# # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
-# CSRF_COOKIE_HTTPONLY = False  # Trenger traefik hvis denne er True tror jeg (https)
-# # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
-# SESSION_COOKIE_HTTPONLY = False  # Trenger traefik hvis denne er True tror jeg (https)

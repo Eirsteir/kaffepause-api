@@ -49,8 +49,6 @@ DATABASES["default"]["ATOMIC_REQUESTS"] = True
 NEOMODEL_NEO4J_BOLT_URL = env("NEO4J_BOLT_URL", default="bolt://neo4j:debug@neo4j:7687")
 NEOMODEL_SIGNALS = env.bool("NEOMODEL_SIGNALS")
 NEOMODEL_FORCE_TIMEZONE = env("NEOMODEL_FORCE_TIMEZONE")
-# TODO: This was removed in v4
-# NEOMODEL_ENCRYPTED_CONNECTION = env("NEOMODEL_ENCRYPTED_CONNECTION")
 NEOMODEL_MAX_POOL_SIZE = env.int("NEOMODEL_MAX_POOL_SIZE")
 
 # URLS
@@ -218,7 +216,8 @@ FIXTURE_DIRS = (str(APPS_DIR / "fixtures"),)
 # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
 SESSION_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
-CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = False
+CSRF_HEADER_NAME = "HTTP_X_CSRFTOKEN"
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-browser-xss-filter
 SECURE_BROWSER_XSS_FILTER = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options

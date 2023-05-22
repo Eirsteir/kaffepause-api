@@ -1,53 +1,55 @@
+# This file is used for production deployment LOCALLY
+#  it is not the same used in production but exposes other services
+#  like the neo4j dashboard and prisma studio
+# It requires the exact same environment variables in .env as in Azure.
 version: '3'
 
 volumes:
   production_traefik: {}
-  azure_file_storage: {}
+  azure_file_storage:
+    driver: azure_file
+    driver_opts:
+      share_name: ${AZURE_NEO4J_SHARE_NAME}
+      storage_account_name: ${AZURE_STORAGE_ACCOUNT_NAME}
+      storage_account_key: ${AZURE_STORAGE_ACCOUNT_KEY}
 
 services:
-  django:
-    container_name: django
+  django_production:
+    container_name: django_production
     image: kaffepause.azurecr.io/kaffepause:latest
     command: /start
-#    ports:
-#      - "8000:8000"
     depends_on:
-      - redis
+      - redis_production
     env_file:
       - .env
 
-  redis:
-    container_name: redis
+  redis_production:
+    container_name: redis_production
     image: redis:6
     env_file:
           - .env
 
-  neo4j:
+  neo4j_production:
     image: neo4j:4.1
-    container_name: neo4j
+    container_name: neo4j_production
     restart: always
-#    ports:
- #     - 7474:7474
-  #    - 7687:7687
+    ports:
+      - 7474:7474
+      - 7687:7687
     volumes:
       - azure_file_storage:/neo4j
     environment:
-      - NEO4J_AUTH=${NEO4J_AUTH}
-      - NEO4J_PLUGINS='["apoc"]'
-#      - NEO4J_dbms_memory_heap_max_size=1G
-#      - NEO4J_dbms_memory_pagecache_size=1G
-      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
-      - NEO4J_dbms_security_procedures_whitelist=apoc.*
+      - NEO4J_apoc_export_file_enabled=true
       - NEO4J_apoc_import_file_enabled=true
-      - NEO4J_dbms_shell_enabled=true
+      - NEO4J_apoc_import_file_use__neo4j__config=true
       - NEO4JLABS_PLUGINS=["apoc"]
     env_file:
           - .env
 
-  traefik:
+  traefik_production:
     image: kaffepause.azurecr.io/kaffepause_production_traefik:latest
     depends_on:
-      - django
+      - django_production
     volumes:
       - production_traefik:/etc/traefik/acme
     ports:
@@ -55,3 +57,10 @@ services:
       - '443:443'
     env_file:
           - .env
+
+  prisma-studio:
+    container_name: prisma-studio
+    image: timothyjmiller/prisma-studio:latest
+    restart: unless-stopped
+    ports:
+      - 5555:5555
