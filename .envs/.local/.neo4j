@@ -1,6 +1,6 @@
 # Neo4j
 # ------------------------------------------------------------------------------
-NEO4J_AUTH=neo4j/neo4jdebug
+NEO4J_AUTH=neo4j/kaffepauseadmin
 
 NEO4J_server.config.strict_validation.enabled=False
 
