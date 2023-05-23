@@ -51,6 +51,7 @@ from neomodel import db, config
 
 try:
    db.set_connection("${NEO4J_BOLT_URL}")
+   neo4j.Driver.verify_connectivity()
 except neo4j.exceptions.ServiceUnavailable:
     sys.exit(-1)
 sys.exit(0)

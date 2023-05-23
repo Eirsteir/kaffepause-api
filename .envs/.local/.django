@@ -6,7 +6,7 @@ DJANGO_SETTINGS_MODULE=config.settings.local
 
 CLOUDINARY_PROFILE_PIC_UPLOAD_FOLDER=profiles/
 
-NEO4J_BOLT_URL=neo4j+s://neo4j:kaffepauseadmin@neo4j:7687
+NEO4J_BOLT_URL=neo4j://neo4j:kaffepauseadmin@neo4j:7687
 
 NEOMODEL_SIGNALS=True
 NEOMODEL_FORCE_TIMEZONE=True
