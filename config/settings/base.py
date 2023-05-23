@@ -360,3 +360,19 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
 )
+
+
+# django-cors-headers
+# ------------------------------------------------------------------------------
+#  https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
+
+CORS_ALLOWED_ORIGINS = CSRF_TRUSTED_ORIGINS = [
+    "https://eiriksteira.com",
+    "https://kaffepause.eiriksteira.com",
+    "https://kaffepause.azurewebsites.net",
+    "http://localhost",
+    "http://localhost:3000",
+    "http://127.0.0.1",
+]
+
+CORS_ALLOW_CREDENTIALS = True
