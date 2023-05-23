@@ -24,6 +24,8 @@ class BaseStatusEnum(Enum):
 
 
 # TODO: put in settings
+ACCOUNT = "kaffepause.accountsV2.models.Account"
+SESSION = "kaffepause.accountsV2.models.Session"
 USER = "kaffepause.users.models.User"
 BREAK = "kaffepause.breaks.models.Break"
 BREAK_INVITATION = "kaffepause.breaks.models.BreakInvitation"

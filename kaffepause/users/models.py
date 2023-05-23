@@ -5,16 +5,17 @@ from neomodel import (
     RelationshipFrom,
     RelationshipTo,
     StringProperty,
-    ZeroOrOne, ZeroOrMore,
+    ZeroOrOne, ZeroOrMore, UniqueIdProperty, DateTimeProperty,
 )
 
+from kaffepause.accountsV2.enums import AccountRelationship
 from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.common.enums import (
     BREAK,
     BREAK_INVITATION,
     LOCATION,
     STATUS_UPDATE,
-    USER, NOTIFICATION, GROUP,
+    USER, NOTIFICATION, GROUP, ACCOUNT, SESSION,
 )
 from kaffepause.common.properties import UUIDProperty
 from kaffepause.groups.enums import GroupRelationship
@@ -26,7 +27,16 @@ from kaffepause.statusupdates.enums import StatusUpdateRelationship
 
 
 class User(DjangoNode):
-    uuid = UUIDProperty()
+    id = UniqueIdProperty()
+    name = StringProperty(required=True, index=True)
+    email = StringProperty(unique_index=True, required=True)
+    emailVerified = DateTimeProperty()
+    image = StringProperty()
+    account = RelationshipTo(ACCOUNT, AccountRelationship.HAS_ACCOUNT)
+    sessions = RelationshipTo(SESSION, AccountRelationship.HAS_SESSION)
+
+    # TODO: remove all these
+    uuid = UUIDProperty()  # TODO: replace with id?
     name = StringProperty(required=True, index=True, max_length=100)
     username = StringProperty(unique_index=True, max_length=100)
     locale = StringProperty(default="en_US", max_length=10)
