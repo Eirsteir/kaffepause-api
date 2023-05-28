@@ -104,10 +104,12 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
-    "social_core.backends.google.GoogleOAuth2",
-    "social_core.backends.facebook.FacebookOAuth2",
-    "graphql_auth.backends.GraphQLAuthBackend",
-    "django.contrib.auth.backends.ModelBackend",
+    # "social_core.backends.google.GoogleOAuth2",
+    # "social_core.backends.facebook.FacebookOAuth2",
+    # "graphql_auth.backends.GraphQLAuthBackend",
+    # "django.contrib.auth.backends.ModelBackend",
+    # "graphql_jwt.backends.JSONWebTokenBackend",
+    "kaffepause.accountsV2.auth.Neo4jGraphQLAuthBackend"
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "accounts.Account"
@@ -184,7 +186,7 @@ TEMPLATES = [
         # https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
         "DIRS": [str(APPS_DIR / "templates")],
         # https://django-graphql-auth.readthedocs.io/en/latest/installation/#5-email-templates
-        # "APP_DIRS": True, ImproperlyConfigured exception
+        "APP_DIRS": True,  # ImproperlyConfigured exception in prod
         "OPTIONS": {
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             "context_processors": [
@@ -274,7 +276,11 @@ GRAPHENE = {
     "MIDDLEWARE": ["graphql_jwt.middleware.JSONWebTokenMiddleware"],
 }
 GRAPHQL_JWT = {
-    "JWT_PAYLOAD_HANDLER": "kaffepause.common.utils.jwt_payload",
+    "JWT_SECRET_KEY": "CKKsPkhIybHLZyajCv2UZeGK/j+5w1oyWVhiY7I6kRY=",
+    "JWT_DECODE_HANDLER": "kaffepause.accountsV2.jwt.get_token",
+    "JWT_PAYLOAD_HANDLER": "kaffepause.accountsV2.jwt.jwt_payload",
+    "JWT_GET_USER_BY_NATURAL_KEY_HANDLER": "kaffepause.accountsV2.jwt.get_user_by_natural_key",
+    "JWT_PAYLOAD_GET_USERNAME_HANDLER": "kaffepause.accountsV2.jwt.get_username_from_user",
     "JWT_VERIFY_EXPIRATION": True,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
     "JWT_EXPIRATION_DELTA": timedelta(days=100),  # TODO: update in prod

@@ -27,6 +27,11 @@ from kaffepause.statusupdates.enums import StatusUpdateRelationship
 
 
 class User(DjangoNode):
+    is_active = True
+    is_authenticated = False
+    is_anonymous = False
+
+
     id = UniqueIdProperty()
     name = StringProperty(required=True, index=True)
     email = StringProperty(unique_index=True, required=True)
@@ -34,6 +39,8 @@ class User(DjangoNode):
     image = StringProperty()
     account = RelationshipTo(ACCOUNT, AccountRelationship.HAS_ACCOUNT)
     sessions = RelationshipTo(SESSION, AccountRelationship.HAS_SESSION)
+
+    USERNAME_FIELD = "email"  #?
 
     # TODO: remove all these
     uuid = UUIDProperty()  # TODO: replace with id?

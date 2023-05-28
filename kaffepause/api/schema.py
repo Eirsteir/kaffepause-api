@@ -19,6 +19,7 @@ class Query(
     kaffepause.location.schema.Query,
     kaffepause.notifications.schema.Query,
     kaffepause.groups.schema.Query,
+
     graphene.ObjectType,
 ):
     debug = graphene.Field(DjangoDebug, name="__debug")

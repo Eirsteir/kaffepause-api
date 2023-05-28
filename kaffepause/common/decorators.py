@@ -11,7 +11,7 @@ def login_required(method):
     @wraps(method)
     @context(method)
     def wrapper(context, ref, *args, **kwargs):
-        ref._user = context.user
+        # ref._user = context.user
         return method(ref, *args, **kwargs)
 
     return wrapper
