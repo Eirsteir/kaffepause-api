@@ -1,15 +1,10 @@
 import logging
 
 import graphene
-from django.utils.translation import gettext_lazy as _
-from graphene_file_upload.scalars import Upload
 
-from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
-from kaffepause.location.models import Location
+from kaffepause.common.bases import LoginRequiredMixin, Output
 from kaffepause.location.services import add_user_location
 from kaffepause.location.types import LocationNode
-from kaffepause.users.services import change_profile_picture, update_profile, update_preferred_location
-from kaffepause.users.types import UserNode
 
 logger = logging.getLogger(__name__)
 

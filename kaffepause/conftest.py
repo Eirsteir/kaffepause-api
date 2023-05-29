@@ -5,16 +5,13 @@ import warnings
 
 import pytest
 from graphene_django.utils.testing import graphql_query
-from graphql_jwt.settings import jwt_settings
-from graphql_jwt.shortcuts import get_token
 from neo4j.exceptions import ClientError as CypherError
 from neobolt.exceptions import ClientError
 from neomodel import change_neo4j_password, clear_neo4j_database, config, db
 
-from kaffepause.accounts.models import Account
-from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.users.models import User
 from kaffepause.users.test.factories import UserFactory
+
 
 #
 @pytest.fixture(autouse=True)
@@ -102,14 +99,6 @@ def pytest_sessionstart(session):
 
 
 @pytest.fixture(autouse=True)
-def account() -> Account:
-    account = AccountFactory()
-    account.status.verified = True
-    account.status.save()
-    return account
-
-
-@pytest.fixture(autouse=True)
 def user(account) -> User:
     return UserFactory(uuid=account.id)
 
@@ -121,14 +110,15 @@ def friend(user) -> User:
     return friend
 
 
-@pytest.fixture(autouse=True)
-def token(account):
-    return f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
-
-
-@pytest.fixture(autouse=True)
-def auth_headers(token):
-    return {jwt_settings.JWT_AUTH_HEADER_NAME: token}
+# @pytest.fixture(autouse=True)
+# def token(account):
+# from graphql_jwt.shortcuts import get_token
+#     return f"{settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
+#
+#
+# @pytest.fixture(autouse=True)
+# def auth_headers(token):
+#     return {settings.JWT_AUTH_HEADER_NAME: token}
 
 
 @pytest.fixture

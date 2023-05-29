@@ -1,13 +1,6 @@
 import graphene
 
-from kaffepause.breaks.models import BreakInvitation
-from kaffepause.breaks.services import (
-    accept_break_invitation,
-    create_break_and_invitation,
-    decline_break_invitation, ignore_break_invitation, request_change,
-)
-from kaffepause.breaks.types import BreakInvitationNode, BreakNode
-from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
+from kaffepause.common.bases import LoginRequiredMixin, Output
 from kaffepause.notifications.services import mark_all_as_seen
 from kaffepause.notifications.types import NotificationBadgeCount
 

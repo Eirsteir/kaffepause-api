@@ -1,10 +1,9 @@
 import graphene
 from graphene import relay
 
-from kaffepause.common.bases import NeomodelGraphQLMixin
-from kaffepause.common.decorators import login_required
+from kaffepause.authentication.decorators import login_required
 from kaffepause.notifications.mutations import MarkAllAsSeen
-from kaffepause.notifications.selectors import get_notifications_for, get_notification_badge_count
+from kaffepause.notifications.selectors import get_notifications_for
 from kaffepause.notifications.types import NotificationConnection, NotificationBadgeCount
 
 

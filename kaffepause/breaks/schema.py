@@ -16,8 +16,7 @@ from kaffepause.breaks.types import (
     BreakInvitationConnection,
     BreakNode, BreaksPresentationNode, BreakInvitationsPresentationNode,
 )
-from kaffepause.common.bases import NeomodelGraphQLMixin
-from kaffepause.common.decorators import login_required
+from kaffepause.authentication.decorators import login_required
 
 
 class Query(graphene.ObjectType):

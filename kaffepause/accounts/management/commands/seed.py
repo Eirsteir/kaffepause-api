@@ -2,7 +2,6 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from neomodel import clear_neo4j_database, db
 
-from kaffepause.accounts.test.factories import AccountFactory, UserStatusFactory
 from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.relationships.enums import UserRelationship
 from kaffepause.users.test.factories import UserFactory
@@ -29,9 +28,7 @@ class Command(BaseCommand):
             raise Exception("Can only seed database in development")
 
         for _ in range(options["accounts"]):
-            account = AccountFactory()
-            UserStatusFactory(user=account)
-            UserFactory(uuid=account.id)
+            UserFactory()
 
         # Command.populate_with_random_data()
         Command.create_random_friendships()

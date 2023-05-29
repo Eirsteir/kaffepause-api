@@ -1,7 +1,7 @@
 import graphene
 from graphene import relay
 
-from kaffepause.common.decorators import login_required
+from kaffepause.authentication.decorators import login_required
 from kaffepause.relationships.mutations import (
     AcceptFriendRequest,
     CancelFriendRequest,
@@ -12,7 +12,6 @@ from kaffepause.relationships.mutations import (
     UnfriendUser,
 )
 from kaffepause.relationships.selectors import (
-    get_friends,
     get_incoming_requests,
     get_outgoing_requests, get_friend_recommendations,
 )

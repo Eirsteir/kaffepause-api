@@ -1,7 +1,6 @@
 import graphene
 
-from kaffepause.common.bases import NeomodelGraphQLMixin
-from kaffepause.common.decorators import login_required
+from kaffepause.authentication.decorators import login_required
 from kaffepause.groups.mutations import CreateGroup, RemoveGroupMember, AddGroupMembers, EditGroupName
 from kaffepause.groups.selectors import get_groups_for, get_group
 from kaffepause.groups.types import GroupNode

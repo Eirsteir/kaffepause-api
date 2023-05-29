@@ -4,9 +4,8 @@ import factory
 import graphene
 from factory.base import FactoryMetaClass
 from graphene import relay
-from graphql_jwt.exceptions import PermissionDenied
 
-from kaffepause.common.decorators import login_required
+from kaffepause.authentication.decorators import login_required
 from kaffepause.common.types import OutputErrorType
 
 
@@ -46,23 +45,6 @@ class LoginRequiredMixin(MutationMixin):
     @login_required
     def mutate(cls, root, info, **input):
         return cls.resolve_mutation(root, info, **input)
-
-
-class NeomodelGraphQLMixin:
-    # https://github.com/flavors/django-graphql-jwt/blob/master/graphql_jwt/middleware.py
-
-    @classmethod
-    def get_current_user(cls):
-        from kaffepause.users.selectors import get_user_from_account
-
-        current_user_account = cls._user
-
-        if not current_user_account:
-            raise PermissionDenied
-
-        current_user = get_user_from_account(account=current_user_account)
-
-        return current_user
 
 
 class NeomodelFactoryMetaClass(FactoryMetaClass):

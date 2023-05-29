@@ -1,6 +1,6 @@
 import graphene
 
-from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
+from kaffepause.common.bases import LoginRequiredMixin, Output
 from kaffepause.relationships.services import (
     accept_friend_request,
     cancel_friend_request,
@@ -10,7 +10,6 @@ from kaffepause.relationships.services import (
     unfollow_friend,
     unfriend_user,
 )
-from kaffepause.users.models import User
 from kaffepause.users.selectors import get_user
 from kaffepause.users.types import UserNode
 

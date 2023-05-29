@@ -1,6 +1,6 @@
 import graphene
 
-from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
+from kaffepause.common.bases import LoginRequiredMixin, Output
 from kaffepause.groups.services import create_group, remove_group_member, add_group_members, edit_group_name
 from kaffepause.groups.types import GroupNode
 from kaffepause.users.exceptions import UserDoesNotExist

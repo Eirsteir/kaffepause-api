@@ -21,10 +21,9 @@ class UserNode(graphene.ObjectType):
 
     uuid = graphene.UUID()
     name = graphene.String()
+    email = graphene.String()
     short_name = graphene.String()
-    locale = graphene.String()
-    profile_pic = graphene.String()
-    username = graphene.String()
+    image = graphene.String()
     is_viewer_friend = graphene.Boolean()
     friends = relay.ConnectionField(lambda: UserConnection)
     social_context = graphene.String()

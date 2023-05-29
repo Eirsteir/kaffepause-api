@@ -1,8 +1,7 @@
 from typing import List
 from uuid import UUID
 
-from graphql_jwt.exceptions import PermissionDenied
-
+from kaffepause.authentication.exceptions import PermissionDenied
 from kaffepause.groups.exceptions import EmptyGroupError, CannotLeaveGroupWhenSingleMember
 from kaffepause.groups.models import Group
 from kaffepause.groups.selectors import get_group

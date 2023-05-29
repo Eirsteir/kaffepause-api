@@ -1,7 +1,7 @@
 import graphene
 
 from kaffepause.accounts.types import AccountNode
-from kaffepause.common.decorators import login_required
+from kaffepause.authentication.decorators import login_required
 
 
 class AccountQuery(graphene.ObjectType):

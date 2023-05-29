@@ -1,6 +1,6 @@
 import graphene
 from graphene import relay
-from graphene_django.utils import camelize
+from graphql import GraphQLError
 
 
 class CountableConnection(relay.Connection):
@@ -49,10 +49,42 @@ class OutputErrorType(graphene.Scalar):
 
     @staticmethod
     def serialize(errors):
-        if isinstance(errors, dict):
-            if errors.get("__all__", False):
-                errors["non_field_errors"] = errors.pop("__all__")
-            return camelize(errors)
-        elif isinstance(errors, list):
-            return {"nonFieldErrors": errors}
-        raise ValueError("`errors` must be list or dict!")
+        # This is stolen from chatgpt, I take no responsibility for this:)
+        if not isinstance(errors, dict):
+            raise GraphQLError("Invalid error format. Expected a dictionary.")
+
+        error_output = {}
+
+        # Map field-specific errors
+        for field, field_errors in errors.items():
+            if field == "nonFieldErrors":
+                # Skip the nonFieldErrors key if present
+                continue
+
+            error_output[field] = []
+            for error in field_errors:
+                if not isinstance(error, dict) or "message" not in error or "code" not in error:
+                    raise GraphQLError("Invalid error format. Expected 'message' and 'code' keys in error dictionary.")
+
+                error_output[field].append({
+                    "message": error["message"],
+                    "code": error["code"]
+                })
+
+        # Add non-field-specific errors if present
+        if "nonFieldErrors" in errors:
+            non_field_errors = errors["nonFieldErrors"]
+            if not isinstance(non_field_errors, list):
+                raise GraphQLError("Invalid error format. Expected a list for 'nonFieldErrors'.")
+
+            error_output["nonFieldErrors"] = []
+            for error in non_field_errors:
+                if not isinstance(error, dict) or "message" not in error or "code" not in error:
+                    raise GraphQLError("Invalid error format. Expected 'message' and 'code' keys in error dictionary.")
+
+                error_output["nonFieldErrors"].append({
+                    "message": error["message"],
+                    "code": error["code"]
+                })
+
+        return error_output

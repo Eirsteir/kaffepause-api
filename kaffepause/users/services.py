@@ -8,21 +8,10 @@ from django.utils.translation import gettext_lazy as _
 from graphene_file_upload.scalars import Upload
 
 from kaffepause.location.models import Location
-from kaffepause.users.forms import UserUpdateForm
 from kaffepause.users.models import User
 
 logger = logging.getLogger(__name__)
 
-
-def update_profile(*, user: User, **data) -> User:
-    logger.debug(f"Updating user (uuid: {user.uuid}")
-
-    form = UserUpdateForm(instance=user, data=data)
-    if form.is_valid():
-        return form.save()
-
-    logger.info(f"Failed to update user (uuid:{user.uuid})")
-    raise ValidationError(form.errors)
 
 
 def change_profile_picture(*, uploaded_by: User, profile_picture: Upload):

@@ -1,8 +1,7 @@
 import graphene
 from graphene import relay
 
-from kaffepause.common.bases import NeomodelGraphQLMixin
-from kaffepause.common.decorators import login_required
+from kaffepause.authentication.decorators import login_required
 from kaffepause.location.mutations import AddUserLocation
 from kaffepause.location.selectors import get_campus_locations
 from kaffepause.location.types import LocationConnection

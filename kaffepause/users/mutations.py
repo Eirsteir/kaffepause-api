@@ -4,41 +4,23 @@ import graphene
 from django.utils.translation import gettext_lazy as _
 from graphene_file_upload.scalars import Upload
 
-from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
+from kaffepause.common.bases import LoginRequiredMixin, Output
 from kaffepause.location.models import Location
 from kaffepause.location.types import LocationNode
-from kaffepause.users.services import change_profile_picture, update_profile, update_preferred_location
+from kaffepause.users.services import change_profile_picture, update_preferred_location
 from kaffepause.users.types import UserNode
 
 logger = logging.getLogger(__name__)
-
-
-class UpdateProfile(
-    LoginRequiredMixin, Output, graphene.Mutation
-):
-    class Arguments:
-        name = graphene.String(required=True)
-        username = graphene.String(required=True)
-        locale = graphene.String(required=True)
-
-    user = graphene.Field(UserNode)
-
-    @classmethod
-    def resolve_mutation(cls, root, info, **kwargs):
-        user = info.context.user
-        user = update_profile(user=user, **kwargs)
-        logger.debug(f"Successfully updated user (uuid:{user.uuid})")
-        return cls(success=True, user=user)
 
 
 class ChangeProfilePicture(
     LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
-        profile_pic = Upload(required=True)
+        image = Upload(required=True)
 
     user = graphene.Field(UserNode)
-    profile_pic = graphene.String()
+    image = graphene.String()
 
     @classmethod
     def resolve_mutation(cls, root, info, profile_pic, **kwargs):

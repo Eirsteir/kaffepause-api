@@ -1,4 +1,4 @@
-from kaffepause.authentication.auth import Neo4jGraphQLAuthBackend
+from kaffepause.authentication.backend import Neo4jAuthBackend
 from kaffepause.authentication.jwt import get_http_authorization
 
 
@@ -20,7 +20,7 @@ def _authenticate(request):
 # from graphql_jwt.middleware import JSONWebTokenMiddleware
 class JSONWebTokenMiddleware:
     def __init__(self):
-        self.backend = Neo4jGraphQLAuthBackend()
+        self.backend = Neo4jAuthBackend()
 
     def resolve(self, next, root, info, **kwargs):
         context = info.context

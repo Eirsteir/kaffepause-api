@@ -1,6 +1,6 @@
 import graphene
 
-from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
+from kaffepause.common.bases import LoginRequiredMixin, Output
 from kaffepause.statusupdates.enums import StatusUpdateType
 from kaffepause.statusupdates.services import update_status
 from kaffepause.statusupdates.types import StatusUpdateNode

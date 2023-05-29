@@ -45,3 +45,5 @@ def time_from_now(hours=0, minutes=0):
     now = timezone.now()
     start = now + timedelta(hours=hours, minutes=minutes)
     return start if start > now else start + timedelta(days=1)
+
+

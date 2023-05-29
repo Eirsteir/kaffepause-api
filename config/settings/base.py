@@ -77,9 +77,9 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "django_neomodel",
     "graphene_django",
-    "graphql_auth",
-    "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
-    "social_django",
+    # "graphql_auth",
+    # "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
+    # "social_django",
     "cloudinary",
 ]
 LOCAL_APPS = [

@@ -1,11 +1,8 @@
 from types import SimpleNamespace
 
 import pytest
-from graphql_jwt.settings import jwt_settings
-from graphql_jwt.shortcuts import get_token
 
 from kaffepause.accounts.models import Account
-from kaffepause.accounts.test.factories import AccountFactory
 from kaffepause.relationships.test.graphql_requests import (
     ACCEPT_FRIEND_REQUEST_MUTATION,
     CANCEL_FRIEND_REQUEST_MUTATION,
@@ -28,8 +25,7 @@ def requested_friend(user):
 
 @pytest.fixture
 def requesting_friend(user):
-    account = AccountFactory()
-    friend = UserFactory(uuid=str(account.id))
+    friend = UserFactory()
     friend.send_friend_request(user)
     return friend
 
@@ -303,14 +299,14 @@ def test_accept_friend_requests_when_addressee_attempts_to_accept(
     """Should do nothing when the addressee attempts to accept on behalf of the user."""
     variables = {"requester": requesting_friend.uuid}
     account = Account.objects.get(id=requesting_friend.uuid)
-    token = f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
-    auth_headers = {jwt_settings.JWT_AUTH_HEADER_NAME: token}
+    # token = f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(account)}"
+    # auth_headers = {jwt_settings.JWT_AUTH_HEADER_NAME: token}
 
     response = client_query(
         ACCEPT_FRIEND_REQUEST_MUTATION,
         op_name="acceptFriendRequest",
         variables=variables,
-        headers=auth_headers,
+        # headers=auth_headers,
     )
     content = response.json()
 

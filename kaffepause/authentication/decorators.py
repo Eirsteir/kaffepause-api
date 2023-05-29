@@ -1,6 +1,7 @@
 from functools import wraps
 
 from graphql import ResolveInfo
+# from graphql.type import GraphQLResolveInfo as ResolveInfo
 
 from kaffepause.authentication.exceptions import PermissionDenied
 

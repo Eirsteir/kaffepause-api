@@ -60,12 +60,3 @@ services:
       - local_postgres_data_backups:/backups:z
     env_file:
       - ./.envs/.local/.postgres
-
-  prisma-studio:  # Add to production.yml
-    container_name: prisma-studio
-    image: timothyjmiller/prisma-studio:latest
-    restart: unless-stopped
-    ports:
-      - 5555:5555
-    env_file:
-      - ./.envs/.local/.postgres
