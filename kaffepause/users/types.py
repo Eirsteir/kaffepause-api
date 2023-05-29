@@ -9,17 +9,17 @@ from kaffepause.relationships.selectors import (
     get_friendship_status,
     get_social_context_between,
 )
-from kaffepause.statusupdates.types import StatusUpdateNode
-from kaffepause.users.selectors import get_user, get_user_from_account
+from kaffepause.users.selectors import get_user_by_id
 
 
 # TODO: Lot of repeated logic and fetching in the resolvers - dataLoader?
 # https://docs.graphene-python.org/en/latest/execution/dataloader/#dataloader
 class UserNode(graphene.ObjectType):
     class Meta:
-        interfaces = (relay.Node,)
+        # interfaces = (relay.Node,)
         name = "User"
 
+    id = graphene.UUID()
     uuid = graphene.UUID()
     name = graphene.String()
     short_name = graphene.String()
@@ -29,7 +29,6 @@ class UserNode(graphene.ObjectType):
     is_viewer_friend = graphene.Boolean()
     friends = relay.ConnectionField(lambda: UserConnection)
     social_context = graphene.String()
-    current_status = graphene.Field(StatusUpdateNode)
     friendship_status = graphene.String()
     preferred_location = graphene.Field(LocationNode)
     current_location = graphene.Field(LocationNode)
@@ -39,35 +38,22 @@ class UserNode(graphene.ObjectType):
         return parent.short_name
 
     def resolve_is_viewer_friend(parent, info):
-        current_user_account = info.context.user
-        current_user = get_user_from_account(account=current_user_account)
-        subject = get_user(user_uuid=parent.uuid)
+        current_user = info.context.user
+        subject = get_user_by_id(id=parent.id)
         return current_user.is_friends_with(user=subject)
 
     def resolve_friendship_status(parent, info):
-        current_user_account = info.context.user
-        current_user = get_user_from_account(account=current_user_account)
-        subject = get_user(user_uuid=parent.uuid)
+        current_user = info.context.user
+        subject = get_user_by_id(id=parent.id)
         return get_friendship_status(actor=current_user, user=subject)
 
     def resolve_friends(parent, info):
         return get_friends(parent)
 
     def resolve_social_context(parent, info):
-        current_user_account = info.context.user
-        current_user = get_user_from_account(account=current_user_account)
-        subject = get_user(user_uuid=parent.uuid)
+        current_user = info.context.user
+        subject = get_user_by_id(id=parent.id)
         return get_social_context_between(actor=current_user, other=subject)
-
-    def resolve_current_status(parent, info):
-        current_user_account = info.context.user
-        current_user = get_user_from_account(account=current_user_account)
-        subject = get_user(user_uuid=parent.uuid)
-
-        if current_user.is_friends_with(subject):
-            return subject.get_current_status()
-
-        return None
 
     def resolve_preferred_location(parent, info):
         return parent.get_preferred_location()

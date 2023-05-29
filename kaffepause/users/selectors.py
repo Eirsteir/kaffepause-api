@@ -20,7 +20,15 @@ def get_user(*, user_uuid: UUID) -> User:
         return User.nodes.get(uuid=user_uuid)
     except User.DoesNotExist as e:
         logger.debug(f"Could not find user with uuid: {user_uuid}", exc_info=e)
-        raise UserDoesNotExist
+        raise UserDoesNotExist from e
+
+
+def get_user_by_id(*, id: UUID) -> User:
+    try:
+        return User.nodes.get(id=id)
+    except User.DoesNotExist as e:
+        logger.debug(f"Could not find user with id: {id}", exc_info=e)
+        raise UserDoesNotExist from e
 
 
 def search_users(*, query: str, searched_by: User) -> Iterable[User]:

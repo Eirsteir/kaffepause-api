@@ -106,9 +106,9 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 AUTHENTICATION_BACKENDS = [
     # "social_core.backends.google.GoogleOAuth2",
     # "social_core.backends.facebook.FacebookOAuth2",
-    "graphql_auth.backends.GraphQLAuthBackend",
+    # "graphql_auth.backends.GraphQLAuthBackend",
     # "django.contrib.auth.backends.ModelBackend",
-    "graphql_jwt.backends.JSONWebTokenBackend",
+    # "graphql_jwt.backends.JSONWebTokenBackend",
     # "kaffepause.accountsV2.auth.Neo4jGraphQLAuthBackend"
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
@@ -273,7 +273,7 @@ LOGGING = {
 # ------------------------------------------------------------------------------
 GRAPHENE = {
     "SCHEMA": "kaffepause.api.schema.schema",
-    "MIDDLEWARE": ["graphql_jwt.middleware.JSONWebTokenMiddleware"],
+    "MIDDLEWARE": ["kaffepause.accountsV2.middleware.JSONWebTokenMiddleware"],
 }
 GRAPHQL_JWT = {
     "JWT_SECRET_KEY": "CKKsPkhIybHLZyajCv2UZeGK/j+5w1oyWVhiY7I6kRY=",

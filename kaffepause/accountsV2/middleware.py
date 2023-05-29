@@ -1,6 +1,5 @@
-from django.contrib.auth import authenticate
-
-from kaffepause.accountsV2.auth import get_http_authorization
+from kaffepause.accountsV2.auth import Neo4jGraphQLAuthBackend
+from kaffepause.accountsV2.jwt import get_http_authorization
 
 
 def get_token_argument(request, **kwargs):
@@ -14,20 +13,19 @@ def get_token_argument(request, **kwargs):
 
 
 def _authenticate(request):
-    is_anonymous = not hasattr(request, 'user')  # or request.user.is_anonymous
+    is_anonymous = not hasattr(request, 'user') or request.user.is_anonymous  # Django-specific?
     return is_anonymous and get_http_authorization(request) is not None
 
 
+# from graphql_jwt.middleware import JSONWebTokenMiddleware
 class JSONWebTokenMiddleware:
+    def __init__(self):
+        self.backend = Neo4jGraphQLAuthBackend()
 
     def resolve(self, next, root, info, **kwargs):
         context = info.context
-        token_argument = get_token_argument(context, **kwargs)
-
-        if _authenticate(context) or token_argument is not None:
-
-            user = authenticate(request=context, **kwargs)
-
+        if _authenticate(context):
+            user = self.backend.authenticate(request=context, **kwargs)
             if user is not None:
                 context.user = user
 

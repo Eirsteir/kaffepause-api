@@ -26,12 +26,14 @@ from kaffepause.relationships.models import FriendRel, RelationshipRel
 from kaffepause.statusupdates.enums import StatusUpdateRelationship
 
 
-class User(DjangoNode):
+class AuthenticationMixin:
+    # https://docs.djangoproject.com/en/4.2/ref/contrib/auth/#attributes
     is_active = True
-    is_authenticated = False
+    is_authenticated = True
     is_anonymous = False
 
 
+class User(DjangoNode, AuthenticationMixin):
     id = UniqueIdProperty()
     name = StringProperty(required=True, index=True)
     email = StringProperty(unique_index=True, required=True)

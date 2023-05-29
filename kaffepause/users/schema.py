@@ -1,8 +1,8 @@
 import graphene
 from graphene import relay
-from graphql_jwt.decorators import login_required
 
 from kaffepause.common.bases import NeomodelGraphQLMixin, LoginRequiredMixin
+from kaffepause.common.decorators import login_required
 from kaffepause.users.models import User
 from kaffepause.users.mutations import ChangeProfilePicture, UpdateProfile, UpdatePreferredLocation
 from kaffepause.users.selectors import get_user, get_users, search_users
@@ -31,9 +31,9 @@ class UserQuery(NeomodelGraphQLMixin, graphene.ObjectType):
 class MeQuery(graphene.ObjectType):
     me = graphene.Field(UserNode)
 
-    # @login_required
+    @login_required
     def resolve_me(self, info, **kwargs):
-        print("INFO", info, kwargs)
+        print(info.context.user)
         return info.context.user
 
 

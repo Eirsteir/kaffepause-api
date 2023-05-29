@@ -1,17 +1,29 @@
 from functools import wraps
 
-from graphql_jwt.decorators import context
-from graphql_jwt.decorators import login_required as gql_login_required
+from graphql import ResolveInfo
+
+from kaffepause.accountsV2.exceptions import PermissionDenied
 
 
-def login_required(method):
-    """Require user to be logged in and set current user on the class ref."""
+def context(f):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            info = next(arg for arg in args if isinstance(arg, ResolveInfo))
+            return func(info.context, *args, **kwargs)
+        return wrapper
+    return decorator
 
-    @gql_login_required
-    @wraps(method)
-    @context(method)
-    def wrapper(context, ref, *args, **kwargs):
-        # ref._user = context.user
-        return method(ref, *args, **kwargs)
 
-    return wrapper
+def user_passes_test(test_func, exc=PermissionDenied()):
+    def decorator(f):
+        @wraps(f)
+        @context(f)
+        def wrapper(context, *args, **kwargs):
+            if test_func(context.user):
+                return f(*args, **kwargs)
+            raise exc
+        return wrapper
+    return decorator
+
+
+login_required = user_passes_test(lambda u: u.is_authenticated)  # TODO: what happens when we dont have AnonymousUser?

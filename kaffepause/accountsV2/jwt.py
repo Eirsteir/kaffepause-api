@@ -4,7 +4,7 @@ from datetime import datetime
 import jwt
 from django.conf import settings
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 import json
 from typing import Any
 from Crypto.Protocol.KDF import HKDF
@@ -36,7 +36,7 @@ def jwt_payload(user, context=None):
 
     payload = {user.USERNAME_FIELD: username, 'exp': datetime.utcnow() + settings.JWT_EXPIRATION_DELTA,
                "user_id": str(user.id)}
-    #
+
     # if jwt_settings.JWT_ALLOW_REFRESH:
     #     payload['origIat'] = timegm(datetime.utcnow().utctimetuple())
 
