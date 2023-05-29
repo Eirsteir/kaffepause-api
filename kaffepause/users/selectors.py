@@ -12,22 +12,14 @@ logger = logging.getLogger(__name__)
 
 
 def get_user_from_account(*, account: Account) -> User:
-    return get_user(user_uuid=account.id)
+    return get_user(uuid=account.id)
 
 
-def get_user(*, user_uuid: UUID) -> User:
+def get_user(*, uuid: UUID) -> User:
     try:
-        return User.nodes.get(uuid=user_uuid)
+        return User.nodes.get(uuid=uuid)
     except User.DoesNotExist as e:
-        logger.debug(f"Could not find user with uuid: {user_uuid}", exc_info=e)
-        raise UserDoesNotExist from e
-
-
-def get_user_by_id(*, id: UUID) -> User:
-    try:
-        return User.nodes.get(id=id)
-    except User.DoesNotExist as e:
-        logger.debug(f"Could not find user with id: {id}", exc_info=e)
+        logger.debug(f"Could not find user with uuid: {uuid}", exc_info=e)
         raise UserDoesNotExist from e
 
 

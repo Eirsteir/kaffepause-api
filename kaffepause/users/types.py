@@ -9,17 +9,16 @@ from kaffepause.relationships.selectors import (
     get_friendship_status,
     get_social_context_between,
 )
-from kaffepause.users.selectors import get_user_by_id
+from kaffepause.users.selectors import get_user
 
 
 # TODO: Lot of repeated logic and fetching in the resolvers - dataLoader?
 # https://docs.graphene-python.org/en/latest/execution/dataloader/#dataloader
 class UserNode(graphene.ObjectType):
     class Meta:
-        # interfaces = (relay.Node,)
+        interfaces = (relay.Node,)
         name = "User"
 
-    id = graphene.UUID()
     uuid = graphene.UUID()
     name = graphene.String()
     short_name = graphene.String()
@@ -39,12 +38,12 @@ class UserNode(graphene.ObjectType):
 
     def resolve_is_viewer_friend(parent, info):
         current_user = info.context.user
-        subject = get_user_by_id(id=parent.id)
+        subject = get_user(uuid=parent.uuid)
         return current_user.is_friends_with(user=subject)
 
     def resolve_friendship_status(parent, info):
         current_user = info.context.user
-        subject = get_user_by_id(id=parent.id)
+        subject = get_user(uuid=parent.uuid)
         return get_friendship_status(actor=current_user, user=subject)
 
     def resolve_friends(parent, info):
@@ -52,7 +51,7 @@ class UserNode(graphene.ObjectType):
 
     def resolve_social_context(parent, info):
         current_user = info.context.user
-        subject = get_user_by_id(id=parent.id)
+        subject = get_user(uuid=parent.uuid)
         return get_social_context_between(actor=current_user, other=subject)
 
     def resolve_preferred_location(parent, info):

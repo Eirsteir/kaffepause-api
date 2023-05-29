@@ -33,7 +33,6 @@ class MeQuery(graphene.ObjectType):
 
     @login_required
     def resolve_me(self, info, **kwargs):
-        print(info.context.user)
         return info.context.user
 
 

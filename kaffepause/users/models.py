@@ -34,7 +34,7 @@ class AuthenticationMixin:
 
 
 class User(DjangoNode, AuthenticationMixin):
-    id = UniqueIdProperty()
+    uuid = UniqueIdProperty(db_property="id")  # Neomodel overrides field id
     name = StringProperty(required=True, index=True)
     email = StringProperty(unique_index=True, required=True)
     emailVerified = DateTimeProperty()
@@ -45,8 +45,6 @@ class User(DjangoNode, AuthenticationMixin):
     USERNAME_FIELD = "email"  #?
 
     # TODO: remove all these
-    uuid = UUIDProperty()  # TODO: replace with id?
-    name = StringProperty(required=True, index=True, max_length=100)
     username = StringProperty(unique_index=True, max_length=100)
     locale = StringProperty(default="en_US", max_length=10)
     profile_pic = StringProperty()
