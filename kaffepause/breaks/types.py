@@ -9,7 +9,6 @@ from kaffepause.breaks.selectors import get_break_history, get_upcoming_breaks, 
 from kaffepause.common.bases import SectionNode
 from kaffepause.common.types import CountableConnection
 import kaffepause.groups.types
-from kaffepause.users.selectors import get_user_from_account
 from kaffepause.users.types import UserConnection, UserNode
 from kaffepause.location.types import LocationNode
 
@@ -59,8 +58,7 @@ class BreakInvitationNode(graphene.ObjectType):
         return parent.get_subject()
 
     def resolve_context(parent, info):
-        current_user_account = info.context.user
-        current_user = get_user_from_account(account=current_user_account)
+        current_user = info.context.user
         return get_invitation_context(actor=current_user, invitation=parent)
 
 
@@ -84,8 +82,7 @@ class BreakNode(graphene.ObjectType):
     change_requests = graphene.List(lambda: ChangeRequestNode)
 
     def resolve_title(parent, info):
-        current_user_account = info.context.user
-        current_user = get_user_from_account(account=current_user_account)
+        current_user = info.context.user
         return get_break_title(actor=current_user, break_=parent)
 
     def resolve_invitation(parent, info):
@@ -98,13 +95,11 @@ class BreakNode(graphene.ObjectType):
         return parent.get_location()
 
     def resolve_is_viewer_initiator(parent, info):
-        current_user_account = info.context.user
-        current_user = get_user_from_account(account=current_user_account)
+        current_user = info.context.user
         return current_user.is_initiator_of(break_=parent)
 
     def resolve_can_viewer_edit_break(parent, info):
-        current_user_account = info.context.user
-        current_user = get_user_from_account(account=current_user_account)
+        current_user = info.context.user
         return can_user_edit_break(user=current_user, break_=parent)
 
     def resolve_initiator(parent, info):

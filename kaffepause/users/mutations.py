@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class UpdateProfile(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
         name = graphene.String(required=True)
@@ -25,14 +25,14 @@ class UpdateProfile(
 
     @classmethod
     def resolve_mutation(cls, root, info, **kwargs):
-        user = cls.get_current_user()
+        user = info.context.user
         user = update_profile(user=user, **kwargs)
         logger.debug(f"Successfully updated user (uuid:{user.uuid})")
         return cls(success=True, user=user)
 
 
 class ChangeProfilePicture(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
         profile_pic = Upload(required=True)
@@ -42,7 +42,7 @@ class ChangeProfilePicture(
 
     @classmethod
     def resolve_mutation(cls, root, info, profile_pic, **kwargs):
-        current_user = cls.get_current_user()
+        current_user = info.context.user
 
         result = change_profile_picture(
             uploaded_by=current_user, profile_picture=profile_pic
@@ -51,7 +51,7 @@ class ChangeProfilePicture(
 
 
 class UpdatePreferredLocation(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
         location_uuid = graphene.UUID(required=True)
@@ -61,7 +61,7 @@ class UpdatePreferredLocation(
 
     @classmethod
     def resolve_mutation(cls, root, info, location_uuid, **kwargs):
-        current_user = cls.get_current_user()
+        current_user = info.context.user
 
         try:
             user = update_preferred_location(

@@ -8,21 +8,19 @@ from kaffepause.notifications.selectors import get_notifications_for, get_notifi
 from kaffepause.notifications.types import NotificationConnection, NotificationBadgeCount
 
 
-class NotificationQuery(NeomodelGraphQLMixin, graphene.ObjectType):
+class NotificationQuery(graphene.ObjectType):
 
     notifications = relay.ConnectionField(NotificationConnection)
     notification_badge_count = graphene.Field(NotificationBadgeCount)
 
-    @classmethod
     @login_required
-    def resolve_notifications(cls, root, info, **kwargs):
+    def resolve_notifications(self, info, **kwargs):
         # TODO: pagination
-        return get_notifications_for(actor=cls.get_current_user())
+        return get_notifications_for(actor=info.context.user)
 
-    @classmethod
     @login_required
-    def resolve_notification_badge_count(cls, root, info, **kwargs):
-        return cls.get_current_user()
+    def resolve_notification_badge_count(self, info, **kwargs):
+        return info.context.user
 
 
 class Query(NotificationQuery, graphene.ObjectType):

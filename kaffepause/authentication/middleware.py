@@ -1,5 +1,5 @@
-from kaffepause.accountsV2.auth import Neo4jGraphQLAuthBackend
-from kaffepause.accountsV2.jwt import get_http_authorization
+from kaffepause.authentication.auth import Neo4jGraphQLAuthBackend
+from kaffepause.authentication.jwt import get_http_authorization
 
 
 def get_token_argument(request, **kwargs):

@@ -7,7 +7,7 @@ from kaffepause.users.exceptions import UserDoesNotExist
 
 
 class CreateGroup(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
         name = graphene.String(required=True)
@@ -17,13 +17,13 @@ class CreateGroup(
 
     @classmethod
     def resolve_mutation(cls, root, info, name, members):
-        current_user = cls.get_current_user()
+        current_user = info.context.user
         group = create_group(actor=current_user, name=name, members=members)
         return cls(group=group, success=True)
 
 
 class RemoveGroupMember(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
         group_uuid = graphene.UUID(required=True)
@@ -33,7 +33,7 @@ class RemoveGroupMember(
 
     @classmethod
     def resolve_mutation(cls, root, info, group_uuid, member_uuid):
-        current_user = cls.get_current_user()
+        current_user = info.context.user
         try:
             group = remove_group_member(actor=current_user, group_uuid=group_uuid, member_uuid=member_uuid)
             return cls(group=group, success=True)
@@ -42,7 +42,7 @@ class RemoveGroupMember(
 
 
 class AddGroupMembers(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
         group_uuid = graphene.UUID(required=True)
@@ -52,13 +52,13 @@ class AddGroupMembers(
 
     @classmethod
     def resolve_mutation(cls, root, info, group_uuid, user_uuids):
-        current_user = cls.get_current_user()
+        current_user = info.context.user
         group = add_group_members(actor=current_user, group_uuid=group_uuid, user_uuids=user_uuids)
         return cls(group=group, success=True)
 
 
 class EditGroupName(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
         group_uuid = graphene.UUID(required=True)
@@ -68,7 +68,7 @@ class EditGroupName(
 
     @classmethod
     def resolve_mutation(cls, root, info, group_uuid, name):
-        current_user = cls.get_current_user()
+        current_user = info.context.user
         group = edit_group_name(actor=current_user, group_uuid=group_uuid, name=name)
         return cls(group=group, success=True)
 

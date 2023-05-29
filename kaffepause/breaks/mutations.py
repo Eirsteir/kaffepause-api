@@ -7,11 +7,11 @@ from kaffepause.breaks.services import (
     decline_break_invitation, ignore_break_invitation, request_change,
 )
 from kaffepause.breaks.types import BreakInvitationNode, BreakNode
-from kaffepause.common.bases import LoginRequiredMixin, NeomodelGraphQLMixin, Output
+from kaffepause.common.bases import LoginRequiredMixin, Output
 
 
 class InitiateBreak(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
         addressees = graphene.List(graphene.UUID, required=False)
@@ -23,7 +23,7 @@ class InitiateBreak(
 
     @classmethod
     def resolve_mutation(cls, root, info, addressees=None, recipient_group_id=None, start_time=None, location=None):
-        current_user = cls.get_current_user()
+        current_user = info.context.user
         break_ = create_break_and_invitation(
             actor=current_user, recipient_user_ids=addressees, recipient_group_id=recipient_group_id, starting_at=start_time, location=location
         )
@@ -31,7 +31,7 @@ class InitiateBreak(
 
 
 class BreakInvitationAction(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
         invitation = graphene.UUID()
@@ -43,7 +43,7 @@ class BreakInvitationAction(
     @classmethod
     def resolve_mutation(cls, root, info, invitation):
         invitation = BreakInvitation.nodes.get(uuid=invitation)
-        current_user = cls.get_current_user()
+        current_user = info.context.user
         invitation = cls._invitation_action(actor=current_user, invitation=invitation)
         return cls(invitation=invitation, success=True)
 
@@ -61,7 +61,7 @@ class IgnoreBreakInvitation(BreakInvitationAction):
 
 
 class RequestChange(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     class Arguments:
         break_uuid = graphene.UUID(required=True)
@@ -72,7 +72,7 @@ class RequestChange(
 
     @classmethod
     def resolve_mutation(cls, root, info, break_uuid, requested_time=None, requested_location_uuid=None):
-        current_user = cls.get_current_user()
+        current_user = info.context.user
 
         break_ = request_change(
             actor=current_user, break_uuid=break_uuid,

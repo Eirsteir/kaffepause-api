@@ -1,12 +1,9 @@
 from enum import Enum
-from uuid import UUID
 
 import factory
 import graphene
-from django.contrib.auth.models import AnonymousUser
 from factory.base import FactoryMetaClass
 from graphene import relay
-from graphql_auth.decorators import verification_required
 from graphql_jwt.exceptions import PermissionDenied
 
 from kaffepause.common.decorators import login_required

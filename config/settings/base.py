@@ -84,7 +84,7 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     "kaffepause.accounts",
-    "kaffepause.accountsV2",
+    "kaffepause.authentication",
     "kaffepause.users",
     "kaffepause.relationships",
     "kaffepause.breaks",
@@ -94,7 +94,6 @@ LOCAL_APPS = [
     "kaffepause.groups",
     "kaffepause.api",
     "kaffepause.common",
-    "kaffepause.utils",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -109,10 +108,10 @@ AUTHENTICATION_BACKENDS = [
     # "graphql_auth.backends.GraphQLAuthBackend",
     # "django.contrib.auth.backends.ModelBackend",
     # "graphql_jwt.backends.JSONWebTokenBackend",
-    # "kaffepause.accountsV2.auth.Neo4jGraphQLAuthBackend"
+    # "kaffepause.authentication.auth.Neo4jGraphQLAuthBackend"
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
-AUTH_USER_MODEL = "accounts.Account"
+AUTH_USER_MODEL = "auth.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
 LOGIN_REDIRECT_URL = "users:redirect"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
@@ -273,46 +272,9 @@ LOGGING = {
 # ------------------------------------------------------------------------------
 GRAPHENE = {
     "SCHEMA": "kaffepause.api.schema.schema",
-    "MIDDLEWARE": ["kaffepause.accountsV2.middleware.JSONWebTokenMiddleware"],
+    "MIDDLEWARE": ["kaffepause.authentication.middleware.JSONWebTokenMiddleware"],
 }
-GRAPHQL_JWT = {
-    "JWT_SECRET_KEY": "CKKsPkhIybHLZyajCv2UZeGK/j+5w1oyWVhiY7I6kRY=",
-    "JWT_DECODE_HANDLER": "kaffepause.accountsV2.jwt.get_token",
-    "JWT_PAYLOAD_HANDLER": "kaffepause.accountsV2.jwt.jwt_payload",
-    "JWT_GET_USER_BY_NATURAL_KEY_HANDLER": "kaffepause.accountsV2.jwt.get_user_by_natural_key",
-    "JWT_PAYLOAD_GET_USERNAME_HANDLER": "kaffepause.accountsV2.jwt.get_username_from_user",
-    "JWT_VERIFY_EXPIRATION": True,
-    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
-    "JWT_EXPIRATION_DELTA": timedelta(days=100),  # TODO: update in prod
-    "JWT_ALLOW_ANY_CLASSES": [
-        "graphql_auth.mutations.Register",
-        "graphql_auth.mutations.VerifyAccount",
-        "graphql_auth.mutations.ResendActivationEmail",
-        "graphql_auth.mutations.SendPasswordResetEmail",
-        "graphql_auth.mutations.PasswordReset",
-        "graphql_auth.mutations.ObtainJSONWebToken",
-        "graphql_auth.mutations.VerifyToken",
-        "graphql_auth.mutations.RefreshToken",
-        "graphql_auth.mutations.RevokeToken",
-        "graphql_auth.mutations.VerifySecondaryEmail",
-    ],
-}
-GRAPHQL_AUTH = {
-    "ALLOW_DELETE_ACCOUNT": True,
-    # Disable some of graphql-auth's required fields
-    "LOGIN_ALLOWED_FIELDS": ["email"],
-    "REGISTER_MUTATION_FIELDS": ["email"],
-    "UPDATE_MUTATION_FIELDS": {},
-    "USER_NODE_FILTER_FIELDS": {
-        "email": ["exact"],
-        "is_active": ["exact"],
-        "status__archived": ["exact"],
-        "status__verified": ["exact"],
-        "status__secondary_email": ["exact"],
-    },
-    "EMAIL_BACKEND": 'django.core.mail.backends.console.EmailBackend',
-    "SEND_ACTIVATION_EMAIL": False,
-}
+
 # Your stuff...
 # ------------------------------------------------------------------------------
 SITE = {
@@ -326,48 +288,6 @@ SITE = {
 API_VERSION = "v1"
 WEBSITE_URL = "https://eiriksteira.com"
 PROFILE_PIC_UPLOAD_FOLDER = env("CLOUDINARY_PROFILE_PIC_UPLOAD_FOLDER")
-
-# Social Auth
-# ------------------------------------------------------------------------------
-#  https://python-social-auth.readthedocs.io/en/latest/configuration/django.html
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", default="")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", default="")
-SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/userinfo.profile",
-]
-
-SOCIAL_AUTH_FACEBOOK_KEY = env("SOCIAL_AUTH_FACEBOOK_KEY", default="")
-SOCIAL_AUTH_FACEBOOK_SECRET = env("SOCIAL_AUTH_FACEBOOK_SECRET", default="")
-SOCIAL_AUTH_FACEBOOK_API_VERSION = env(
-    "SOCIAL_AUTH_FACEBOOK_API_VERSION", default="9.0"
-)
-SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    "fields": "id, name, email, picture.type(large)"
-}
-SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [
-    ("name", "name"),
-    ("email", "email"),
-    ("picture", "picture"),
-]
-
-SOCIAL_AUTH_PIPELINE = (
-    "social_core.pipeline.social_auth.social_details",
-    "social_core.pipeline.social_auth.social_uid",
-    "social_core.pipeline.social_auth.auth_allowed",
-    "social_core.pipeline.social_auth.social_user",
-    "social_core.pipeline.user.get_username",
-    "social_core.pipeline.user.create_user",
-    "kaffepause.users.social_core.create_user",  # <-
-    "social_core.pipeline.social_auth.associate_user",
-    "social_core.pipeline.social_auth.load_extra_data",
-    "social_core.pipeline.user.user_details",
-)
-
 
 # django-cors-headers
 # ------------------------------------------------------------------------------

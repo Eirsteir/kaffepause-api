@@ -3,18 +3,6 @@ from rest_framework import exceptions as rest_exceptions
 
 from kaffepause.api.errors import get_error_message
 
-# from rest_framework.permissions import IsAuthenticated
-
-
-# from rest_framework_simplejwt.authentication import JWTAuthentication
-
-
-#
-# class ApiAuthMixin:
-#     authentication_classes = (JWTAuthentication, )
-#     permission_classes = (IsAuthenticated, )
-
-
 class ApiErrorsMixin:
     """
     Mixin that transforms Django and Python exceptions into rest_framework ones.

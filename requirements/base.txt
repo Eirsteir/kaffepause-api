@@ -34,10 +34,10 @@ git+https://github.com/Eirsteir/django-neomodel.git@master
 # GraphQL
 # ------------------------------------------------------------------------------
 graphene>=2.0  # https://graphene-python.org/
-graphene-django~=2.1  # https://github.com/graphql-python/graphene-django
-django-graphql-auth==0.3.14
-django-graphql-jwt==0.3.0  # https://github.com/flavors/django-graphql-jwt
-django-graphql-social-auth[jwt]==0.1.4  # https://github.com/flavors/django-graphql-social-auth
+# graphene-django~=2.1  # https://github.com/graphql-python/graphene-django
+# django-graphql-auth==0.3.14
+# django-graphql-jwt==0.3.0  # https://github.com/flavors/django-graphql-jwt
+# django-graphql-social-auth[jwt]==0.1.4  # https://github.com/flavors/django-graphql-social-auth
 graphene-file-upload==1.2.2  # https://github.com/lmcgartland/graphene-file-upload
 
 # JWT

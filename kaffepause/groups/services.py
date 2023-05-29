@@ -42,7 +42,7 @@ def add_members_to_group(actor: User, group: Group, members: [User]):
 
 def remove_group_member(*, actor: User, group_uuid: UUID, member_uuid: UUID) -> Group:
     group = get_group(actor=actor, uuid=group_uuid)
-    member_to_remove = get_user(user_uuid=member_uuid)
+    member_to_remove = get_user(uuid=member_uuid)
 
     if not actor.is_member_of(group):
         raise PermissionDenied

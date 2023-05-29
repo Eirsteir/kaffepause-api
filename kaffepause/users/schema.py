@@ -9,7 +9,7 @@ from kaffepause.users.selectors import get_user, get_users, search_users
 from kaffepause.users.types import UserConnection, UserNode
 
 
-class UserQuery(NeomodelGraphQLMixin, graphene.ObjectType):
+class UserQuery(graphene.ObjectType):
 
     user = graphene.Field(UserNode, id=graphene.UUID())
     search_users = relay.ConnectionField(UserConnection, query=graphene.String())
@@ -22,7 +22,7 @@ class UserQuery(NeomodelGraphQLMixin, graphene.ObjectType):
     @classmethod
     @login_required
     def resolve_search_users(cls, root, info, query=None, **kwargs):
-        current_user = cls.get_current_user()
+        current_user = info.context.user
         if query:
             return search_users(query=query, searched_by=current_user)
         return get_users(fetched_by=current_user)

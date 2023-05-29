@@ -13,13 +13,13 @@ from kaffepause.notifications.types import NotificationBadgeCount
 
 
 class MarkAllAsSeen(
-    LoginRequiredMixin, NeomodelGraphQLMixin, Output, graphene.Mutation
+    LoginRequiredMixin, Output, graphene.Mutation
 ):
     notification_badge_count = graphene.Field(NotificationBadgeCount)
 
     @classmethod
     def resolve_mutation(cls, root, info):
-        current_user = cls.get_current_user()
+        current_user = info.context.user
         mark_all_as_seen(user=current_user)
         return cls(notification_badge_count=current_user, success=True)
 

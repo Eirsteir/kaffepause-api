@@ -8,7 +8,7 @@ from neomodel import (
     ZeroOrOne, ZeroOrMore, UniqueIdProperty, DateTimeProperty,
 )
 
-from kaffepause.accountsV2.enums import AccountRelationship
+from kaffepause.authentication.enums import AccountRelationship
 from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.common.enums import (
     BREAK,
@@ -31,6 +31,7 @@ class AuthenticationMixin:
     is_active = True
     is_authenticated = True
     is_anonymous = False
+    USERNAME_FIELD = "email"
 
 
 class User(DjangoNode, AuthenticationMixin):
@@ -39,15 +40,9 @@ class User(DjangoNode, AuthenticationMixin):
     email = StringProperty(unique_index=True, required=True)
     emailVerified = DateTimeProperty()
     image = StringProperty()
+
     account = RelationshipTo(ACCOUNT, AccountRelationship.HAS_ACCOUNT)
     sessions = RelationshipTo(SESSION, AccountRelationship.HAS_SESSION)
-
-    USERNAME_FIELD = "email"  #?
-
-    # TODO: remove all these
-    username = StringProperty(unique_index=True, max_length=100)
-    locale = StringProperty(default="en_US", max_length=10)
-    profile_pic = StringProperty()
 
     friends = Relationship(USER, UserRelationship.ARE_FRIENDS, model=FriendRel)
     following = RelationshipTo(USER, UserRelationship.FOLLOWING, model=RelationshipRel)

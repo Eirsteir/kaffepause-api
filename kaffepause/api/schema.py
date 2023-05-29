@@ -26,7 +26,6 @@ class Query(
 
 
 class Mutation(
-    kaffepause.accounts.schema.Mutation,
     kaffepause.users.schema.Mutation,
     kaffepause.relationships.schema.Mutation,
     kaffepause.breaks.schema.Mutation,

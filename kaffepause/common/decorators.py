@@ -2,7 +2,7 @@ from functools import wraps
 
 from graphql import ResolveInfo
 
-from kaffepause.accountsV2.exceptions import PermissionDenied
+from kaffepause.authentication.exceptions import PermissionDenied
 
 
 def context(f):
