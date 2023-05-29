@@ -4,9 +4,7 @@ from kaffepause.notifications.enums import NotificationEntityType
 from kaffepause.notifications.services import notify
 from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
-    CannotFollowUser,
     CannotRejectFriendRequest,
-    CannotUnfollowUser,
     CannotUnfriendUser,
     FriendRequestDoesNotExist,
     RelationshipAlreadyExists,
@@ -68,17 +66,6 @@ def unfriend_user(actor: User, friend: User):
         action=actor.remove_friend, exc=CannotUnfriendUser(), users=(actor, friend)
     )
 
-
-def follow_friend(actor: User, friend: User):
-    return _perform_friend_action(
-        action=actor.follow_user, exc=CannotFollowUser(), users=(actor, friend)
-    )
-
-
-def unfollow_friend(actor: User, friend: User):
-    return _perform_friend_action(
-        action=actor.unfollow_user, exc=CannotUnfollowUser(), users=(actor, friend)
-    )
 
 
 def _perform_friend_action(*, action: Callable, exc: Exception, users: Iterable[User]):

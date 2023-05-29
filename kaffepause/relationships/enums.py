@@ -4,7 +4,6 @@ from kaffepause.common.bases import NeomodelRelationshipEnum
 class UserRelationship(NeomodelRelationshipEnum):
     ARE_FRIENDS = "Are friends"
     REQUESTING_FRIENDSHIP = "Requested"
-    FOLLOWING = "Following"
 
 
 class NonRelatedRelationship(NeomodelRelationshipEnum):

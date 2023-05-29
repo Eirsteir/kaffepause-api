@@ -4,10 +4,8 @@ from kaffepause.common.bases import LoginRequiredMixin, Output
 from kaffepause.relationships.services import (
     accept_friend_request,
     cancel_friend_request,
-    follow_friend,
     reject_friend_request,
     send_friend_request,
-    unfollow_friend,
     unfriend_user,
 )
 from kaffepause.users.selectors import get_user
@@ -95,33 +93,3 @@ class RejectFriendRequest(
         reject_friend_request(actor=current_user, requester=requester)
 
         return cls(success=True, rejected_friend_requestee=requester)
-
-
-class UnfollowFriend(
-    LoginRequiredMixin, Output, graphene.Mutation
-):
-    class Arguments:
-        friend_id = graphene.UUID(required=True)
-
-    unfollowed_friend = graphene.Field(UserNode)
-
-    @classmethod
-    def resolve_mutation(cls, root, info, friend_id):
-        current_user = info.context.user
-        friend = get_user(uuid=friend_id)
-        unfollow_friend(actor=current_user, friend=friend)
-        return cls(success=True, unfollowed_friend=friend)
-
-
-class FollowFriend(LoginRequiredMixin, Output, graphene.Mutation):
-    class Arguments:
-        friend_id = graphene.UUID(required=True)
-
-    followed_friend = graphene.Field(UserNode)
-
-    @classmethod
-    def resolve_mutation(cls, root, info, friend_id):
-        current_user = info.context.user
-        friend = get_user(uuid=friend_id)
-        follow_friend(actor=current_user, friend=friend)
-        return cls(success=True, followed_friend=friend)

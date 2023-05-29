@@ -45,10 +45,6 @@ class User(DjangoNode, AuthenticationMixin):
     sessions = RelationshipTo(SESSION, AccountRelationship.HAS_SESSION)
 
     friends = Relationship(USER, UserRelationship.ARE_FRIENDS, model=FriendRel)
-    following = RelationshipTo(USER, UserRelationship.FOLLOWING, model=RelationshipRel)
-    followed_by = RelationshipFrom(
-        USER, UserRelationship.FOLLOWING, model=RelationshipRel
-    )
 
     outgoing_friend_requests = RelationshipTo(
         USER, UserRelationship.REQUESTING_FRIENDSHIP, model=RelationshipRel
@@ -132,12 +128,6 @@ class User(DjangoNode, AuthenticationMixin):
     def can_perform_action_on_friend(self, friend):
         """A user can perform an arbitrary action on another if they are friends and the friend is not itself."""
         return self.friends.is_connected(friend) and friend is not self
-
-    def follow_user(self, user):
-        return self.following.connect(user)
-
-    def unfollow_user(self, user):
-        return self.following.disconnect(user)
 
     def get_current_status(self):
         return self.current_status.single()

@@ -5,10 +5,8 @@ from kaffepause.authentication.decorators import login_required
 from kaffepause.relationships.mutations import (
     AcceptFriendRequest,
     CancelFriendRequest,
-    FollowFriend,
     RejectFriendRequest,
     SendFriendRequest,
-    UnfollowFriend,
     UnfriendUser,
 )
 from kaffepause.relationships.selectors import (
@@ -47,5 +45,3 @@ class Mutation(graphene.ObjectType):
     accept_friend_request = AcceptFriendRequest.Field()
     reject_friend_request = RejectFriendRequest.Field()
     unfriend_user = UnfriendUser.Field()
-    unfollow_friend = UnfollowFriend.Field()
-    follow_friend = FollowFriend.Field()

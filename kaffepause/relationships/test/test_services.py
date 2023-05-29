@@ -2,19 +2,15 @@ import pytest
 
 from kaffepause.relationships.exceptions import (
     CannotAcceptFriendRequest,
-    CannotFollowUser,
     CannotRejectFriendRequest,
-    CannotUnfollowUser,
     FriendRequestDoesNotExist,
     RelationshipAlreadyExists,
 )
 from kaffepause.relationships.services import (
     accept_friend_request,
     cancel_friend_request,
-    follow_friend,
     reject_friend_request,
     send_friend_request,
-    unfollow_friend,
     unfriend_user,
 )
 from kaffepause.users.test.factories import UserFactory
@@ -189,74 +185,3 @@ def test_remove_friend(actor, addressee):
     assert not actor.incoming_friend_requests.is_connected(addressee)
     assert not actor.outgoing_friend_requests.is_connected(addressee)
 
-
-def test_follow_friend_when_friends_and_not_following_follows_the_friend(actor, user):
-    """Should make the actor follow the user when they are friends."""
-    actor.add_friend(user)
-    actor.unfollow_user(user)
-
-    follow_friend(actor=actor, friend=user)
-
-    assert actor.friends.is_connected(user)
-    assert actor.following.is_connected(user)
-    assert user.following.is_connected(actor)
-
-
-def test_follow_friend_when_friends_and_already_following_follows_the_friend(
-    actor, user
-):
-    """The actor should still be following the user when attempting to follow one it has already followed."""
-    actor.add_friend(user)
-
-    follow_friend(actor=actor, friend=user)
-
-    assert actor.friends.is_connected(user)
-    assert actor.following.is_connected(user)
-    assert user.following.is_connected(actor)
-
-
-def test_follow_friend_when_not_friends_fails(actor, user):
-    """Should raise an exception if the user attempts to follow a non-friend."""
-    with pytest.raises(CannotFollowUser):
-        follow_friend(actor=actor, friend=user)
-
-
-def test_follow_friend_when_attempting_to_follow_self_fails(actor, user):
-    """Should raise an exception if the actor attempts to follow itself."""
-    with pytest.raises(CannotFollowUser):
-        follow_friend(actor=actor, friend=actor)
-
-
-def test_unfollow_friend_when_friends_unfollows_the_friend(actor, user):
-    """Should remove the user from the actors following list but keep the friend connection."""
-    actor.add_friend(user)
-
-    unfollow_friend(actor=actor, friend=user)
-
-    assert actor.friends.is_connected(user)
-    assert not actor.following.is_connected(user)
-    assert user.following.is_connected(actor)
-
-
-def test_unfollow_friend_when_friends_but_not_following_does_nothing(actor, user):
-    """The actor should still be not following the user when attempting to unfollow one it has already unfollowed."""
-    actor.add_friend(user)
-    actor.unfollow_user(user)
-
-    unfollow_friend(actor=actor, friend=user)
-
-    assert actor.friends.is_connected(user)
-    assert not actor.following.is_connected(user)
-    assert user.following.is_connected(actor)
-
-
-def test_unfollow_friend_when_not_friends_fails(actor, user):
-    """Should raise an exception if the user attempts to unfollow a non-friend."""
-    with pytest.raises(CannotUnfollowUser):
-        unfollow_friend(actor=actor, friend=user)
-
-
-def test_unfollow_friend_when_actor_is_user_fails(actor):
-    """Should raise an exception if the user attempts to unfollow itself."""
-    with pytest.raises(CannotUnfollowUser):
-        unfollow_friend(actor=actor, friend=actor)
