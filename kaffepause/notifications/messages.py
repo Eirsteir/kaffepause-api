@@ -5,39 +5,39 @@ from django.utils.translation import gettext as _
 
 
 def _get_user_friend_add_message(actor_name, **kwargs):
-    return _("%(actor_name)s har sendt deg en venneforespørsel.") % {"actor_name": actor_name, **kwargs}
+    return "%(actor_name)s har sendt deg en venneforespørsel." % {"actor_name": actor_name, **kwargs}
 
 
 def _get_user_friend_accept_message(actor_name, **kwargs):
-    return _("%(actor_name)s godtok venneforespørselen din.") % {"actor_name": actor_name, **kwargs}
+    return "%(actor_name)s godtok venneforespørselen din." % {"actor_name": actor_name, **kwargs}
 
 
 def _get_break_invitation_sent_message(actor_name, **kwargs):
     if kwargs.get("location_name"):
-        return _("%(actor_name)s vil ta en pause på %(location_name)s kl %(starting_at)s.") % {"actor_name": actor_name, **kwargs}
-    return _("%(actor_name)s vil ta en pause kl %(starting_at)s.") % {"actor_name": actor_name, **kwargs}
+        return "%(actor_name)s vil ta en pause på %(location_name)s kl %(starting_at)s." % {"actor_name": actor_name, **kwargs}
+    return "%(actor_name)s vil ta en pause kl %(starting_at)s." % {"actor_name": actor_name, **kwargs}
 
 
 def _get_break_invitation_sent_to_group_message(actor_name, **kwargs):
     if kwargs.get("location_name"):
-        return _("%(actor_name)s inviterte deg og %(group_name)s til en pause på %(location_name)s kl %(starting_at)s.") % {"actor_name": actor_name, **kwargs}
-    return _("%(actor_name)s inviterte deg og %(group_name)s til en pause kl %(starting_at)s.") % {"actor_name": actor_name, **kwargs}
+        return "%(actor_name)s inviterte deg og %(group_name)s til en pause på %(location_name)s kl %(starting_at)s." % {"actor_name": actor_name, **kwargs}
+    return "%(actor_name)s inviterte deg og %(group_name)s til en pause kl %(starting_at)s." % {"actor_name": actor_name, **kwargs}
 
 
 def _get_break_invitation_accepted_message(actor_name, **kwargs):
-    return _("%(actor_name)s godtok pauseinvitasjonen din.") % {"actor_name": actor_name, **kwargs}
+    return "%(actor_name)s godtok pauseinvitasjonen din." % {"actor_name": actor_name, **kwargs}
 
 
 def _get_break_invitation_declined_message(actor_name, **kwargs):
-    return _("%(actor_name)s avslo pauseinvitasjonen din.") % {"actor_name": actor_name, **kwargs}
+    return "%(actor_name)s avslo pauseinvitasjonen din." % {"actor_name": actor_name, **kwargs}
 
 
 def _get_group_member_added_message(actor_name, **kwargs):
-    return _("%(actor_name)s la deg til i gruppen %(group_name)s.") % {"actor_name": actor_name, **kwargs}
+    return "%(actor_name)s la deg til i gruppen %(group_name)s." % {"actor_name": actor_name, **kwargs}
 
 
 def _get_group_name_changed_message(actor_name, **kwargs):
-    return _("%(actor_name)s ga nytt navn til gruppen %(group_name)s: %(new_group_name)s.") % {"actor_name": actor_name, **kwargs}
+    return "%(actor_name)s ga nytt navn til gruppen %(group_name)s: %(new_group_name)s." % {"actor_name": actor_name, **kwargs}
 
 
 Messages = {

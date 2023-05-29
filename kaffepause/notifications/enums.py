@@ -1,7 +1,5 @@
 from enum import Enum
 
-from django.utils.translation import gettext as _
-
 from kaffepause.common.bases import NeomodelRelationshipEnum
 
 
@@ -17,14 +15,14 @@ class SeenState(Enum):
 
 
 class NotificationEntityType(Enum):
-    USER_FRIEND_ADD = _("User sends a friend request")
-    USER_FRIEND_ACCEPT = _("User accepts a friend request")
-    BREAK_INVITATION_SENT_INDIVIDUALLY = _("Individual break invitation is sent")
-    BREAK_INVITATION_SENT_TO_GROUP = _("Group break invitation is sent")
-    BREAK_INVITATION_ACCEPTED = _("Break invitation is accepted")
-    BREAK_INVITATION_DECLINED = _("Break invitation is declined")
-    GROUP_MEMBER_ADDED = _("User is added to group")
-    GROUP_NAME_CHANGED = _("A user changed name of a group")
+    USER_FRIEND_ADD = "User sends a friend request"
+    USER_FRIEND_ACCEPT = "User accepts a friend request"
+    BREAK_INVITATION_SENT_INDIVIDUALLY = "Individual break invitation is sent"
+    BREAK_INVITATION_SENT_TO_GROUP = "Group break invitation is sent"
+    BREAK_INVITATION_ACCEPTED = "Break invitation is accepted"
+    BREAK_INVITATION_DECLINED = "Break invitation is declined"
+    GROUP_MEMBER_ADDED = "User is added to group"
+    GROUP_NAME_CHANGED = "A user changed name of a group"
 
     @classmethod
     def choices(cls):
@@ -32,8 +30,8 @@ class NotificationEntityType(Enum):
 
 
 class NotificationRelationship(NeomodelRelationshipEnum):
-    NOTIFIES = _("Notifies")
-    ACTOR = _("Is actor of")
-    SUBJECT = _("Is about")
+    NOTIFIES = "Notifies"
+    ACTOR = "Is actor of"
+    SUBJECT = "Is about"
 
 

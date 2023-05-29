@@ -1,5 +1,3 @@
-from django.utils.translation import ugettext_lazy as _
-
 
 class JSONWebTokenError(Exception):
     default_message = None
@@ -12,8 +10,8 @@ class JSONWebTokenError(Exception):
 
 
 class PermissionDenied(JSONWebTokenError):
-    default_message = _('You do not have permission to perform this action')
+    default_message = 'Du har ikke tilgang til å utføre denne handlingen'
 
 
 class JSONWebTokenExpired(JSONWebTokenError):
-    default_message = _('Signature has expired')
+    default_message = 'Signature has expired'

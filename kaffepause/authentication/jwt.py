@@ -71,7 +71,7 @@ def get_payload(token, context=None):
     try:
         payload = decode_jwt(token, context)
     except jwe.JWEError:
-        raise jwt.JWTError(_('Error decoding token'))
+        raise jwt.JWTError('Error decoding token')
     return payload
 
 
@@ -79,12 +79,12 @@ def get_user_by_payload(payload):
     email = get_username_from_user(payload)
 
     if not email:
-        raise jwt.JWTError(_('Invalid payload'))
+        raise jwt.JWTError('Invalid payload')
 
     user = get_user_by_natural_key(email)
 
     if user is not None and not user.is_active:
-        raise jwt.JWTError(_('User is disabled'))
+        raise jwt.JWTError('User is disabled')
     return user
 
 

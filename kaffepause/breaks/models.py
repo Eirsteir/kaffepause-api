@@ -1,13 +1,11 @@
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
 from neomodel import (
     DateTimeProperty,
     One,
     ZeroOrOne,
     RelationshipFrom,
     RelationshipTo,
-    StructuredNode, ZeroOrMore, StringProperty,
-)
+    StructuredNode, ZeroOrMore, )
 
 from kaffepause.breaks.enums import BreakRelationship
 from kaffepause.breaks.exceptions import (
@@ -41,7 +39,7 @@ class Break(StructuredNode):
         if timezone.now() >= start_time or not start_time:
             raise InvalidBreakStartTime
         elif time_from_now(minutes=5) >= start_time:
-            raise InvalidBreakStartTime(_("Pausen må begynne om minimum 5 minutter."))
+            raise InvalidBreakStartTime("Pausen må begynne om minimum 5 minutter.")
 
     @property
     def is_expired(self):
@@ -55,7 +53,7 @@ class Break(StructuredNode):
     def kicker(self):
         if self.starting_at > timezone.now():
             return format_kicker_message(self.starting_at)
-        return _("Utgått")
+        return "Utgått"
 
     @property
     def has_invitation(self):

@@ -1,31 +1,21 @@
-from django.utils.translation import gettext_lazy as _
-
 from kaffepause.common.exceptions import DefaultError
 
 
 class RelationshipAlreadyExists(DefaultError):
-    default_message = _("This relationship already exists")
+    default_message = "Dette vennskapet finnes allerede"
 
 
 class CannotAcceptFriendRequest(DefaultError):
-    default_message = _("You cannot accept this friend request")
+    default_message = "Du kan ikke godta denne venneforespørselen"
 
 
 class FriendRequestDoesNotExist(DefaultError):
-    default_message = _("This friend request does not exist")
+    default_message = "Denne venneforespørselen finnes ikke"
 
 
 class CannotRejectFriendRequest(DefaultError):
-    default_message = _("You cannot reject this friend request")
+    default_message = "Du kan ikke avslå denne venneforespørselen"
 
 
 class CannotUnfriendUser(DefaultError):
-    default_message = _("You cannot unfriend this user, you are not friends")
-
-
-class CannotFollowUser(DefaultError):
-    default_message = _("You cannot follow this user, you are not friends")
-
-
-class CannotUnfollowUser(DefaultError):
-    default_message = _("You cannot unfollow this user, you are not friends")
+    default_message = "Du kan ikke fjerne denne personen som venn siden dere ikke er venner"

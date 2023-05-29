@@ -1,7 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.utils import timezone
-from django.utils.translation import gettext as _
 
 
 def get_first_matching_attr(obj, *attrs, default=None):
@@ -22,7 +21,7 @@ def three_hours_from_now():
 
 def format_kicker_message(time):
     time_str = format_time_from_now(time)
-    return _("Om %(time)s") % {"time": time_str}
+    return "Om %(time)s" % {"time": time_str}
 
 
 def format_time_from_now(target_time) -> str: # TODO: håndter enkelte timer (time) og minutter (minutt)
@@ -33,9 +32,9 @@ def format_time_from_now(target_time) -> str: # TODO: håndter enkelte timer (ti
     minutes = int((time_diff.total_seconds() % 3600) // 60)
     # Format the result based on the number of hours and minutes
     if hours > 0:
-        result = _("%(hours)d timer og %(minutes)d minutter") % {"hours": hours, "minutes": minutes}
+        result = "%(hours)d timer og %(minutes)d minutter" % {"hours": hours, "minutes": minutes}
     else:
-        result = _("%(minutes)d minutter") % {"minutes": minutes}
+        result = "%(minutes)d minutter" % {"minutes": minutes}
 
     return result
 

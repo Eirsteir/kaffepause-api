@@ -1,6 +1,5 @@
 from typing import List
 
-from django.utils.translation import gettext_lazy as _
 from neomodel import db
 
 from kaffepause.relationships.enums import NonRelatedRelationship, UserRelationship
@@ -64,13 +63,13 @@ def get_friendship_status(actor: User, user: User) -> object:
     else:
         status = str(NonRelatedRelationship.CAN_REQUEST)
 
-    return _(status)
+    return status
 
 
 def get_social_context_between(actor: User, other: User) -> str:
     mutual_friends_count = get_mutual_friends_count(actor=actor, user=other)
     count = mutual_friends_count if mutual_friends_count else "Ingen"
-    return _(f"{count} felles venner")
+    return f"{count} felles venner"
 
 
 def get_mutual_friends_count(actor: User, user: User) -> int:

@@ -14,18 +14,18 @@ class InvitationReplyStatus(Enum):
 
 
 class BreakRelationship(NeomodelRelationshipEnum):
-    PARTICIPATED_IN = _("Participated in")
-    INITIATED = _("Initiated")
-    SENT = _("Sent")
-    TO_USER = _("To user")
-    TO_GROUP = _("To group")
-    REGARDING = _("Regarding")
-    ACCEPTED = _("Accepted")
-    DECLINED = _("Declined")
-    IGNORED = _("Ignored")
-    LOCATED_AT = _("Located at")
-    REQUESTED_CHANGE = _("Requested change")
-    CHANGE_REQUESTED_FOR = _("Change request for")
-    ACCEPTED_CHANGE = _("Accepted change")
-    DENIED_CHANGE = _("Denied change")
-    REQUESTED_LOCATION = _("Requested location")
+    PARTICIPATED_IN = "Participated in"
+    INITIATED = "Initiated"
+    SENT = "Sent"
+    TO_USER = "To user"
+    TO_GROUP = "To group"
+    REGARDING = "Regarding"
+    ACCEPTED = "Accepted"
+    DECLINED = "Declined"
+    IGNORED = "Ignored"
+    LOCATED_AT = "Located at"
+    REQUESTED_CHANGE = "Requested change"
+    CHANGE_REQUESTED_FOR = "Change request for"
+    ACCEPTED_CHANGE = "Accepted change"
+    DENIED_CHANGE = "Denied change"
+    REQUESTED_LOCATION = "Requested location"

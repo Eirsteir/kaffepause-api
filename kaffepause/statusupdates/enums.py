@@ -6,11 +6,11 @@ from kaffepause.common.bases import NeomodelRelationshipEnum
 
 
 class StatusUpdateType(Enum):
-    INACTIVE = _("is inactive")
-    READY_FOR_BREAK = _("is ready for a break")
-    FOCUSMODE = _("is in focusmode")
-    ON_A_BREAK = _("is on a break")
-    UNKNOWN = _("is MIA")
+    INACTIVE = "is inactive"
+    READY_FOR_BREAK = "is ready for a break"
+    FOCUSMODE = "is in focusmode"
+    ON_A_BREAK = "is on a break"
+    UNKNOWN = "is MIA"
 
     @classmethod
     def choices(cls):
@@ -18,5 +18,5 @@ class StatusUpdateType(Enum):
 
 
 class StatusUpdateRelationship(NeomodelRelationshipEnum):
-    CURRENT = _("Current")
-    PREVIOUS = _("Previous")
+    CURRENT = "Current"
+    PREVIOUS = "Previous"

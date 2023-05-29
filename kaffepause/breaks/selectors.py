@@ -1,8 +1,6 @@
 from typing import List
 from uuid import UUID
-from django.utils.translation import gettext_lazy as _
 
-from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from neomodel import db
 
@@ -24,21 +22,21 @@ def is_viewer_initiator(*, actor, break_: Break):
 def get_break_title(*, actor: User, break_: Break) -> str:
     if break_.has_passed:
         if actor.is_participant_of(break_=break_):
-            return _("Du tok en pause")
+            return "Du tok en pause"
         elif actor.is_invited_to(break_=break_):
-            return _("%(sender_name)s inviterte deg til pause" % {"sender_name": break_.invitation_sender.short_name})
+            return "%(sender_name)s inviterte deg til pause" % {"sender_name": break_.invitation_sender.short_name}
 
     if is_invited_and_has_not_replied(actor, break_):
-        return _("%(sender_name)s har invitert deg til pause" % {
-            "sender_name": break_.invitation_sender.short_name})
+        return "%(sender_name)s har invitert deg til pause" % {
+            "sender_name": break_.invitation_sender.short_name}
 
     if is_initiator_and_has_invited(actor, break_):
-        return _("Du har invitert til pause")
+        return "Du har invitert til pause"
 
     if is_initiator_and_has_planned_break(actor, break_):
-        return _("Du har planlagt en pause")
+        return "Du har planlagt en pause"
 
-    return _("Pause")
+    return "Pause"
 
 
 def is_initiator_and_has_planned_break(actor, break_):

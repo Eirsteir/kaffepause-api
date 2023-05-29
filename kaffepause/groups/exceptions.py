@@ -4,12 +4,12 @@ from kaffepause.common.exceptions import DefaultError
 
 
 class GroupDoesNotExist(DefaultError):
-    default_message = _("Could not find a group with this id")
+    default_message = "Denne gruppen eksisterer ikke"
 
 
 class EmptyGroupError(DefaultError):
-    default_message = _("Gruppen må ha medlemmer.")
+    default_message = "Gruppen må ha medlemmer."
 
 
 class CannotLeaveGroupWhenSingleMember(DefaultError):
-    default_message = _("Du kan ikke forlate gruppen når du er eneste medlem. Du kan kun slette den.")
+    default_message = "Du kan ikke forlate gruppen når du er eneste medlem. Du kan kun slette den."

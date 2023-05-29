@@ -1,7 +1,6 @@
 import logging
 
 import graphene
-from django.utils.translation import gettext_lazy as _
 from graphene_file_upload.scalars import Upload
 
 from kaffepause.common.bases import LoginRequiredMixin, Output
@@ -51,6 +50,6 @@ class UpdatePreferredLocation(
             )
             logger.debug(f"Successfully updated users preferred location (uuid:{user.uuid}, location_uuid: {location_uuid})")
         except Location.DoesNotExist as e:
-            return cls(success=False, errors=[_("Dette stedet eksisterer ikke")])
+            return cls(success=False, errors=["Dette stedet eksisterer ikke"])
 
         return cls(success=True, user=user)
