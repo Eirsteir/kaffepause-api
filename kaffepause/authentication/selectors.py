@@ -1,9 +1,12 @@
+import logging
 from datetime import datetime
 from typing import Optional
 
 from kaffepause.accounts.models import Session, Account
 from kaffepause.authentication.exceptions import PermissionDenied
 from kaffepause.users import models
+
+logger = logging.getLogger(__name__)
 
 
 def get_user_by_session_token(session_token: str) -> Optional[models.User]:
@@ -35,6 +38,8 @@ def get_user_by_social_id(provider: str, access_token: str) -> Optional[models.U
     Return the user associated with a social provider and access token.
     """
     account = Account.nodes.get_or_none(provider=provider, access_token=access_token)
+
+    logger.debug("Resolved account by social id: %s", account)
 
     if account is None:
         return None
