@@ -10,6 +10,5 @@ class UserFactory(NeomodelFactory):
 
     uuid = factory.Faker("uuid4")
     name = factory.Faker("name")
-    username = factory.Faker("user_name")
-    locale = factory.Faker("locale")
-    profile_pic = factory.Faker("url")
+    email = factory.Faker("email")
+    image = factory.Faker("url")

@@ -1,9 +1,11 @@
 import graphene
+from django.contrib.auth import get_user_model
 from graphene import relay
-from kaffepause.users.types import UserNode
+import kaffepause.users.types
 
 
 class GroupNode(graphene.ObjectType):
+
     class Meta:
         interfaces = (relay.Node,)
         name = "Group"
@@ -11,8 +13,8 @@ class GroupNode(graphene.ObjectType):
     uuid = graphene.UUID()
     name = graphene.String()
     created = graphene.DateTime()
-    creator = graphene.Field(UserNode)
-    members = graphene.List(UserNode)
+    creator = graphene.Field(lambda: kaffepause.users.types.UserNode)
+    members = graphene.List(lambda: kaffepause.users.types.UserNode)
 
     def resolve_creator(parent, info):
         return parent.creator.single()

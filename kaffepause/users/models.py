@@ -33,6 +33,9 @@ class AuthenticationMixin:
     is_anonymous = False
     USERNAME_FIELD = "email"
 
+    account = RelationshipTo(ACCOUNT, AccountRelationship.HAS_ACCOUNT)
+    sessions = RelationshipTo(SESSION, AccountRelationship.HAS_SESSION)
+
 
 class User(DjangoNode, AuthenticationMixin):
     uuid = UniqueIdProperty(db_property="id")  # Neomodel overrides field id
@@ -40,9 +43,6 @@ class User(DjangoNode, AuthenticationMixin):
     email = StringProperty(unique_index=True, required=True)
     emailVerified = DateTimeProperty()
     image = StringProperty()
-
-    account = RelationshipTo(ACCOUNT, AccountRelationship.HAS_ACCOUNT)
-    sessions = RelationshipTo(SESSION, AccountRelationship.HAS_SESSION)
 
     friends = Relationship(USER, UserRelationship.ARE_FRIENDS, model=FriendRel)
 

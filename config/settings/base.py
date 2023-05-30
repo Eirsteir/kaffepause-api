@@ -69,11 +69,11 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
-    "django.forms",
-    "django_filters",
+    # "django.forms",
+    # "django_filters",
 ]
 THIRD_PARTY_APPS = [
-    "crispy_forms",
+    # "crispy_forms",
     "corsheaders",
     "django_neomodel",
     "graphene_django",
@@ -311,4 +311,5 @@ JWT_AUTH_HEADER_NAME = "HTTP_AUTHORIZATION"
 JWT_AUTH_HEADER_PREFIX = "JWT"
 JWT_COOKIE_NAME = "JWT"
 JWT_SECRET_KEY = "CKKsPkhIybHLZyajCv2UZeGK/j+5w1oyWVhiY7I6kRY="
+JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_DELTA = timedelta(days=30)

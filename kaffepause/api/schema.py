@@ -1,6 +1,7 @@
 import graphene
 from graphene_django.debug import DjangoDebug
 
+import kaffepause.authentication.schema
 import kaffepause.accounts.schema
 import kaffepause.breaks.schema
 import kaffepause.location.schema
@@ -26,6 +27,7 @@ class Query(
 
 
 class Mutation(
+    kaffepause.authentication.schema.Mutation,
     kaffepause.users.schema.Mutation,
     kaffepause.relationships.schema.Mutation,
     kaffepause.breaks.schema.Mutation,
